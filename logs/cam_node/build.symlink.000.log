@@ -1,0 +1,4 @@
+Symlinking /home/nvidia/catkin_ws/devel/lib/pkgconfig/cam_node.pc
+Symlinking /home/nvidia/catkin_ws/devel/lib/cam_node/cam_node
+Symlinking /home/nvidia/catkin_ws/devel/share/cam_node/cmake/cam_nodeConfig-version.cmake
+Symlinking /home/nvidia/catkin_ws/devel/share/cam_node/cmake/cam_nodeConfig.cmake

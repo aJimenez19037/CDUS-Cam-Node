@@ -1,0 +1,1 @@
+/home/nvidia/catkin_ws/devel/.private/cam_node/lib/pkgconfig/cam_node.pc
