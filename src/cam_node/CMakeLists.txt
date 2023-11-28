@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(rs2opencv)
+project(cam_node)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+#Compile as C++11, supported in ROS Kinetic and newer
+#add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -13,8 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  message_generation
 )
-set(OpenCV_DIR "/home/nvidia/OpenCV/opencv")
+set(OpenCV_DIR "/home/nvidia/OpenCV/opencv/build/")
 find_package(OpenCV REQUIRED COMPONENTS core imgproc highgui objdetect)
 find_package(realsense2 REQUIRED)
 #find_package(Eigen REQUIRED)
@@ -160,37 +161,37 @@ catkin_package(
 # target_link_libraries(cam_node_wNN ${realsense2_LIBRARY})
 # add_dependencies(cam_node_wNN beginner_tutorials_generate_messages_cpp)
 
-add_executable(cam_node5 src/cam_node5.cpp)
-target_link_libraries(cam_node5 ${catkin_LIBRARIES})
-target_link_libraries(cam_node5 ${OpenCV_LIBS})
-target_link_libraries(cam_node5 ${realsense2_LIBRARY})
-add_dependencies(cam_node5 beginner_tutorials_generate_messages_cpp)
+#add_executable(cam_node5 src/cam_node5.cpp)
+#target_link_libraries(cam_node5 ${catkin_LIBRARIES})
+#target_link_libraries(cam_node5 ${OpenCV_LIBS})
+#target_link_libraries(cam_node5 ${realsense2_LIBRARY})
+#add_dependencies(cam_node5 beginner_tutorials_generate_messages_cpp)
 
-add_executable(cam_node4 src/cam_node4.cpp)
-target_link_libraries(cam_node4 ${catkin_LIBRARIES})
-target_link_libraries(cam_node4 ${OpenCV_LIBS})
-target_link_libraries(cam_node4 ${realsense2_LIBRARY})
-add_dependencies(cam_node4 beginner_tutorials_generate_messages_cpp)
+#add_executable(cam_node4 src/cam_node4.cpp)
+#target_link_libraries(cam_node4 ${catkin_LIBRARIES})
+#target_link_libraries(cam_node4 ${OpenCV_LIBS})
+#target_link_libraries(cam_node4 ${realsense2_LIBRARY})
+#add_dependencies(cam_node4 beginner_tutorials_generate_messages_cpp)
 
-add_executable(receiver_node4 src/receiver_node4.cpp)
-target_link_libraries(receiver_node4 ${catkin_LIBRARIES})
-target_link_libraries(receiver_node4 ${OpenCV_LIBS})
-target_link_libraries(receiver_node4 ${realsense2_LIBRARY})
-target_link_libraries(receiver_node4 Eigen3::Eigen)
+#add_executable(receiver_node4 src/receiver_node4.cpp)
+#target_link_libraries(receiver_node4 ${catkin_LIBRARIES})
+#target_link_libraries(receiver_node4 ${OpenCV_LIBS})
+#target_link_libraries(receiver_node4 ${realsense2_LIBRARY})
+#target_link_libraries(receiver_node4 Eigen3::Eigen)
 #target_link_libraries(receiver_node2 ${Eigen_LIBRARIES})
-add_dependencies(receiver_node4 beginner_tutorials_generate_messages_cpp)
+#add_dependencies(receiver_node4 beginner_tutorials_generate_messages_cpp)
 
-add_executable(cam_node6 src/cam_node6.cpp)
-target_link_libraries(cam_node6 ${catkin_LIBRARIES})
-target_link_libraries(cam_node6 ${OpenCV_LIBS})
-target_link_libraries(cam_node6 ${realsense2_LIBRARY})
-add_dependencies(cam_node6 beginner_tutorials_generate_messages_cpp)
+#add_executable(cam_node6 src/cam_node6.cpp)
+#target_link_libraries(cam_node6 ${catkin_LIBRARIES})
+#target_link_libraries(cam_node6 ${OpenCV_LIBS})
+#target_link_libraries(cam_node6 ${realsense2_LIBRARY})
+#add_dependencies(cam_node6 beginner_tutorials_generate_messages_cpp)
 
-add_executable(cam_node_SLAM src/cam_node_SLAM.cpp)
-target_link_libraries(cam_node_SLAM ${catkin_LIBRARIES})
-target_link_libraries(cam_node_SLAM ${OpenCV_LIBS})
-target_link_libraries(cam_node_SLAM ${realsense2_LIBRARY})
-add_dependencies(cam_node_SLAM beginner_tutorials_generate_messages_cpp)
+add_executable(cam_node src/cam_node.cpp)
+target_link_libraries(cam_node ${catkin_LIBRARIES})
+target_link_libraries(cam_node ${OpenCV_LIBS})
+target_link_libraries(cam_node ${realsense2_LIBRARY})
+#add_dependencies(cam_node beginner_tutorials_generate_messages_cpp)
 
 
 
