@@ -1,0 +1,56 @@
+[35m[1mScanning dependencies of target std_msgs_generate_messages_py[0m
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_py[0m
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target cam_node[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_lisp[0m
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target sensor_msgs_generate_messages_lisp[0m
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target cam_node_generate_messages_py[0m
+[35m[1mScanning dependencies of target cam_node_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target cam_node_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target cam_node_generate_messages_eus[0m
+[35m[1mScanning dependencies of target cam_node_generate_messages_lisp[0m
+[  0%] Built target cam_node_generate_messages_py
+[  0%] Built target cam_node_generate_messages_nodejs
+[  0%] Built target cam_node_generate_messages_cpp
+[ 33%] [34m[1mGenerating EusLisp manifest code for cam_node[0m
+[ 33%] Built target cam_node_generate_messages_lisp
+[ 66%] [32mBuilding CXX object CMakeFiles/cam_node.dir/src/cam_node.cpp.o[0m
+[ 66%] Built target cam_node_generate_messages_eus
+[35m[1mScanning dependencies of target cam_node_generate_messages[0m
+[ 66%] Built target cam_node_generate_messages
+[01m[K/home/locus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/cam_node.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/locus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/cam_node.cpp:295:39:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KblobFromImage(cv::Mat&, double, int, int, cv::Scalar, bool, bool)[m[K’
+                                 false [01;31m[K)[m[K;
+                                       [01;31m[K^[m[K
+In file included from [01m[K/home/locus/opencv_build/opencv/modules/dnn/include/opencv2/dnn.hpp:76:0[m[K,
+                 from [01m[K/home/locus/opencv_build/opencv/include/opencv2/opencv.hpp:62[m[K,
+                 from [01m[K/home/locus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/cam_node.cpp:27[m[K:
+[01m[K/home/locus/opencv_build/opencv/modules/dnn/include/opencv2/dnn/dnn.hpp:1140:22:[m[K [01;36m[Knote: [m[Kcandidate: cv::Mat cv::dnn::dnn4_v20230620::blobFromImage(cv::InputArray, double, const Size&, const Scalar&, bool, bool, int)
+     CV_EXPORTS_W Mat [01;36m[KblobFromImage[m[K(InputArray image, double scalefactor=1.0, const Size& size = Size(),
+                      [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/locus/opencv_build/opencv/modules/dnn/include/opencv2/dnn/dnn.hpp:1140:22:[m[K [01;36m[Knote: [m[K  no known conversion for argument 3 from ‘[01m[Kint[m[K’ to ‘[01m[Kconst Size& {aka const cv::Size_<int>&}[m[K’
+[01m[K/home/locus/opencv_build/opencv/modules/dnn/include/opencv2/dnn/dnn.hpp:1148:21:[m[K [01;36m[Knote: [m[Kcandidate: void cv::dnn::dnn4_v20230620::blobFromImage(cv::InputArray, cv::OutputArray, double, const Size&, const Scalar&, bool, bool, int)
+     CV_EXPORTS void [01;36m[KblobFromImage[m[K(InputArray image, OutputArray blob, double scalefactor=1.0,
+                     [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/locus/opencv_build/opencv/modules/dnn/include/opencv2/dnn/dnn.hpp:1148:21:[m[K [01;36m[Knote: [m[K  no known conversion for argument 2 from ‘[01m[Kdouble[m[K’ to ‘[01m[Kcv::OutputArray {aka const cv::_OutputArray&}[m[K’
+CMakeFiles/cam_node.dir/build.make:62: recipe for target 'CMakeFiles/cam_node.dir/src/cam_node.cpp.o' failed
+make[2]: *** [CMakeFiles/cam_node.dir/src/cam_node.cpp.o] Error 1
+CMakeFiles/Makefile2:67: recipe for target 'CMakeFiles/cam_node.dir/all' failed
+make[1]: *** [CMakeFiles/cam_node.dir/all] Error 2
+Makefile:140: recipe for target 'all' failed
+make: *** [all] Error 2

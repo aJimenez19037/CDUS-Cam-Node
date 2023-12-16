@@ -1,0 +1,486 @@
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PVATrajectory[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryResult[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_SetInteger[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_TxId[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_RequestRelativePoseBatch[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryActionFeedback[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Attitude2D[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryActionGoal[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryGoal[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PingStatus[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PingStatus
+[  0%] Built target _mg_msgs_generate_messages_check_deps_TxId
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryResult
+[  0%] Built target _mg_msgs_generate_messages_check_deps_SetInteger
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Attitude2D
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PVATrajectory
+[  0%] Built target _mg_msgs_generate_messages_check_deps_RequestRelativePoseBatch
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryGoal
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryActionFeedback
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Bitcontainer[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryActionGoal
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_SetQuadBool[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Almanac[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_GnssObservablesSegment[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_BaseTime[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_RadarTarget[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_minSnapWpStamped[0m
+[35m[1mScanning dependencies of target nav_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryGoal[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PVA_request[0m
+[  0%] Built target nav_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_TransmitterInfoSegment[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Bitcontainer
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Almanac
+[  0%] Built target _mg_msgs_generate_messages_check_deps_GnssObservablesSegment
+[  0%] Built target _mg_msgs_generate_messages_check_deps_SetQuadBool
+[  0%] Built target _mg_msgs_generate_messages_check_deps_minSnapWpStamped
+[  0%] Built target _mg_msgs_generate_messages_check_deps_BaseTime
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryGoal
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PVAJ_request[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PVA_request
+[  0%] Built target _mg_msgs_generate_messages_check_deps_RadarTarget
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PVA_array[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_SingleBaselineRTK[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryAction[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PolyPVA[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_ObservablesMeasurementTime[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PVA_Stamped[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_TransmitterInfoSegment
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PVAJ_request
+[  0%] Built target geometry_msgs_generate_messages_eus
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryActionResult[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Polynomial[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_RadarConfig[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryActionResult[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_SingleBaselineRTK
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PolyPVA
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PVA_array
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryAction
+[  0%] Built target _mg_msgs_generate_messages_check_deps_ObservablesMeasurementTime
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PVA_Stamped
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_GPStoUTC[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_minAccXYWpPVA[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_minSnapWpPVAJ[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Imu[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PVAJS[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryResult[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryActionResult
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Polynomial
+[  0%] Built target _mg_msgs_generate_messages_check_deps_RadarConfig
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryActionResult
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_TransmitterInfo[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_set_strings[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryFeedback[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Status[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_minAccXYWpPVA
+[  0%] Built target _mg_msgs_generate_messages_check_deps_minSnapWpPVAJ
+[  0%] Built target _mg_msgs_generate_messages_check_deps_GPStoUTC
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Imu
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryResult
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PVAJS
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_GnssObservables[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_NavigationSolution[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_MultiBaselineRTKAttitude2D[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PVAJS_array[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_GameState[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Info[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_TransmitterInfo
+[  0%] Built target _mg_msgs_generate_messages_check_deps_set_strings
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Status
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryFeedback
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_StatusMessage[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Radar[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_NavigationSolution
+[  0%] Built target _mg_msgs_generate_messages_check_deps_GnssObservables
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_MultiBaselineRTKAttitude3D[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryFeedback[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PVAJS_array
+[  0%] Built target _mg_msgs_generate_messages_check_deps_MultiBaselineRTKAttitude2D
+[  0%] Built target _mg_msgs_generate_messages_check_deps_GameState
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_PVA[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Info
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Coda[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryActionFeedback[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_BalloonInfo[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Ephemeris[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_ImuConfig[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_Attitude3D[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Radar
+[  0%] Built target _mg_msgs_generate_messages_check_deps_StatusMessage
+[  0%] Built target _mg_msgs_generate_messages_check_deps_MultiBaselineRTKAttitude3D
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryFeedback
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryAction[0m
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_WifiStatus[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_PVA
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_updatePx4param[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_ImuConfig
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Coda
+[  0%] Built target _mg_msgs_generate_messages_check_deps_BalloonInfo
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_TriggerTime[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Ephemeris
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PVAJS_trajectoryActionFeedback
+[35m[1mScanning dependencies of target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryActionGoal[0m
+[35m[1mScanning dependencies of target nav_msgs_generate_messages_lisp[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_Attitude3D
+[35m[1mScanning dependencies of target std_msgs_generate_messages_lisp[0m
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_lisp[0m
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target nav_msgs_generate_messages_cpp[0m
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target nav_msgs_generate_messages_lisp
+[35m[1mScanning dependencies of target std_msgs_generate_messages_cpp[0m
+[  0%] Built target geometry_msgs_generate_messages_lisp
+[  0%] Built target geometry_msgs_generate_messages_cpp
+[  0%] Built target nav_msgs_generate_messages_cpp
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryAction
+[  0%] Built target _mg_msgs_generate_messages_check_deps_WifiStatus
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target _mg_msgs_generate_messages_check_deps_updatePx4param
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target geometry_msgs_generate_messages_py[0m
+[35m[1mScanning dependencies of target nav_msgs_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target nav_msgs_generate_messages_py[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_nodejs[0m
+[35m[1mScanning dependencies of target std_msgs_generate_messages_py[0m
+[  0%] Built target _mg_msgs_generate_messages_check_deps_TriggerTime
+[  0%] Built target geometry_msgs_generate_messages_nodejs
+[  0%] Built target _mg_msgs_generate_messages_check_deps_follow_PolyPVA_XY_trajectoryActionGoal
+[  0%] Built target nav_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target nav_msgs_generate_messages_py
+[35m[1mScanning dependencies of target mg_msgs_generate_messages_eus[0m
+[35m[1mScanning dependencies of target mg_msgs_generate_messages_cpp[0m
+[35m[1mScanning dependencies of target mg_msgs_generate_messages_lisp[0m
+[35m[1mScanning dependencies of target mg_msgs_generate_messages_nodejs[0m
+[  0%] [34m[1mGenerating EusLisp code from mg_msgs/Imu.msg[0m
+[  2%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PolyPVA_XY_trajectoryActionResult.msg[0m
+[  2%] [34m[1mGenerating EusLisp code from mg_msgs/NavigationSolution.msg[0m
+[  2%] [34m[1mGenerating EusLisp code from mg_msgs/ImuConfig.msg[0m
+[  2%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PVAJS_trajectoryFeedback.msg[0m
+[35m[1mScanning dependencies of target mg_msgs_generate_messages_py[0m
+[  2%] [34m[1mGenerating EusLisp code from mg_msgs/StatusMessage.msg[0m
+[  2%] [34m[1mGenerating EusLisp code from mg_msgs/GPStoUTC.msg[0m
+[  2%] [34m[1mGenerating C++ code from mg_msgs/Imu.msg[0m
+[  3%] [34m[1mGenerating Lisp code from mg_msgs/Imu.msg[0m
+[  3%] [34m[1mGenerating Javascript code from mg_msgs/Imu.msg[0m
+[  3%] [34m[1mGenerating Python from MSG mg_msgs/Imu[0m
+[  3%] [34m[1mGenerating Lisp code from mg_msgs/follow_PolyPVA_XY_trajectoryActionResult.msg[0m
+[  3%] [34m[1mGenerating Javascript code from mg_msgs/follow_PolyPVA_XY_trajectoryActionResult.msg[0m
+[  4%] [34m[1mGenerating Javascript code from mg_msgs/StatusMessage.msg[0m
+[  4%] [34m[1mGenerating Javascript code from mg_msgs/NavigationSolution.msg[0m
+[  5%] [34m[1mGenerating Lisp code from mg_msgs/NavigationSolution.msg[0m
+[  5%] [34m[1mGenerating Lisp code from mg_msgs/StatusMessage.msg[0m
+[  5%] [34m[1mGenerating Javascript code from mg_msgs/ImuConfig.msg[0m
+[  5%] [34m[1mGenerating Javascript code from mg_msgs/follow_PVAJS_trajectoryFeedback.msg[0m
+[  5%] [34m[1mGenerating EusLisp code from mg_msgs/TransmitterInfoSegment.msg[0m
+[  6%] [34m[1mGenerating EusLisp code from mg_msgs/BaseTime.msg[0m
+[  6%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PolyPVA_XY_trajectoryAction.msg[0m
+[  6%] [34m[1mGenerating EusLisp code from mg_msgs/RadarTarget.msg[0m
+[  6%] [34m[1mGenerating C++ code from mg_msgs/follow_PolyPVA_XY_trajectoryActionResult.msg[0m
+[  7%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PVAJS_trajectoryAction.msg[0m
+[  7%] [34m[1mGenerating Lisp code from mg_msgs/ImuConfig.msg[0m
+[  8%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PVAJS_trajectoryResult.msg[0m
+[  8%] [34m[1mGenerating Javascript code from mg_msgs/GPStoUTC.msg[0m
+[  8%] [34m[1mGenerating EusLisp code from mg_msgs/TransmitterInfo.msg[0m
+[  9%] [34m[1mGenerating C++ code from mg_msgs/StatusMessage.msg[0m
+[  9%] [34m[1mGenerating Lisp code from mg_msgs/follow_PVAJS_trajectoryFeedback.msg[0m
+[  9%] [34m[1mGenerating Javascript code from mg_msgs/TransmitterInfoSegment.msg[0m
+[ 10%] [34m[1mGenerating Lisp code from mg_msgs/GPStoUTC.msg[0m
+[ 10%] [34m[1mGenerating Python from MSG mg_msgs/follow_PolyPVA_XY_trajectoryActionResult[0m
+[ 10%] [34m[1mGenerating C++ code from mg_msgs/NavigationSolution.msg[0m
+[ 10%] [34m[1mGenerating Javascript code from mg_msgs/BaseTime.msg[0m
+[ 11%] [34m[1mGenerating Javascript code from mg_msgs/follow_PolyPVA_XY_trajectoryAction.msg[0m
+[ 11%] [34m[1mGenerating Javascript code from mg_msgs/RadarTarget.msg[0m
+[ 11%] [34m[1mGenerating C++ code from mg_msgs/ImuConfig.msg[0m
+[ 12%] [34m[1mGenerating EusLisp code from mg_msgs/Status.msg[0m
+[ 12%] [34m[1mGenerating Javascript code from mg_msgs/follow_PVAJS_trajectoryAction.msg[0m
+[ 12%] [34m[1mGenerating Lisp code from mg_msgs/TransmitterInfoSegment.msg[0m
+[ 13%] [34m[1mGenerating Javascript code from mg_msgs/follow_PVAJS_trajectoryResult.msg[0m
+[ 13%] [34m[1mGenerating Lisp code from mg_msgs/BaseTime.msg[0m
+[ 13%] [34m[1mGenerating Javascript code from mg_msgs/TransmitterInfo.msg[0m
+[ 14%] [34m[1mGenerating C++ code from mg_msgs/follow_PVAJS_trajectoryFeedback.msg[0m
+[ 14%] [34m[1mGenerating Lisp code from mg_msgs/follow_PolyPVA_XY_trajectoryAction.msg[0m
+[ 14%] [34m[1mGenerating Javascript code from mg_msgs/Status.msg[0m
+[ 15%] [34m[1mGenerating Lisp code from mg_msgs/RadarTarget.msg[0m
+[ 15%] [34m[1mGenerating EusLisp code from mg_msgs/PVAJS.msg[0m
+[ 15%] [34m[1mGenerating Lisp code from mg_msgs/follow_PVAJS_trajectoryAction.msg[0m
+[ 15%] [34m[1mGenerating Javascript code from mg_msgs/PVAJS.msg[0m
+[ 15%] [34m[1mGenerating C++ code from mg_msgs/GPStoUTC.msg[0m
+[ 16%] [34m[1mGenerating Python from MSG mg_msgs/StatusMessage[0m
+[ 16%] [34m[1mGenerating Lisp code from mg_msgs/follow_PVAJS_trajectoryResult.msg[0m
+[ 17%] [34m[1mGenerating Javascript code from mg_msgs/MultiBaselineRTKAttitude2D.msg[0m
+[ 17%] [34m[1mGenerating Python from MSG mg_msgs/NavigationSolution[0m
+[ 17%] [34m[1mGenerating Python from MSG mg_msgs/ImuConfig[0m
+[ 18%] [34m[1mGenerating Lisp code from mg_msgs/TransmitterInfo.msg[0m
+[ 18%] [34m[1mGenerating Javascript code from mg_msgs/Polynomial.msg[0m
+[ 18%] [34m[1mGenerating EusLisp code from mg_msgs/MultiBaselineRTKAttitude2D.msg[0m
+[ 19%] [34m[1mGenerating Python from MSG mg_msgs/follow_PVAJS_trajectoryFeedback[0m
+[ 19%] [34m[1mGenerating C++ code from mg_msgs/TransmitterInfoSegment.msg[0m
+[ 19%] [34m[1mGenerating Javascript code from mg_msgs/GnssObservables.msg[0m
+[ 19%] [34m[1mGenerating Lisp code from mg_msgs/Status.msg[0m
+[ 20%] [34m[1mGenerating Javascript code from mg_msgs/PVAJ_request.msg[0m
+[ 20%] [34m[1mGenerating Javascript code from mg_msgs/Radar.msg[0m
+[ 21%] [34m[1mGenerating C++ code from mg_msgs/BaseTime.msg[0m
+[ 21%] [34m[1mGenerating EusLisp code from mg_msgs/Polynomial.msg[0m
+[ 21%] [34m[1mGenerating Lisp code from mg_msgs/PVAJS.msg[0m
+[ 21%] [34m[1mGenerating Javascript code from mg_msgs/PVA_Stamped.msg[0m
+[ 21%] [34m[1mGenerating C++ code from mg_msgs/follow_PolyPVA_XY_trajectoryAction.msg[0m
+[ 21%] [34m[1mGenerating Python from MSG mg_msgs/GPStoUTC[0m
+[ 22%] [34m[1mGenerating Javascript code from mg_msgs/follow_PolyPVA_XY_trajectoryGoal.msg[0m
+[ 22%] [34m[1mGenerating Python from MSG mg_msgs/TransmitterInfoSegment[0m
+[ 22%] [34m[1mGenerating Python from MSG mg_msgs/BaseTime[0m
+[ 23%] [34m[1mGenerating Lisp code from mg_msgs/MultiBaselineRTKAttitude2D.msg[0m
+[ 23%] [34m[1mGenerating Lisp code from mg_msgs/Polynomial.msg[0m
+[ 24%] [34m[1mGenerating EusLisp code from mg_msgs/GnssObservables.msg[0m
+[ 25%] [34m[1mGenerating Python from MSG mg_msgs/follow_PolyPVA_XY_trajectoryAction[0m
+[ 25%] [34m[1mGenerating Javascript code from mg_msgs/follow_PVAJS_trajectoryActionGoal.msg[0m
+[ 25%] [34m[1mGenerating C++ code from mg_msgs/RadarTarget.msg[0m
+[ 25%] [34m[1mGenerating Javascript code from mg_msgs/follow_PVAJS_trajectoryActionFeedback.msg[0m
+[ 25%] [34m[1mGenerating Lisp code from mg_msgs/GnssObservables.msg[0m
+[ 25%] [34m[1mGenerating Javascript code from mg_msgs/PVA_array.msg[0m
+[ 25%] [34m[1mGenerating C++ code from mg_msgs/follow_PVAJS_trajectoryAction.msg[0m
+[ 25%] [34m[1mGenerating EusLisp code from mg_msgs/PVAJ_request.msg[0m
+[ 26%] [34m[1mGenerating C++ code from mg_msgs/follow_PVAJS_trajectoryResult.msg[0m
+[ 27%] [34m[1mGenerating Lisp code from mg_msgs/PVAJ_request.msg[0m
+[ 27%] [34m[1mGenerating C++ code from mg_msgs/TransmitterInfo.msg[0m
+[ 27%] [34m[1mGenerating Python from MSG mg_msgs/RadarTarget[0m
+[ 28%] [34m[1mGenerating Javascript code from mg_msgs/follow_PolyPVA_XY_trajectoryFeedback.msg[0m
+[ 28%] [34m[1mGenerating C++ code from mg_msgs/Status.msg[0m
+[ 28%] [34m[1mGenerating EusLisp code from mg_msgs/Radar.msg[0m
+[ 28%] [34m[1mGenerating Lisp code from mg_msgs/Radar.msg[0m
+[ 28%] [34m[1mGenerating Python from MSG mg_msgs/follow_PVAJS_trajectoryAction[0m
+[ 29%] [34m[1mGenerating EusLisp code from mg_msgs/PVA_Stamped.msg[0m
+[ 29%] [34m[1mGenerating Javascript code from mg_msgs/follow_PVAJS_trajectoryGoal.msg[0m
+[ 30%] [34m[1mGenerating C++ code from mg_msgs/PVAJS.msg[0m
+[ 30%] [34m[1mGenerating Lisp code from mg_msgs/PVA_Stamped.msg[0m
+[ 30%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PolyPVA_XY_trajectoryGoal.msg[0m
+[ 30%] [34m[1mGenerating Javascript code from mg_msgs/Info.msg[0m
+[ 30%] [34m[1mGenerating C++ code from mg_msgs/MultiBaselineRTKAttitude2D.msg[0m
+[ 30%] [34m[1mGenerating Lisp code from mg_msgs/follow_PolyPVA_XY_trajectoryGoal.msg[0m
+[ 30%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PVAJS_trajectoryActionGoal.msg[0m
+[ 31%] [34m[1mGenerating Python from MSG mg_msgs/follow_PVAJS_trajectoryResult[0m
+[ 31%] [34m[1mGenerating C++ code from mg_msgs/Polynomial.msg[0m
+[ 32%] [34m[1mGenerating Javascript code from mg_msgs/Attitude3D.msg[0m
+[ 34%] [34m[1mGenerating C++ code from mg_msgs/GnssObservables.msg[0m
+[ 35%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PVAJS_trajectoryActionFeedback.msg[0m
+[ 35%] [34m[1mGenerating EusLisp code from mg_msgs/PVA_array.msg[0m
+[ 36%] [34m[1mGenerating Lisp code from mg_msgs/follow_PVAJS_trajectoryActionGoal.msg[0m
+[ 36%] [34m[1mGenerating Python from MSG mg_msgs/TransmitterInfo[0m
+[ 36%] [34m[1mGenerating Javascript code from mg_msgs/Almanac.msg[0m
+[ 36%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PolyPVA_XY_trajectoryFeedback.msg[0m
+[ 36%] [34m[1mGenerating Lisp code from mg_msgs/follow_PVAJS_trajectoryActionFeedback.msg[0m
+[ 36%] [34m[1mGenerating C++ code from mg_msgs/PVAJ_request.msg[0m
+[ 37%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PVAJS_trajectoryGoal.msg[0m
+[ 37%] [34m[1mGenerating EusLisp code from mg_msgs/Info.msg[0m
+[ 37%] [34m[1mGenerating Javascript code from mg_msgs/WifiStatus.msg[0m
+[ 37%] [34m[1mGenerating Lisp code from mg_msgs/PVA_array.msg[0m
+[ 37%] [34m[1mGenerating EusLisp code from mg_msgs/Attitude3D.msg[0m
+[ 37%] [34m[1mGenerating C++ code from mg_msgs/Radar.msg[0m
+[ 37%] [34m[1mGenerating Python from MSG mg_msgs/Status[0m
+[ 38%] [34m[1mGenerating C++ code from mg_msgs/PVA_Stamped.msg[0m
+[ 39%] [34m[1mGenerating C++ code from mg_msgs/follow_PolyPVA_XY_trajectoryGoal.msg[0m
+[ 39%] [34m[1mGenerating Javascript code from mg_msgs/GameState.msg[0m
+[ 39%] [34m[1mGenerating EusLisp code from mg_msgs/Almanac.msg[0m
+[ 40%] [34m[1mGenerating Lisp code from mg_msgs/follow_PolyPVA_XY_trajectoryFeedback.msg[0m
+[ 41%] [34m[1mGenerating EusLisp code from mg_msgs/WifiStatus.msg[0m
+[ 41%] [34m[1mGenerating EusLisp code from mg_msgs/GameState.msg[0m
+[ 41%] [34m[1mGenerating Javascript code from mg_msgs/TxId.msg[0m
+[ 41%] [34m[1mGenerating EusLisp code from mg_msgs/TxId.msg[0m
+[ 41%] [34m[1mGenerating Lisp code from mg_msgs/follow_PVAJS_trajectoryGoal.msg[0m
+[ 41%] [34m[1mGenerating C++ code from mg_msgs/follow_PVAJS_trajectoryActionGoal.msg[0m
+[ 41%] [34m[1mGenerating EusLisp code from mg_msgs/PVAJS_array.msg[0m
+[ 42%] [34m[1mGenerating EusLisp code from mg_msgs/MultiBaselineRTKAttitude3D.msg[0m
+[ 42%] [34m[1mGenerating Javascript code from mg_msgs/MultiBaselineRTKAttitude3D.msg[0m
+[ 42%] [34m[1mGenerating EusLisp code from mg_msgs/TriggerTime.msg[0m
+[ 42%] [34m[1mGenerating Lisp code from mg_msgs/Info.msg[0m
+[ 43%] [34m[1mGenerating Python from MSG mg_msgs/PVAJS[0m
+[ 44%] [34m[1mGenerating EusLisp code from mg_msgs/PolyPVA.msg[0m
+[ 44%] [34m[1mGenerating C++ code from mg_msgs/follow_PVAJS_trajectoryActionFeedback.msg[0m
+[ 45%] [34m[1mGenerating Javascript code from mg_msgs/PVAJS_array.msg[0m
+[ 46%] [34m[1mGenerating Javascript code from mg_msgs/TriggerTime.msg[0m
+[ 46%] [34m[1mGenerating C++ code from mg_msgs/PVA_array.msg[0m
+[ 47%] [34m[1mGenerating Lisp code from mg_msgs/Attitude3D.msg[0m
+[ 47%] [34m[1mGenerating EusLisp code from mg_msgs/BalloonInfo.msg[0m
+[ 47%] [34m[1mGenerating EusLisp code from mg_msgs/Ephemeris.msg[0m
+[ 47%] [34m[1mGenerating EusLisp code from mg_msgs/RadarConfig.msg[0m
+[ 47%] [34m[1mGenerating Javascript code from mg_msgs/PolyPVA.msg[0m
+[ 48%] [34m[1mGenerating EusLisp code from mg_msgs/PingStatus.msg[0m
+[ 48%] [34m[1mGenerating Lisp code from mg_msgs/Almanac.msg[0m
+[ 48%] [34m[1mGenerating Lisp code from mg_msgs/WifiStatus.msg[0m
+[ 48%] [34m[1mGenerating C++ code from mg_msgs/follow_PolyPVA_XY_trajectoryFeedback.msg[0m
+[ 48%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PVAJS_trajectoryActionResult.msg[0m
+[ 48%] [34m[1mGenerating EusLisp code from mg_msgs/PVA_request.msg[0m
+[ 48%] [34m[1mGenerating Javascript code from mg_msgs/Ephemeris.msg[0m
+[ 49%] [34m[1mGenerating Javascript code from mg_msgs/BalloonInfo.msg[0m
+[ 49%] [34m[1mGenerating Lisp code from mg_msgs/GameState.msg[0m
+[ 49%] [34m[1mGenerating Python from MSG mg_msgs/MultiBaselineRTKAttitude2D[0m
+[ 50%] [34m[1mGenerating Lisp code from mg_msgs/TxId.msg[0m
+[ 51%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PolyPVA_XY_trajectoryActionGoal.msg[0m
+[ 51%] [34m[1mGenerating C++ code from mg_msgs/follow_PVAJS_trajectoryGoal.msg[0m
+[ 51%] [34m[1mGenerating Javascript code from mg_msgs/RadarConfig.msg[0m
+[ 51%] [34m[1mGenerating Javascript code from mg_msgs/PingStatus.msg[0m
+[ 51%] [34m[1mGenerating Lisp code from mg_msgs/MultiBaselineRTKAttitude3D.msg[0m
+[ 52%] [34m[1mGenerating Javascript code from mg_msgs/follow_PVAJS_trajectoryActionResult.msg[0m
+[ 53%] [34m[1mGenerating Javascript code from mg_msgs/PVA_request.msg[0m
+[ 53%] [34m[1mGenerating C++ code from mg_msgs/Info.msg[0m
+[ 53%] [34m[1mGenerating Javascript code from mg_msgs/follow_PolyPVA_XY_trajectoryActionGoal.msg[0m
+[ 54%] [34m[1mGenerating Javascript code from mg_msgs/follow_PolyPVA_XY_trajectoryResult.msg[0m
+[ 54%] [34m[1mGenerating Javascript code from mg_msgs/ObservablesMeasurementTime.msg[0m
+[ 54%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PolyPVA_XY_trajectoryResult.msg[0m
+[ 54%] [34m[1mGenerating Lisp code from mg_msgs/PVAJS_array.msg[0m
+[ 54%] [34m[1mGenerating Javascript code from mg_msgs/Attitude2D.msg[0m
+[ 54%] [34m[1mGenerating EusLisp code from mg_msgs/ObservablesMeasurementTime.msg[0m
+[ 54%] [34m[1mGenerating Javascript code from mg_msgs/PVATrajectory.msg[0m
+[ 55%] [34m[1mGenerating EusLisp code from mg_msgs/Attitude2D.msg[0m
+[ 56%] [34m[1mGenerating Javascript code from mg_msgs/PVA.msg[0m
+[ 56%] [34m[1mGenerating Javascript code from mg_msgs/Coda.msg[0m
+[ 56%] [34m[1mGenerating Python from MSG mg_msgs/Polynomial[0m
+[ 57%] [34m[1mGenerating Lisp code from mg_msgs/TriggerTime.msg[0m
+[ 57%] [34m[1mGenerating Lisp code from mg_msgs/PolyPVA.msg[0m
+[ 57%] [34m[1mGenerating EusLisp code from mg_msgs/PVATrajectory.msg[0m
+[ 57%] [34m[1mGenerating Lisp code from mg_msgs/Ephemeris.msg[0m
+[ 57%] [34m[1mGenerating C++ code from mg_msgs/Attitude3D.msg[0m
+[ 57%] [34m[1mGenerating EusLisp code from mg_msgs/PVA.msg[0m
+[ 58%] [34m[1mGenerating Javascript code from mg_msgs/GnssObservablesSegment.msg[0m
+[ 58%] [34m[1mGenerating Python from MSG mg_msgs/GnssObservables[0m
+[ 58%] [34m[1mGenerating C++ code from mg_msgs/Almanac.msg[0m
+[ 59%] [34m[1mGenerating C++ code from mg_msgs/WifiStatus.msg[0m
+[ 59%] [34m[1mGenerating EusLisp code from mg_msgs/Coda.msg[0m
+[ 60%] [34m[1mGenerating Lisp code from mg_msgs/BalloonInfo.msg[0m
+[ 60%] [34m[1mGenerating Lisp code from mg_msgs/RadarConfig.msg[0m
+[ 61%] [34m[1mGenerating Javascript code from mg_msgs/follow_PolyPVA_XY_trajectoryActionFeedback.msg[0m
+[ 62%] [34m[1mGenerating EusLisp code from mg_msgs/GnssObservablesSegment.msg[0m
+[ 62%] [34m[1mGenerating EusLisp code from mg_msgs/follow_PolyPVA_XY_trajectoryActionFeedback.msg[0m
+[ 62%] [34m[1mGenerating Lisp code from mg_msgs/PingStatus.msg[0m
+[ 63%] [34m[1mGenerating Lisp code from mg_msgs/follow_PVAJS_trajectoryActionResult.msg[0m
+[ 63%] [34m[1mGenerating Lisp code from mg_msgs/PVA_request.msg[0m
+[ 63%] [34m[1mGenerating Javascript code from mg_msgs/Bitcontainer.msg[0m
+[ 63%] [34m[1mGenerating C++ code from mg_msgs/GameState.msg[0m
+[ 63%] [34m[1mGenerating EusLisp code from mg_msgs/Bitcontainer.msg[0m
+[ 63%] [34m[1mGenerating Lisp code from mg_msgs/follow_PolyPVA_XY_trajectoryActionGoal.msg[0m
+[ 63%] [34m[1mGenerating Lisp code from mg_msgs/follow_PolyPVA_XY_trajectoryResult.msg[0m
+[ 63%] [34m[1mGenerating Python from MSG mg_msgs/PVAJ_request[0m
+[ 64%] [34m[1mGenerating Lisp code from mg_msgs/ObservablesMeasurementTime.msg[0m
+[ 64%] [34m[1mGenerating Javascript code from mg_msgs/SingleBaselineRTK.msg[0m
+[ 65%] [34m[1mGenerating EusLisp code from mg_msgs/SingleBaselineRTK.msg[0m
+[ 65%] [34m[1mGenerating C++ code from mg_msgs/TxId.msg[0m
+[ 65%] [34m[1mGenerating C++ code from mg_msgs/MultiBaselineRTKAttitude3D.msg[0m
+[ 67%] [34m[1mGenerating C++ code from mg_msgs/PVAJS_array.msg[0m
+[ 67%] [34m[1mGenerating Lisp code from mg_msgs/Attitude2D.msg[0m
+[ 67%] [34m[1mGenerating Lisp code from mg_msgs/PVATrajectory.msg[0m
+[ 68%] [34m[1mGenerating Lisp code from mg_msgs/PVA.msg[0m
+[ 68%] [34m[1mGenerating Python from MSG mg_msgs/Radar[0m
+[ 69%] [34m[1mGenerating Javascript code from mg_msgs/SetQuadBool.srv[0m
+[ 69%] [34m[1mGenerating EusLisp code from mg_msgs/SetQuadBool.srv[0m
+[ 69%] [34m[1mGenerating Javascript code from mg_msgs/minAccXYWpPVA.srv[0m
+[ 69%] [34m[1mGenerating Python from MSG mg_msgs/PVA_Stamped[0m
+[ 69%] [34m[1mGenerating Javascript code from mg_msgs/minSnapWpPVAJ.srv[0m
+[ 69%] [34m[1mGenerating Lisp code from mg_msgs/Coda.msg[0m
+[ 69%] [34m[1mGenerating C++ code from mg_msgs/TriggerTime.msg[0m
+[ 70%] [34m[1mGenerating Javascript code from mg_msgs/minSnapWpStamped.srv[0m
+[ 71%] [34m[1mGenerating Python from MSG mg_msgs/follow_PolyPVA_XY_trajectoryGoal[0m
+[ 71%] [34m[1mGenerating Javascript code from mg_msgs/SetInteger.srv[0m
+[ 71%] [34m[1mGenerating C++ code from mg_msgs/PolyPVA.msg[0m
+[ 71%] [34m[1mGenerating Lisp code from mg_msgs/GnssObservablesSegment.msg[0m
+[ 71%] [34m[1mGenerating EusLisp code from mg_msgs/minAccXYWpPVA.srv[0m
+[ 72%] [34m[1mGenerating Javascript code from mg_msgs/updatePx4param.srv[0m
+[ 72%] [34m[1mGenerating C++ code from mg_msgs/Ephemeris.msg[0m
+[ 72%] [34m[1mGenerating Javascript code from mg_msgs/set_strings.srv[0m
+[ 73%] [34m[1mGenerating Javascript code from mg_msgs/RequestRelativePoseBatch.srv[0m
+[ 73%] [34m[1mGenerating Python from MSG mg_msgs/follow_PVAJS_trajectoryActionGoal[0m
+[ 74%] [34m[1mGenerating Lisp code from mg_msgs/follow_PolyPVA_XY_trajectoryActionFeedback.msg[0m
+[ 74%] [34m[1mGenerating Python from MSG mg_msgs/follow_PVAJS_trajectoryActionFeedback[0m
+[ 74%] [34m[1mGenerating Lisp code from mg_msgs/Bitcontainer.msg[0m
+[ 75%] [34m[1mGenerating Python from MSG mg_msgs/PVA_array[0m
+[ 75%] Built target mg_msgs_generate_messages_nodejs
+[ 76%] [34m[1mGenerating EusLisp code from mg_msgs/minSnapWpPVAJ.srv[0m
+[ 76%] [34m[1mGenerating Python from MSG mg_msgs/follow_PolyPVA_XY_trajectoryFeedback[0m
+[ 76%] [34m[1mGenerating Lisp code from mg_msgs/SingleBaselineRTK.msg[0m
+[ 76%] [34m[1mGenerating C++ code from mg_msgs/BalloonInfo.msg[0m
+[ 76%] [34m[1mGenerating Lisp code from mg_msgs/SetQuadBool.srv[0m
+[ 77%] [34m[1mGenerating Lisp code from mg_msgs/minAccXYWpPVA.srv[0m
+[ 77%] [34m[1mGenerating C++ code from mg_msgs/RadarConfig.msg[0m
+[ 77%] [34m[1mGenerating EusLisp code from mg_msgs/minSnapWpStamped.srv[0m
+[ 77%] [34m[1mGenerating Lisp code from mg_msgs/minSnapWpPVAJ.srv[0m
+[ 78%] [34m[1mGenerating C++ code from mg_msgs/PingStatus.msg[0m
+[ 78%] [34m[1mGenerating C++ code from mg_msgs/follow_PVAJS_trajectoryActionResult.msg[0m
+[ 78%] [34m[1mGenerating Python from MSG mg_msgs/follow_PVAJS_trajectoryGoal[0m
+[ 78%] [34m[1mGenerating Lisp code from mg_msgs/minSnapWpStamped.srv[0m
+[ 79%] [34m[1mGenerating Python from MSG mg_msgs/Info[0m
+[ 79%] [34m[1mGenerating EusLisp code from mg_msgs/SetInteger.srv[0m
+[ 79%] [34m[1mGenerating Python from MSG mg_msgs/Almanac[0m
+[ 79%] [34m[1mGenerating Python from MSG mg_msgs/Attitude3D[0m
+[ 79%] [34m[1mGenerating Python from MSG mg_msgs/WifiStatus[0m
+[ 80%] [34m[1mGenerating Lisp code from mg_msgs/SetInteger.srv[0m
+[ 80%] [34m[1mGenerating C++ code from mg_msgs/PVA_request.msg[0m
+[ 81%] [34m[1mGenerating Lisp code from mg_msgs/updatePx4param.srv[0m
+[ 81%] [34m[1mGenerating C++ code from mg_msgs/follow_PolyPVA_XY_trajectoryActionGoal.msg[0m
+[ 82%] [34m[1mGenerating EusLisp code from mg_msgs/updatePx4param.srv[0m
+[ 82%] [34m[1mGenerating Lisp code from mg_msgs/set_strings.srv[0m
+[ 82%] [34m[1mGenerating C++ code from mg_msgs/follow_PolyPVA_XY_trajectoryResult.msg[0m
+[ 84%] [34m[1mGenerating Python from MSG mg_msgs/GameState[0m
+[ 84%] [34m[1mGenerating Lisp code from mg_msgs/RequestRelativePoseBatch.srv[0m
+[ 84%] [34m[1mGenerating Python from MSG mg_msgs/TxId[0m
+[ 84%] [34m[1mGenerating Python from MSG mg_msgs/MultiBaselineRTKAttitude3D[0m
+[ 84%] [34m[1mGenerating EusLisp code from mg_msgs/set_strings.srv[0m
+[ 84%] Built target mg_msgs_generate_messages_lisp
+[ 84%] [34m[1mGenerating EusLisp code from mg_msgs/RequestRelativePoseBatch.srv[0m
+[ 85%] [34m[1mGenerating Python from MSG mg_msgs/PVAJS_array[0m
+[ 85%] [34m[1mGenerating Python from MSG mg_msgs/TriggerTime[0m
+[ 85%] [34m[1mGenerating Python from MSG mg_msgs/PolyPVA[0m
+[ 85%] [34m[1mGenerating C++ code from mg_msgs/ObservablesMeasurementTime.msg[0m
+[ 85%] [34m[1mGenerating EusLisp manifest code for mg_msgs[0m
+[ 85%] [34m[1mGenerating C++ code from mg_msgs/Attitude2D.msg[0m
+[ 86%] [34m[1mGenerating C++ code from mg_msgs/PVATrajectory.msg[0m
+[ 87%] [34m[1mGenerating Python from MSG mg_msgs/Ephemeris[0m
+[ 87%] [34m[1mGenerating Python from MSG mg_msgs/BalloonInfo[0m
+[ 87%] [34m[1mGenerating C++ code from mg_msgs/PVA.msg[0m
+[ 87%] [34m[1mGenerating Python from MSG mg_msgs/RadarConfig[0m
+[ 88%] [34m[1mGenerating Python from MSG mg_msgs/PingStatus[0m
+[ 88%] [34m[1mGenerating Python from MSG mg_msgs/follow_PVAJS_trajectoryActionResult[0m
+[ 88%] [34m[1mGenerating Python from MSG mg_msgs/PVA_request[0m
+[ 88%] [34m[1mGenerating C++ code from mg_msgs/Coda.msg[0m
+[ 88%] [34m[1mGenerating C++ code from mg_msgs/follow_PolyPVA_XY_trajectoryActionFeedback.msg[0m
+[ 89%] [34m[1mGenerating C++ code from mg_msgs/GnssObservablesSegment.msg[0m
+[ 89%] [34m[1mGenerating Python from MSG mg_msgs/follow_PolyPVA_XY_trajectoryActionGoal[0m
+[ 89%] [34m[1mGenerating C++ code from mg_msgs/Bitcontainer.msg[0m
+[ 90%] [34m[1mGenerating C++ code from mg_msgs/SingleBaselineRTK.msg[0m
+[ 91%] [34m[1mGenerating Python from MSG mg_msgs/follow_PolyPVA_XY_trajectoryResult[0m
+[ 91%] [34m[1mGenerating Python from MSG mg_msgs/ObservablesMeasurementTime[0m
+[ 91%] [34m[1mGenerating C++ code from mg_msgs/SetQuadBool.srv[0m
+[ 91%] [34m[1mGenerating Python from MSG mg_msgs/Attitude2D[0m
+[ 92%] [34m[1mGenerating C++ code from mg_msgs/minSnapWpPVAJ.srv[0m
+[ 92%] [34m[1mGenerating Python from MSG mg_msgs/PVATrajectory[0m
+[ 92%] [34m[1mGenerating Python from MSG mg_msgs/PVA[0m
+[ 92%] [34m[1mGenerating C++ code from mg_msgs/minAccXYWpPVA.srv[0m
+[ 92%] [34m[1mGenerating Python from MSG mg_msgs/Coda[0m
+[ 93%] [34m[1mGenerating C++ code from mg_msgs/minSnapWpStamped.srv[0m
+[ 94%] [34m[1mGenerating Python from MSG mg_msgs/GnssObservablesSegment[0m
+[ 94%] Built target mg_msgs_generate_messages_eus
+[ 94%] [34m[1mGenerating C++ code from mg_msgs/SetInteger.srv[0m
+[ 94%] [34m[1mGenerating Python from MSG mg_msgs/follow_PolyPVA_XY_trajectoryActionFeedback[0m
+[ 94%] [34m[1mGenerating Python from MSG mg_msgs/Bitcontainer[0m
+[ 94%] [34m[1mGenerating Python from MSG mg_msgs/SingleBaselineRTK[0m
+[ 95%] [34m[1mGenerating Python code from SRV mg_msgs/SetQuadBool[0m
+[ 95%] [34m[1mGenerating C++ code from mg_msgs/updatePx4param.srv[0m
+[ 95%] [34m[1mGenerating Python code from SRV mg_msgs/minAccXYWpPVA[0m
+[ 96%] [34m[1mGenerating C++ code from mg_msgs/set_strings.srv[0m
+[ 96%] [34m[1mGenerating C++ code from mg_msgs/RequestRelativePoseBatch.srv[0m
+[ 96%] [34m[1mGenerating Python code from SRV mg_msgs/minSnapWpPVAJ[0m
+[ 97%] [34m[1mGenerating Python code from SRV mg_msgs/minSnapWpStamped[0m
+[ 97%] [34m[1mGenerating Python code from SRV mg_msgs/SetInteger[0m
+[ 97%] [34m[1mGenerating Python code from SRV mg_msgs/updatePx4param[0m
+[ 98%] [34m[1mGenerating Python code from SRV mg_msgs/set_strings[0m
+[ 98%] [34m[1mGenerating Python code from SRV mg_msgs/RequestRelativePoseBatch[0m
+[ 98%] [34m[1mGenerating Python msg __init__.py for mg_msgs[0m
+[100%] [34m[1mGenerating Python srv __init__.py for mg_msgs[0m
+[100%] Built target mg_msgs_generate_messages_cpp
+[100%] Built target mg_msgs_generate_messages_py
+[35m[1mScanning dependencies of target mg_msgs_generate_messages[0m
+[100%] Built target mg_msgs_generate_messages

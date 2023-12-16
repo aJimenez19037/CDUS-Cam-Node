@@ -1,0 +1,32 @@
+[35m[1mScanning dependencies of target cam_node[0m
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target sensor_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[  0%] Built target sensor_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target cam_node_generate_messages_py
+[  0%] Built target cam_node_generate_messages_cpp
+[  0%] Built target cam_node_generate_messages_nodejs
+[  0%] Built target cam_node_generate_messages_lisp
+[ 33%] Built target cam_node_generate_messages_eus
+[ 66%] [32mBuilding CXX object CMakeFiles/cam_node.dir/src/cam_node.cpp.o[0m
+[ 66%] Built target cam_node_generate_messages
+[01m[K/home/locus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/cam_node.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/locus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/cam_node.cpp:292:37:[m[K [01;31m[Kerror: [m[K‘[01m[Ksize[m[K’ is not a member of ‘[01m[Kcv[m[K’
+                                 cv::[01;31m[Ksize[m[K(300,300),
+                                     [01;31m[K^~~~[m[K
+[01m[K/home/locus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/cam_node.cpp:292:37:[m[K [01;36m[Knote: [m[Ksuggested alternative: ‘[01m[KSize[m[K’
+                                 cv::[01;36m[Ksize[m[K(300,300),
+                                     [01;36m[K^~~~[m[K
+                                     [32m[KSize[m[K
+CMakeFiles/cam_node.dir/build.make:62: recipe for target 'CMakeFiles/cam_node.dir/src/cam_node.cpp.o' failed
+make[2]: *** [CMakeFiles/cam_node.dir/src/cam_node.cpp.o] Error 1
+CMakeFiles/Makefile2:67: recipe for target 'CMakeFiles/cam_node.dir/all' failed
+make[1]: *** [CMakeFiles/cam_node.dir/all] Error 2
+Makefile:140: recipe for target 'all' failed
+make: *** [all] Error 2
