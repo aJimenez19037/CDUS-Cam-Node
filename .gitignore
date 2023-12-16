@@ -1,7 +1,8 @@
-build/
-log/
-devel/
-build/*
-log/*
-devel/*
-.catkin_tools/*
+catkin_ws/build/
+catkin_ws/logs/
+catkin_ws/devel/
+catkin_ws/build/*
+catkin_ws/log/*
+catkin_ws/devel/*
+catkin_ws/.catkin_tools/*
+catkin_ws/.catkin_tools
