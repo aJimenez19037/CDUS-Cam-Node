@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   message_generation
 )
-set(OpenCV_DIR "/home/nvidia/OpenCV/opencv/build/")
+set(OpenCV_DIR "/home/locus/opencv_build/opencv/build/")
 find_package(OpenCV REQUIRED COMPONENTS core imgproc highgui objdetect)
 find_package(realsense2 REQUIRED)
 #find_package(Eigen REQUIRED)
@@ -209,6 +209,9 @@ include_directories(
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${realsense2_INCLUDE_DIRS})
 include_directories(${Eigen_INCLUDE_DIRS})
+
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 
 ## Declare a C++ library

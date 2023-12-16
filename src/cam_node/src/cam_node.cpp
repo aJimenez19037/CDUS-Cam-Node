@@ -36,13 +36,15 @@
 #include <cmath>
 #include <typeinfo>
 #include <stdbool.h>
+#include <string>
+#include <fstream>
 
 double median_finder(Eigen::VectorXd& vec) {
 	
 	double median_val;
 
 	// Sort the vector in ascending order
-	std::sort(vec.begin(), vec.end());
+	std::sort(vec.data(), vec.data() + vec.size());
 
 	// Determine the length and half length of the vector
 	double len = vec.size();
@@ -64,7 +66,7 @@ double iqr_finder(Eigen::VectorXd& vec) {
 	double iqr_val;
 
 	// Sort the vector in ascending order
-	std::sort(vec.begin(), vec.end());
+	std::sort(vec.data(), vec.data() + vec.size());
 
 	// Determine the length and half length of the vector
 	double len = vec.size();
@@ -107,34 +109,35 @@ int main(int argc, char **argv) try {
     // Set up files and parameters for the NN
     // ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
-    std::vector<std::string> class_names;
+
+	std::vector<std::string> class_names;
     std::string line;
     // The relative path is FROM the " ~/.ros " directory !!!!
-    std::ifstream ifs(std::string("../catkin_ws/src/rs2opencv/src/NNet/object_detection_classes_coco.txt").c_str());
+    std::ifstream ifs(std::string("../catkin_ws/src/cam_node/src/NNet/object_detection_classes_coco.txt").c_str());
     while (getline(ifs, line))
     {
         class_names.push_back(line);
     }  
     // load the neural network model
     cv::dnn::Net nnet;
-    nnet = cv::dnn::readNet("/home/nvidia/catkin_ws/src/cam_node/src/NNet/frozen_inference_graph.pb", 
-                        "../catkin_ws/src/rs2opencv/src/NNet/ssd_mobilenet_v2_coco_2018_03_29.pbtxt.txt", 
+	nnet = cv::dnn::readNet("/home/locus/catkin_ws/src/cam_node/src/NNet/frozen_inference_graph.pb", 
+                        "/home/locus/catkin_ws/src/cam_node/src/NNet/ssd_mobilenet_v2_coco_2018_03_29.pbtxt.txt", 
                         "TensorFlow");
+    // nnet = cv::dnn::readNet("../catkin_ws/src/cam_node/src/NNet/frozen_inference_graph.pb", 
+    //                     "../catkin_ws/src/cam_node/src/NNet/ssd_mobilenet_v2_coco_2018_03_29.pbtxt.txt", 
+    //                     "TensorFlow");
 
     // ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
     // ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
-
-
-
 
 	// ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
 	// ROS Publisher Node Initialization work
 	// ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
-	ros::init(argc, argv, "camera_node2");
+	ros::init(argc, argv, "cam_node");
 	ros::NodeHandle nh_;
 	ros::Publisher rgb_pub_ = nh_.advertise<sensor_msgs::Image>("RGB_data", 10);
 	ros::Publisher depth_pub_ = nh_.advertise<sensor_msgs::Image>("depth_data", 10);
@@ -190,7 +193,9 @@ int main(int argc, char **argv) try {
 		// ----------------------------------------------------------------------------- //
 		// Get current RealSense frame
 		ROS_INFO("____START____");
+		std::cout<<"Post start" << std::endl;
 		rs2::frameset fs = pipe.wait_for_frames();
+		std::cout<<"Post wait for frame" << std::endl;
 
 		// Publish pose flag!!!!
 		pose_flag_ros.data = true;
@@ -200,22 +205,39 @@ int main(int argc, char **argv) try {
 
 		// Process current frame to generate aligned frameset
 		rs2::frameset fs_aligned = align_to_color.process(fs);
+		std::cout<<"Post frame alignment" << std::endl;
 
 		// Pull depth data from aligned frameset
 		// Pull frame properties in order to convert to OpenCV depth Map matrix
 		rs2::depth_frame depth = fs_aligned.get_depth_frame();
+		std::cout<<"Post frame alignmen get depth frame" << std::endl;
+
 		// const double depthScale = 
 		const int w1 = depth.as<rs2::video_frame>().get_width();	// number of columns
 		const int h1 = depth.as<rs2::video_frame>().get_height();	// number of rows
+		std::cout<<"Post get size" << std::endl;
 
 		// Pull BGR data from frame and convert
 		// Pull frame properties in order to convert to OpenCV RGB matrix
 		// rs2::frame bgr_fs = fs_aligned.get_color_frame();
 		rs2::frame bgr_fs = fs.get_color_frame();
+		std::cout<<"Post get color frame" << std::endl;
+
 		const int w2 = bgr_fs.as<rs2::video_frame>().get_width();
 		const int h2 = bgr_fs.as<rs2::video_frame>().get_height();
-		cv::Mat bgr_img(cv::Size(w2,h2), CV_8UC3, (void*)bgr_fs.get_data(), cv::Mat::AUTO_STEP);
+		std::cout<<"Post get sizes:" << w2 <<"," <<h2<< std::endl;
+		if ((void*)bgr_fs.get_data() == nullptr){
+			std::cout<<"nullllllllll" << std::endl;
+		}
+		std::cout<<"Imafe" << (void*)bgr_fs.get_data() << std::endl;
+		
+
+		cv::Mat bgr_img(w2,h2, CV_8UC3, (void*)bgr_fs.get_data(), cv::Mat::AUTO_STEP);
+		std::cout<<"Post weird line" << std::endl;
+
 		cv::Mat rgb_image = bgr_img;
+		std::cout<<"Post bgr frame" << std::endl;
+
 		// cv::cvtColor(bgr_img, rgb_image, cv::COLOR_BGR2RGB);
 
 		// ----------------------------------------------------------------------------- //
@@ -239,7 +261,9 @@ int main(int argc, char **argv) try {
 				dMap(i,j) = sqrt(pow(vtx_ptr->x,2) + pow(vtx_ptr->y,2) + pow(vtx_ptr->z,2) );
 				vtx_ptr ++;
 			}
-		}		
+		}	
+		std::cout<<"Post point cloud" << std::endl;
+	
 
 		// ----------------------------------------------------------------------------- //
 		// ----------------------------------------------------------------------------- //
@@ -249,6 +273,7 @@ int main(int argc, char **argv) try {
         std::vector<cv::Rect> bboxes;
         std::vector<std::string> labels;
 
+		std::cout<<"Post init box and labels" << std::endl;
 
         // ----------------------------------------------------------------------------- //
 	    // ----------------------------------------------------------------------------- //
@@ -257,19 +282,24 @@ int main(int argc, char **argv) try {
 	    // ----------------------------------------------------------------------------- //
         int img_height = rgb_image.cols;
         int img_width = rgb_image.rows;
+		std::cout<<"Post getting img" << std::endl;
+
 
         // Create the necessary "BLOB" type from the image
         cv::Mat blob = cv::dnn::blobFromImage(
                                 rgb_image, 
                                 1.0, 
-                                cv::Size(300,300),
+                                300,300,
                                 cv::Scalar(127.5, 127.5, 127.5),
                                 true,
                                 false );
-        
+		std::cout<<"Pre input blob" << std::endl;
+
         // Forward propagate the input through the model
         // set the input blob for the NN
         nnet.setInput(blob);
+		std::cout<<"Post input blob" << std::endl;
+
         // forward pass the image through the NN model
         // cv::Mat output = nnet.forward();
         cv::Mat output;
