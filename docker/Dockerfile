@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/l4t-base:r36.2.0
+FROM nvcr.io/nvidia/l4t-base:r32.7.1
 
 #-----------------------------------------------------------------------------------ROS MELODIC INSTALL
 #install dependencies
