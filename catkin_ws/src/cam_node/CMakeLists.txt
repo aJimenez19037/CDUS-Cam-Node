@@ -8,7 +8,6 @@ project(cam_node)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  cv_bridge
   image_transport
   roscpp
   rospy
@@ -16,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 set(OpenCV_DIR "/home/locus/opencv_build/opencv/build/")
-find_package(OpenCV REQUIRED COMPONENTS core imgproc highgui objdetect)
+find_package(OpenCV 4.5 REQUIRED COMPONENTS core imgproc highgui objdetect dnn)
 find_package(realsense2 REQUIRED)
 #find_package(Eigen REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)

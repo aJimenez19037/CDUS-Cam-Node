@@ -11,7 +11,7 @@
 // Include ROS, ROS CV_Bridge package, and message types
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
-#include <cv_bridge/cv_bridge.h>
+//#include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <std_msgs/Bool.h>
@@ -27,6 +27,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/objdetect.hpp>
 #include <opencv2/core/eigen.hpp>
+#include <opencv2/dnn/dnn.hpp>
 
 // Include RealSense Library
 #include <librealsense2/rs.hpp>
@@ -110,6 +111,8 @@ int main(int argc, char **argv) try {
     // ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
 
+
+	std::cout << "OpenCV version: " << CV_VERSION << std::endl;
 	std::vector<std::string> class_names;
     std::string line;
     // The relative path is FROM the " ~/.ros " directory !!!!
@@ -718,16 +721,19 @@ int main(int argc, char **argv) try {
 		// Create another CV_Bridge instance and an empty ROS Image message
 		// in order to convert the cv::Mat rgb_img to that ROS message
 
-		cv_bridge::CvImage rgb_img_bridge;
-		sensor_msgs::Image rgb_ros_msg;
-		std_msgs::Header rgb_header;
-		rgb_header.stamp = ros::Time::now();
-		rgb_img_bridge = cv_bridge::CvImage(rgb_header, sensor_msgs::image_encodings::RGB8, rgb_image);
-		rgb_img_bridge.toImageMsg(rgb_ros_msg);
+//*******************************
+		// cv_bridge::CvImage rgb_img_bridge;
+		// sensor_msgs::Image rgb_ros_msg;
+		// std_msgs::Header rgb_header;
+		// rgb_header.stamp = ros::Time::now();
+		// rgb_img_bridge = cv_bridge::CvImage(rgb_header, sensor_msgs::image_encodings::RGB8, rgb_image);
+		// rgb_img_bridge.toImageMsg(rgb_ros_msg);
 
 
-		// Publish the ROS Image message
-		rgb_pub_.publish(rgb_ros_msg);
+		// // Publish the ROS Image message
+		// rgb_pub_.publish(rgb_ros_msg);
+
+
 		// depth_pub_.publish(depth_ros_msg);
 
 		// PUBLISH !!!!
