@@ -6,3 +6,7 @@ catkin_ws/log/*
 catkin_ws/devel/*
 catkin_ws/.catkin_tools/*
 catkin_ws/.catkin_tools
+.catkin_tools
+.catkin_workspace
+catkin_ws/src/CMakeList.txt
+catkin_ws/.catkin_tools/*

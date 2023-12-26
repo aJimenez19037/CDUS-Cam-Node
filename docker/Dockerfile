@@ -57,44 +57,22 @@ RUN apt-get update && apt-get install -y libeigen3-dev
 
 
 #----------------------------------------------------------------------------------OPENCV AND CONTRIB INSTALL
-RUN apt-get update && apt-get install -y \
-    libjpeg-dev \
-    libpng-dev \
-    libtiff-dev \
-    libavcodec-dev \
-    libavformat-dev \
-    libswscale-dev \
-    libv4l-dev \
-    libxvidcore-dev \
-    libx264-dev \
-    libgtk-3-dev \
-    libatlas-base-dev \
-    gfortran \
-    && rm -rf /var/lib/apt/lists/
 
-# Clone OpenCV and OpenCV contrib repositories
-WORKDIR /opencv_build
-RUN git clone --branch 4.7.0 --depth 1 https://github.com/opencv/opencv.git
-RUN git clone --branch 4.7.0 --depth 1 https://github.com/opencv/opencv_contrib.git
+ARG OPENCV_URL
+ARG OPENCV_DEB
 
+COPY opencv_install.sh /opt/opencv_install.sh
+USER root
+RUN chown root:root /opt/opencv_install.sh && chmod +x /opt/opencv_install.sh
 
-# Build and install OpenCV with contrib modules
-WORKDIR /home/opencv_build/opencv/build
-RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D OPENCV_EXTRA_MODULES_PATH=/opencv_sources/opencv_contrib/modules \
-    -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 \
-    -D OPENCV_GENERATE_PKGCONFIG=ON \
-    -D WITH_TBB=ON \
-    -D WITH_V4L=ON \
-    -D WITH_QT=OFF \
-    -D WITH_OPENGL=ON \
-    -D BUILD_opencv_java=OFF \
-    -D BUILD_SHARED_LIBS=OFF \
-    ..
-RUN make -j$(nproc)
-RUN make install
+# leave the installer script under /opt and patch it with the
+# build args hardcoded in case it needs re-installed later
+RUN cd /opt && \
+    sed -i "2i OPENCV_URL=${OPENCV_URL}" opencv_install.sh && \
+    sed -i "3i OPENCV_DEB=${OPENCV_DEB}" opencv_install.sh && \
+    cat opencv_install.sh
 
+RUN cd /opt && ./opencv_install.sh
 
 #----------------------------------------------------------------------------------INSTALL REALSENSE
 WORKDIR /home/
