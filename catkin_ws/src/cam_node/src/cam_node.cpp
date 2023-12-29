@@ -126,7 +126,6 @@ int main(int argc, char **argv) try {
 	nnet = cv::dnn::readNet("../catkin_ws/src/cam_node/src/NNet/frozen_inference_graph.pb", 
                         "../catkin_ws/src/cam_node/src/NNet/ssd_mobilenet_v2_coco_2018_03_29.pbtxt.txt", 
                         "TensorFlow");
-
 	// ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
 	// ROS Publisher Node Initialization work
@@ -343,6 +342,7 @@ int main(int argc, char **argv) try {
         std::string m_str = "microwave ";
         std::string d_str = "person ";
         std::string e_str = "cell phone ";
+		std::string r_str = "refrigerator";
         
 		int bbsize = bboxes.size();
         int label_counter = 0;
@@ -368,7 +368,8 @@ int main(int argc, char **argv) try {
 			if ((current_label.compare(b_str) == 1) || 
                 (current_label.compare(m_str) == 1) || 
                 (current_label.compare(d_str) == 1) || 
-                (current_label.compare(e_str) == 1) ) {
+                (current_label.compare(e_str) == 1) ||
+				(current_label.compare(r_str) == 1)) {
                 
 				// "Re-Blow-up" the bb back to proper size that corresponds to original image
 				// Pay close attention to data types when rounding and comparing max and mins...
@@ -557,12 +558,13 @@ int main(int argc, char **argv) try {
 				std::cout << current_label.compare(b_str) << std::endl;
 				std::cout << current_label.compare(m_str) << std::endl;
 
-                if ( ( (current_label.compare(a_str) == 0) || (current_label.compare(b_str) == 0) || (current_label.compare(m_str) == 0) ) 
+                if ( ( (current_label.compare(a_str) == 0) || (current_label.compare(b_str) == 0) || (current_label.compare(m_str) == 0) || (current_label.compare(r_str) == 0)) 
                         && ( ((*min_element(cX.begin(), cX.end())) < 1) && (abs(y) < 0.5) ) ) {
 					std::cout << current_label << std::endl;
 					std::cout << b_str << std::endl;
 					std::cout << m_str << std::endl;
-                    ROS_INFO_STREAM("WE FOUND A TV, LAPTOP, or MICROWAVE closeby") ;
+					std::cout << b_str << std::endl;
+                    ROS_INFO_STREAM("WE FOUND A TV, LAPTOP, REFRIGERATOR or MICROWAVE closeby") ;
                     obstacle_flag = true;
 
 					// std::vector<double> vec1 = { 1.1, 2., 3.1};
@@ -584,12 +586,13 @@ int main(int argc, char **argv) try {
 					obs_corners_pub_.publish(obs_corn_msg);
 
                 }
-                if ( ( (current_label.compare(a_str) == 0) || (current_label.compare(b_str) == 0) || (current_label.compare(m_str) == 0)) 
+                if ( ( (current_label.compare(a_str) == 0) || (current_label.compare(b_str) == 0) || (current_label.compare(m_str) == 0) || (current_label.compare(r_str) == 0)) 
                         && ((*min_element(cX.begin(), cX.end())) >= 1) ) {
 					std::cout << current_label << std::endl;
 					std::cout << b_str << std::endl;
 					std::cout << m_str << std::endl;
-                    ROS_INFO_STREAM("TV, LAPTOP, or MICROWAVE but too far away") ;
+					std::cout << r_str << std::endl;
+                    ROS_INFO_STREAM("TV, LAPTOP, REFRIGERATOR or MICROWAVE but too far away") ;
                     obstacle_flag = false;
                 }
 

@@ -12,7 +12,7 @@ from math import *
 import numpy as np
 from numpy.linalg import norm
 import time
-
+from utils import const as fc
 
 class Drone:
     def __init__(self):
@@ -136,16 +136,17 @@ class Drone:
         pose_new[1] = pose[0]
         pose_new[2] = pose[2]
         return pose_new
-    
-    
+    def goTo(self, wp, mode='global', tol = None):
 
-    def goTo(self, wp, mode='global', tol=0.05):
+        if tol == None:
+            tol = fc.DIST_TO_GOAL_TOL
+
         wp = self.transform(wp)
         if mode=='global':
             goal = wp
         elif mode=='relative':
             goal = self.pose + wp
-        print ("Going to a waypoint...")
+        rospy.loginfo("Going to a waypoint...")
         self.sp = self.pose
         while norm(goal - self.pose) > tol:
             n = (goal - self.sp) / norm(goal - self.sp)

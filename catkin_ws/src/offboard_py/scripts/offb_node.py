@@ -7,13 +7,11 @@ from std_msgs.msg import Float32MultiArray, Bool
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
-
-
-DRONE_WIDTH = 1
-DIST_TO_GOAL_TOL = .1
+from utils import const as fc
 
 drone = None
 obs_detected = False
+land_flag = False
 
 
 def eucl_dist(x,y,z):
@@ -24,7 +22,9 @@ def eucl_dist(x,y,z):
 
 def cam_cb(msg):
     
+    #data contains all coordinates of all 8 points. 
     # Callback function of the subscriber.
+    
     cXYZ = msg.data
     cX = cXYZ[0,8]
     cY = cXYZ[8,16]
@@ -45,15 +45,22 @@ def cam_cb(msg):
     drone.takeoff(center[2])
     #Ensure that an obs has been detected
     while obs_detected == True:
-        drone.goTo(drone_x, min_y-DRONE_WIDTH, center[2])
-        drone.goTo(drone_x, min_y-DRONE_WIDTH, center[2])
+        #  x = depth , y = width, z = height
+        drone.goTo([drone_x, min_y-fc.DRONE_WIDTH, center[2]],'relative')
+        drone.goTo([max_x, min_y-fc.DRONE_WIDTH, center[2]], 'relative')
+
 
     
 def obs_found_cb(msg):
     obs_detected = msg.data
+    if obs_detected == True:
+        drone.hover(5)
+        rospy.loginfo("Obstacle detected")
 
 def main():
     rospy.init_node("offb_node_py")
+    obs_found_sub = rospy.Subscriber('/obstacle_flag', Bool, obs_found_cb)
+    obs_corners_sub = rospy.Subscriber('/obs_corners_data',Float32MultiArray, cam_cb )
     try:
         drone = Drone()
         # Your main code...
@@ -62,11 +69,17 @@ def main():
     # rospy.init_node("cam_node")
     # rospy.Subscriber("obstacle_flag", Bool, obs_found_cb)
     # rospy.Subscriber('obs_corners_data', Float32MultiArray, cam_cb)
-
+    # add a wait for camera 
+    # add wait for init pos   
     drone.arm()
-    drone.takeoff(1)
-    
-    drone.rate.sleep()
+    drone.takeoff(0.75)
+    drone.hover(5.0)
+    while not rospy.is_shutdown():
+        while obs_detected == False and land_flag == False:
+            drone.hover(1)
+            drone.rate.sleep()
+        if land_flag == True:
+            drone.land()
 
 
 

@@ -10,7 +10,7 @@ project(offboard_py)
 find_package(catkin REQUIRED COMPONENTS
   rospy
 )
-
+catkin_python_setup()
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -202,3 +202,4 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
