@@ -1,6 +1,10 @@
 # CDUS-Cam-Node
 This repository containerizes L4T 32.7, OpenCV, ROS Melodic, Eigen, Realsense, and the PX4 Autopilot flight code. Additionally you can install the packages and run the code on your local copmputer. 
 
+# Modifications needed for own setup
+
+
+
 # Setting Up PX4 Sim 
 ```bash
 #Clone PX4 Repo in ~/
@@ -31,6 +35,9 @@ $ source .bashrc
 ```
 If you wish to modify the sim world, examples of this can be seen in the PX4 OFFBOARD EXAMPLE at the bottom of the README.
 
+# Potential Errors
+## Accessing DNN files
+If your cam_node is having trouble opening the NNet files, source your .bashrc file and rebuild the container. 
 
 # Resources
 PX4:
@@ -43,9 +50,13 @@ PX4:
 
 OpenCV:
 
-[OPENCV INSTALL ON UBUNTU 18.04 (NOT JETSON)](https://linuxize.com/post/how-to-install-opencv-on-ubuntu-18-04/)
+[OPENCV INSTALL ON UBUNTU 18.04 (NON JETSON)](https://linuxize.com/post/how-to-install-opencv-on-ubuntu-18-04/)
 
 [OPENCV 4.5 ON JETSON NANO](https://www.youtube.com/watch?v=P-EZr0zy53g)
+
+RealSense:
+
+[RealSense Install](https://jetsonhacks.com/2019/12/22/install-realsense-camera-in-5-minutes-jetson-nano/)
 
 Docker:
 
