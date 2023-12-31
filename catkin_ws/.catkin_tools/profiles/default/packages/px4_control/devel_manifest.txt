@@ -1,6 +1,0 @@
-px4_control
-/home/locus/catkin_ws/devel/.private/px4_control/cmake.lock /home/locus/catkin_ws/devel/./cmake.lock
-/home/locus/catkin_ws/devel/.private/px4_control/share/px4_control/cmake/px4_controlConfig-version.cmake /home/locus/catkin_ws/devel/share/px4_control/cmake/px4_controlConfig-version.cmake
-/home/locus/catkin_ws/devel/.private/px4_control/share/px4_control/cmake/px4_controlConfig.cmake /home/locus/catkin_ws/devel/share/px4_control/cmake/px4_controlConfig.cmake
-/home/locus/catkin_ws/devel/.private/px4_control/lib/px4_control/px4_control_node /home/locus/catkin_ws/devel/lib/px4_control/px4_control_node
-/home/locus/catkin_ws/devel/.private/px4_control/lib/pkgconfig/px4_control.pc /home/locus/catkin_ws/devel/lib/pkgconfig/px4_control.pc
