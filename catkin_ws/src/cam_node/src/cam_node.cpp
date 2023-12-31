@@ -195,8 +195,8 @@ int main(int argc, char **argv) try {
 		rs2::frameset fs = pipe.wait_for_frames();
 
 		// Publish pose flag!!!!
-		// pose_flag_ros.data = true;
-		// pose_flag_pub_.publish(pose_flag_ros);
+		pose_flag_ros.data = true;
+		pose_flag_pub_.publish(pose_flag_ros);
 		// pose_flag_ros.data = false;
 		// pose_flag_pub_.publish(pose_flag_ros);
 

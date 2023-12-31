@@ -66,14 +66,23 @@ def main():
         # Your main code...
     except rospy.ROSInterruptException:
         pass
-    # rospy.init_node("cam_node")
     # rospy.Subscriber("obstacle_flag", Bool, obs_found_cb)
     # rospy.Subscriber('obs_corners_data', Float32MultiArray, cam_cb)
+
     # add a wait for camera 
-    # add wait for init pos   
+    try:
+        # Wait for a message on the specified topic with a timeout
+        rospy.loginfo("Waiting for a message on topic /obstacle flag")
+        rospy.wait_for_message("/pose_flag", Bool, timeout=fc.CAM_TIMEOUT)
+    except rospy.ROSException:
+        rospy.logwarn("Timeout reached. No message received.")
+        rospy.signal_shutdown("Timeout reached. No message received.")
+
+
     drone.arm()
     drone.takeoff(0.75)
     drone.hover(5.0)
+
     while not rospy.is_shutdown():
         while obs_detected == False and land_flag == False:
             drone.hover(1)

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="start_roscore" default="true"/>
+
+    <!-- Conditionally start roscore if specified -->
+    <group if="$(arg start_roscore)">
+        <exec name="roscore" pkg="ros_core" cwd="node" respawn="true"/>
+    </group>
+
+    <include file="$(find offboard_py)/launch/start_offb.launch"/>
+    <node pkg="cam_node" type="cam_node" name="cam_node" output="screen"/>
+</launch>
+
+    
