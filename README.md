@@ -37,7 +37,7 @@ If you wish to modify the sim world, examples of this can be seen in the PX4 OFF
 
 # Potential Errors
 ## Accessing DNN files
-If your cam_node is having trouble opening the NNet files, source your .bashrc file and rebuild the container. 
+If your cam_node is having trouble opening the NNet files, open a new terminal, source your .bashrc file, and rebuild the container. 
 
 # Resources
 PX4:
@@ -63,4 +63,6 @@ Docker:
 [GITHUB W/ JETSON CONTAINERS](https://github.com/dusty-nv/jetson-containers/blob/master/jetson_containers/l4t_version.py)
 
 [UPGRADING TO NVIDIA CONTAINER](http://docs.nvidia.com/dgx/nvidia-container-runtime-upgrade/index.html)
+
+[PX4_CONTROLLER GUIDE](https://github.com/RuslanAgishev/px4_control/tree/master)
 
