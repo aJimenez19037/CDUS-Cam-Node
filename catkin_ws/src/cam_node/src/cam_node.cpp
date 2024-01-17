@@ -1,3 +1,8 @@
+//cam_node does not publish obs_corner data
+
+
+
+
 // Cleaned Up Camera Node Version
 //
 // This Camera Node will serve as the recepter of actual sensor data from
@@ -109,10 +114,8 @@ int main(int argc, char **argv) try {
 	// ----------------------------------------------------------------------------- //
     // Set up files and parameters for the NN
     // ----------------------------------------------------------------------------- //
-	// ----------------------------------------------------------------------------- //
+	// ----------------------------------------------------------------------------- 
 
-
-	std::cout << "OpenCV version: " << CV_VERSION << std::endl;
 	std::vector<std::string> class_names;
     std::string line;
     // The relative path is FROM the " ~/.ros " directory !!!!
@@ -132,7 +135,14 @@ int main(int argc, char **argv) try {
 	// ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
 	ros::init(argc, argv, "cam_node");
-	ros::NodeHandle nh_;
+	ros::NodeHandle nh_("~");// "~" is used to get parameters relative to the private namespace of the node
+	int debug;
+	nh_.param<int>("debug_cam", debug, 0);
+	std::cout << "debug: " << debug << std::endl;
+
+	if (debug == (1||2))
+		std::cout << "OpenCV version: " << CV_VERSION << std::endl;
+
 	ros::Publisher rgb_pub_ = nh_.advertise<sensor_msgs::Image>("RGB_data", 10);
 	ros::Publisher depth_pub_ = nh_.advertise<sensor_msgs::Image>("depth_data", 10);
 	ros::Publisher target_pub_ = nh_.advertise<std_msgs::Bool>("target_flag", 10);
@@ -143,7 +153,6 @@ int main(int argc, char **argv) try {
 
 	bool target_flag = false;
     bool obstacle_flag = false;
-	bool cam_connected_flag = false;
     std_msgs::Bool target_flag_ros;
     std_msgs::Bool obstacle_flag_ros;
 	std_msgs::Float32MultiArray tar_corn_msg;
@@ -190,7 +199,8 @@ int main(int argc, char **argv) try {
 		// ----------------------------------------------------------------------------- //
 		// ----------------------------------------------------------------------------- //
 		// Get current RealSense frame
-		ROS_INFO("____START____");
+		if (debug == 2)
+			ROS_INFO("____START____");
 		//std::cout<<"Post start" << std::endl;
 		rs2::frameset fs = pipe.wait_for_frames();
 
@@ -220,7 +230,8 @@ int main(int argc, char **argv) try {
 		const int h2 = bgr_fs.as<rs2::video_frame>().get_height();
 		//std::cout<<"Post get sizes:" << w2 <<"," <<h2<< std::endl;
 		if ((void*)bgr_fs.get_data() == nullptr){
-			std::cout<<"nullllllllll" << std::endl;
+			if (debug == 1 || debug == 2)
+				std::cout<<"nullllllllll" << std::endl;
 		}		
 
 		cv::Mat bgr_img(w2,h2, CV_8UC3, (void*)bgr_fs.get_data(), cv::Mat::AUTO_STEP);
@@ -349,7 +360,8 @@ int main(int argc, char **argv) try {
         // std_msgs::Bool debug_flag_ros;
 
 		if (bbsize == 0) {
-			ROS_INFO_STREAM("Nothing found... no trigger flag") ;
+			if (debug == 2)
+				ROS_INFO_STREAM("Nothing found... no trigger flag") ;
 			target_flag = false;
 			obstacle_flag = false;
 
@@ -363,7 +375,8 @@ int main(int argc, char **argv) try {
         for ( cv::Rect& bbox : bboxes) {
             // The current label is:
             std::string current_label = labels[label_counter];
-            std::cout << "---------- Current label is ___________" << current_label << std::endl;
+			if (debug == 1 || debug == 2 || debug == 0)
+            	std::cout << "---------- Current label is ___________" << current_label << std::endl;
 
 			if ((current_label.compare(b_str) == 1) || 
                 (current_label.compare(m_str) == 1) || 
@@ -382,14 +395,18 @@ int main(int argc, char **argv) try {
 
 				// A little bit of logic to ensure we don't go out of the image bounds
 				if ((xpos + wpos) > w2){
-					std::cout << "The current width is: " << wpos << std::endl;
+					if (debug == 2)
+						std::cout << "The current width is: " << wpos << std::endl;
 					wpos = wpos - 1;
-					std::cout << "The width has been adjusted to: " << wpos << std::endl;
+					if (debug == 2)
+						std::cout << "The width has been adjusted to: " << wpos << std::endl;
 				}
 				if ((ypos + hpos) > h2){
-					std::cout << "The current height is: " << hpos << std::endl;
+					if (debug == 2)
+						std::cout << "The current height is: " << hpos << std::endl;
 					hpos = hpos - 1;
-					std::cout << "The height has been adjusted to: " << hpos << std::endl;
+					if (debug == 2)
+						std::cout << "The height has been adjusted to: " << hpos << std::endl;
 				}
 
 				// bbox3D function portion
@@ -414,8 +431,10 @@ int main(int argc, char **argv) try {
 					break;
 				}
 				double iqr_depth = iqr_finder(DmVec);
-				std::cout << "________The Median of the Depth data is: " << med_depth << std::endl;
-				std::cout << "________The IQR of the Depth data is: " << iqr_depth << std::endl;
+				if (debug == 2){
+					std::cout << "________The Median of the Depth data is: " << med_depth << std::endl;
+					std::cout << "________The IQR of the Depth data is: " << iqr_depth << std::endl;
+				}
 
 				// Initialize a reduced set of points corresponding to our object according to 
 				// the heuristic
@@ -468,8 +487,8 @@ int main(int argc, char **argv) try {
 				double x = xmin + (0.5 * d);
 				double y = ymin + (0.5 * w);
 				double z = zmin + (0.5 * h);
-
-				std::cout << "3D BB params: " << d << "\t" << w << "\t" << h << "\t" << x << "\t" << y << "\t" << z << std::endl;
+				if (debug == 1 || debug == 2)
+					std::cout << "3D BB params: " << d << "\t" << w << "\t" << h << "\t" << x << "\t" << y << "\t" << z << std::endl;
 
 				// -------------------------------------------------------------------------- //
 				// -------------------------------------------------------------------------- //
@@ -535,8 +554,8 @@ int main(int argc, char **argv) try {
 				cXYZ.insert( cXYZ.end(), cY.begin(), cY.end() );
 				cXYZ.insert( cXYZ.end(), cZ.begin(), cZ.end() );
 
-			
-				std::cout << "Min X: " << *min_element(cX.begin(), cX.end()) << std::endl;
+				if (debug == 1 || debug == 2)
+					std::cout << "Min X: " << *min_element(cX.begin(), cX.end()) << std::endl;
 
 				// -------------------------------------------------------------------------- //
 				// -------------------------------------------------------------------------- //
@@ -553,18 +572,23 @@ int main(int argc, char **argv) try {
                 
                 // Check range to a and b strings:
 				// (current_label.compare(a_str) == 1)
+				if (debug == 2){
+					std::cout << "---------- BEFORE " << std::endl;
+					std::cout << current_label.compare(b_str) << std::endl;
+					std::cout << current_label.compare(m_str) << std::endl;
+				}
 
-				std::cout << "---------- BEFORE " << std::endl;
-				std::cout << current_label.compare(b_str) << std::endl;
-				std::cout << current_label.compare(m_str) << std::endl;
-
-                if ( ( (current_label.compare(a_str) == 0) || (current_label.compare(b_str) == 0) || (current_label.compare(m_str) == 0) || (current_label.compare(r_str) == 0)) 
+                if ( ( (current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) || (current_label.compare(r_str) == 1)) 
                         && ( ((*min_element(cX.begin(), cX.end())) < 1) && (abs(y) < 0.5) ) ) {
-					std::cout << current_label << std::endl;
-					std::cout << b_str << std::endl;
-					std::cout << m_str << std::endl;
-					std::cout << b_str << std::endl;
-                    ROS_INFO_STREAM("WE FOUND A TV, LAPTOP, REFRIGERATOR or MICROWAVE closeby") ;
+					if (debug == 1 || debug == 2){
+						std::cout << current_label << std::endl;
+						if (debug ==2){
+							std::cout << b_str << std::endl;
+							std::cout << m_str << std::endl;
+							std::cout << b_str << std::endl;
+						}
+                    	ROS_INFO_STREAM("WE FOUND A TV, LAPTOP, REFRIGERATOR or MICROWAVE closeby") ;
+					}
                     obstacle_flag = true;
 
 					// std::vector<double> vec1 = { 1.1, 2., 3.1};
@@ -581,33 +605,47 @@ int main(int argc, char **argv) try {
 					obs_corn_msg.data.insert(obs_corn_msg.data.end(), cXYZ.begin(), cXYZ.end());
 
 					obstacle_flag_ros.data = obstacle_flag;
-					std::cout << "Publishing Obstacle: " << obstacle_flag_ros << std::endl;
+					if (debug == 1 || debug == 2)
+						std::cout << "Publishing Obstacle: " << obstacle_flag_ros << std::endl;
 					obstacle_pub_.publish(obstacle_flag_ros);
 					obs_corners_pub_.publish(obs_corn_msg);
 
                 }
-                if ( ( (current_label.compare(a_str) == 0) || (current_label.compare(b_str) == 0) || (current_label.compare(m_str) == 0) || (current_label.compare(r_str) == 0)) 
+                if ( ( (current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) || (current_label.compare(r_str) == 1)) 
                         && ((*min_element(cX.begin(), cX.end())) >= 1) ) {
-					std::cout << current_label << std::endl;
-					std::cout << b_str << std::endl;
-					std::cout << m_str << std::endl;
-					std::cout << r_str << std::endl;
-                    ROS_INFO_STREAM("TV, LAPTOP, REFRIGERATOR or MICROWAVE but too far away") ;
+					if (debug == 1 || debug == 2){
+						std::cout << current_label << std::endl;
+						if (debug == 2){
+							std::cout << b_str << std::endl;
+							std::cout << m_str << std::endl;
+							std::cout << r_str << std::endl;
+						}
+						ROS_INFO_STREAM("TV, LAPTOP, REFRIGERATOR or MICROWAVE but too far away") ;
+						ROS_INFO_STREAM("NOT PUBLISHING OBSTACLE") ;
+					}
+
                     obstacle_flag = false;
                 }
-
-				std::cout << "---------- IN between" << std::endl;
-				std::cout << current_label.compare(d_str) << std::endl;
-				std::cout << current_label.compare(e_str) << std::endl;
-				std::cout << "target_flag" << target_flag << std::endl;
+				if (debug == 1 || debug == 2){
+					std::cout << "----------aaaaaaaaaaaaaaaaaaaaa IN between" << debug << std::endl;
+					if (debug == 2){
+						std::cout << current_label.compare(d_str) << std::endl;
+						std::cout << current_label.compare(e_str) << std::endl;
+						std::cout << "target_flag" << target_flag << std::endl;
+					}
+				}
 
                 // Check range to c and d strings:
-                if ( ((current_label.compare(d_str) == 0) || (current_label.compare(e_str) == 0) ) 
+                if ( ((current_label.compare(d_str) == 1) || (current_label.compare(e_str) == 1) ) 
                         && ( ((*min_element(cX.begin(), cX.end())) < 1) && (abs(y) < 0.5) ) ) {
-					std::cout << current_label << std::endl;
-					std::cout << d_str << std::endl;
-					std::cout << e_str << std::endl;
-					std::cout << "WE FOUND A PERSON or CELLPHONE closeby" << std::endl;
+					if (debug == 1 || debug == 2){
+						std::cout << current_label << std::endl;
+						if (debug == 2){
+							std::cout << d_str << std::endl;
+							std::cout << e_str << std::endl;
+						}
+						std::cout << "WE FOUND A PERSON or CELLPHONE closeby" << std::endl;
+					}
                     // ROS_INFO_STREAM("WE FOUND A PERSON or CELLPHONE closeby") ;
                     target_flag = true;
 
@@ -623,34 +661,42 @@ int main(int argc, char **argv) try {
 					tar_corn_msg.data.insert(tar_corn_msg.data.end(), cXYZ.begin(), cXYZ.end());
 					
 					target_flag_ros.data = target_flag;
-					std::cout << "Publishing Target: " << target_flag_ros << std::endl;
+					if (debug == 1 || debug == 2)
+						std::cout << "Publishing Target: " << target_flag_ros << std::endl;
 					target_pub_.publish(target_flag_ros);
 					tar_corners_pub_.publish(tar_corn_msg);
 
 
                 }
-                if ( ((current_label.compare(d_str) == 0) || (current_label.compare(e_str) == 0) ) 
+                if ( ((current_label.compare(d_str) == 1) || (current_label.compare(e_str) == 1) ) 
                         &&  ( (*min_element(cX.begin(), cX.end())) >= 1) ) {
-					std::cout << current_label << std::endl;
-					std::cout << d_str << std::endl;
-					std::cout << e_str << std::endl;
-					std::cout << "PERSON or CELLPHONE but too far away" << std::endl;
+					if (debug == 1 || debug == 2){
+						std::cout << current_label << std::endl;
+						if (debug==2){
+							std::cout << d_str << std::endl;
+							std::cout << e_str << std::endl;
+						}
+						std::cout << "PERSON or CELLPHONE but too far away" << std::endl;
+					}
                     // ROS_INFO_STREAM("PERSON or CELLPHONE but too far away") ;
                     target_flag = false;
                 }
 
 			}
             else{
-                ROS_INFO_STREAM("No Applicable objects found... no trigger flag") ;
+				if (debug == 1 || debug == 2)
+					ROS_INFO_STREAM("No Applicable objects found... no trigger flag") ;
                 target_flag = false;
                 obstacle_flag = false;
 
 				target_flag_ros.data = target_flag;
-				std::cout << "Publishing Target: " << target_flag_ros << std::endl;
+				if (debug == 1 || debug == 2)
+					std::cout << "Publishing Target: " << target_flag_ros << std::endl;
 				target_pub_.publish(target_flag_ros);
 
 				obstacle_flag_ros.data = obstacle_flag;
-				std::cout << "Publishing Obstacle: " << obstacle_flag_ros << std::endl;
+				if (debug == 1 || debug == 2)
+					std::cout << "Publishing Obstacle: " << obstacle_flag_ros << std::endl;
 				obstacle_pub_.publish(obstacle_flag_ros);
             }
             
@@ -738,7 +784,8 @@ int main(int argc, char **argv) try {
         // Get duration. Substart timepoints to get duration. To cast it to proper unit
         // use duration cast method
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-        std::cout << "Time taken by function: " << duration.count() << " milliseconds" << std::endl;
+		if (debug == 2)
+			std::cout << "Time taken by function: " << duration.count() << " milliseconds" << std::endl;
 
 	}
 	return EXIT_SUCCESS;
