@@ -169,7 +169,7 @@ int main(int argc, char **argv) try {
 	Eigen::MatrixXd yMat;
 	Eigen::MatrixXd zMat;
 	// RealSense2 Pipeline AND Pointcloud Initialization
-	// rs2::colorizer color_map;
+	//rs2::colorizer color_map;
 	rs2::pipeline pipe;
 	rs2::pointcloud ptcloud;
 	// Set config param to be able to stream (and ultimately align)
@@ -179,7 +179,9 @@ int main(int argc, char **argv) try {
 	auto profile = pipe.start(cfg);
 
 	// Generate the aligned frameset
+	rs2::align align_to_depth(RS2_STREAM_DEPTH);
 	rs2::align align_to_color(RS2_STREAM_COLOR);
+	//rs2::align align_to_color(RS2_STREAM_COLOR);
 
 	// ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //
@@ -234,10 +236,11 @@ int main(int argc, char **argv) try {
 				std::cout<<"nullllllllll" << std::endl;
 		}		
 
-		cv::Mat bgr_img(w2,h2, CV_8UC3, (void*)bgr_fs.get_data(), cv::Mat::AUTO_STEP);
-
+		cv::Mat bgr_img(h2,w2, CV_8UC3, (void*)bgr_fs.get_data(), cv::Mat::AUTO_STEP);
 		cv::Mat rgb_image = bgr_img;
+		//cv::imwrite("/home/locus/catkin_ws/src/imgs/test.jpg", rgb_image);
 
+		//std::cout<<"img written" << std::to_string(w2) << std::to_string(h2)<<std::endl;
 		// cv::cvtColor(bgr_img, rgb_image, cv::COLOR_BGR2RGB);
 
 		// ----------------------------------------------------------------------------- //
@@ -354,6 +357,8 @@ int main(int argc, char **argv) try {
         std::string d_str = "person ";
         std::string e_str = "cell phone ";
 		std::string r_str = "refrigerator";
+		std::string z_str = "zebra";
+
         
 		int bbsize = bboxes.size();
         int label_counter = 0;
@@ -578,16 +583,16 @@ int main(int argc, char **argv) try {
 					std::cout << current_label.compare(m_str) << std::endl;
 				}
 
-                if ( ( (current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) || (current_label.compare(r_str) == 1)) 
+                if ( ( (current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) || (current_label.compare(z_str) == 1)) 
                         && ( ((*min_element(cX.begin(), cX.end())) < 1) && (abs(y) < 0.5) ) ) {
 					if (debug == 1 || debug == 2){
 						std::cout << current_label << std::endl;
 						if (debug ==2){
 							std::cout << b_str << std::endl;
 							std::cout << m_str << std::endl;
-							std::cout << b_str << std::endl;
+							std::cout << z_str << std::endl;
 						}
-                    	ROS_INFO_STREAM("WE FOUND A TV, LAPTOP, REFRIGERATOR or MICROWAVE closeby") ;
+                    	ROS_INFO_STREAM("WE FOUND A TV, LAPTOP, ZEBRA or MICROWAVE closeby") ;
 					}
                     obstacle_flag = true;
 
@@ -611,17 +616,17 @@ int main(int argc, char **argv) try {
 					obs_corners_pub_.publish(obs_corn_msg);
 
                 }
-                if ( ( (current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) || (current_label.compare(r_str) == 1)) 
+                if ( ( (current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) || (current_label.compare(z_str) == 1)) 
                         && ((*min_element(cX.begin(), cX.end())) >= 1) ) {
 					if (debug == 1 || debug == 2){
 						std::cout << current_label << std::endl;
 						if (debug == 2){
 							std::cout << b_str << std::endl;
 							std::cout << m_str << std::endl;
-							std::cout << r_str << std::endl;
+							std::cout << z_str << std::endl;
 						}
-						ROS_INFO_STREAM("TV, LAPTOP, REFRIGERATOR or MICROWAVE but too far away") ;
-						ROS_INFO_STREAM("NOT PUBLISHING OBSTACLE") ;
+						ROS_INFO_STREAM("TV, LAPTOP, ZEBRA, MICROWAVE but too far away") ;
+						ROS_INFO_STREAM("NOT PUBLISHING OBSTACLE");
 					}
 
                     obstacle_flag = false;

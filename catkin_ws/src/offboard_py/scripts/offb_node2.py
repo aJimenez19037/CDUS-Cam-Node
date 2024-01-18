@@ -69,14 +69,14 @@ class Offb_Node:
                 center = [(max_x-min_x)/2,(max_y-min_y)/2,(max_z-min_z)/2]
                 drone_x, drone_y, drone_z = self.drone.pose
                 print("changing alt")
-                self.drone.goTo([drone_x,center[2],drone_z],'relative')
+                self.drone.goTo([0,center[2],0],'relative')
                 #  x = depth , y = width, z = height
                 print("beginnign to avoid obs")
-                self.drone.goTo([drone_x, min_y-fc.DRONE_WIDTH, center[2]],'relative')
+                self.drone.goTo([0, min_y-fc.DRONE_WIDTH, center[2]],'relative')
                 print("moving past obs")
                 self.drone.goTo([max_x+fc.DRONE_WIDTH, min_y-fc.DRONE_WIDTH, center[2]], 'relative')
                 print("realigning")
-                self.drone.goTo([max_x+fc.DRONE_WIDTH, drone_y, center[2]], 'relative')
+                self.drone.goTo([max_x+fc.DRONE_WIDTH, 0, center[2]], 'relative')
                 self.obs_detected = False
 
 

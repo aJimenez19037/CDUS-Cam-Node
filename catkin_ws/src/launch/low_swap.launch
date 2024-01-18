@@ -3,7 +3,7 @@
 
     <arg name="sim" default="true"/>
     <arg name="cam" default="true"/>
-    <arg name="debug_cam" default="2"/><!-- 1 weak , 2 strong -->
+    <arg name="debug_cam" default="0"/><!-- 1 weak , 2 strong -->
 
     <group if="$(arg cam)">
         <!-- cam_node needs roscore -->
