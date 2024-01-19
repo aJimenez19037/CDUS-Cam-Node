@@ -632,7 +632,7 @@ int main(int argc, char **argv) try {
                     obstacle_flag = false;
                 }
 				if (debug == 1 || debug == 2){
-					std::cout << "----------aaaaaaaaaaaaaaaaaaaaa IN between" << debug << std::endl;
+					std::cout << " IN between " << debug << std::endl;
 					if (debug == 2){
 						std::cout << current_label.compare(d_str) << std::endl;
 						std::cout << current_label.compare(e_str) << std::endl;

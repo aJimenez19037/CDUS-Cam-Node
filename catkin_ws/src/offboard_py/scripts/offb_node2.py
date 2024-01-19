@@ -15,8 +15,7 @@ class Offb_Node:
             obs_detected = False
             land_flag = False
             rospy.init_node('offb_node_py')
-            prev_detection = rospy.get_time()           
-
+            prev = rospy.get_time
             try:
                 self.drone = Drone()
                 cam = rospy.get_param('~cam', default=True)
@@ -45,14 +44,10 @@ class Offb_Node:
                 pass
         def obs_found_cb(self, msg):
             self.obs_detected = msg.data
-            if self.obs_detected == True:
-                self.prev_detection = rospy.get_time()
-                print("Obstacle detected")
-            elif self.obs_detected == False and ((rospy.get_time()-self.prev_detection) > fc.PREV_DETECTION):
-                self.obs_detected = True
+            
         def cam_cb(self, msg):
                 #data contains all coordinates of all 8 points. 
-                print("cam_cbbbbbbbbbb")
+                print("cam_cbb")
                 cXYZ = msg.data
                 cX = cXYZ[:8]
                 cY = cXYZ[8:16]

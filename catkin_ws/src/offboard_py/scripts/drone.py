@@ -40,6 +40,7 @@ class Drone:
         self.pose = np.array([ pose_msg.pose.position.x, pose_msg.pose.position.y, pose_msg.pose.position.z ])
 
     def arm(self):
+        print("arming")
         for i in range(self.hz):
             self.publish_setpoint([0,0,-1])
             self.rate.sleep()
