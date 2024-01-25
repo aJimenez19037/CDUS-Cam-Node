@@ -2,7 +2,7 @@
 
 import rospy
 import math
-from drone import Drone
+from offboard_py.scripts.drone import Drone
 from std_msgs.msg import Float32MultiArray, Bool
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State

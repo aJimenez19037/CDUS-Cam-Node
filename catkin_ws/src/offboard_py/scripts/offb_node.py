@@ -25,7 +25,8 @@ pose = [0,0,0]
 
 def cam_cb(msg):
     #data contains all coordinates of all 8 points. 
-    
+    print("cam callback called")
+    rospy.loginfo("cam callabck called")
     cXYZ = msg.data
     cX = cXYZ[:8]
     cY = cXYZ[8:16]
@@ -43,15 +44,23 @@ def cam_cb(msg):
 
     drone_x, drone_y, drone_z = pose
     #change alt to alt of obj, 
-    drone.takeoff(center[2])
+    print("height change aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    rospy.loginfo("height change aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    drone.goTo([0, center[2], 0],'relative')
     #Ensure that an obs has been detected
     # while obs_detected == True:
     #  x = depth , y = width, z = height
-    rospy.loginfo("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-    drone.goTo([drone_x, min_y-fc.DRONE_WIDTH, center[2]],'relative')
-    rospy.loginfo("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-    drone.goTo([max_x, min_y-fc.DRONE_WIDTH, center[2]], 'relative')
-    rospy.loginfo("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC")
+    print("moving left bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+    rospy.loginfo("moving left bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+    drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
+    rospy.loginfo("moving past ccccccccccccccccccccccccccccccccccccc")
+    print("moving past ccccccccccccccccccccccccccccccccccccc")
+    drone.goTo([max_x+fc.DRONE_WIDTH, 0, 0], 'relative')
+    print("moving right dddddddddddddddddddddddddddd") 
+    rospy.loginfo("moving right dddddddddddddddddddddddddddd")
+    drone.goTo([0, -(min_y-fc.DRONE_WIDTH), 0], 'relative')
+    rospy.loginfo("done with obs avoidance")
+    print("done with obs avoidance")
     obs_detected = False
     land_flag = True
 
