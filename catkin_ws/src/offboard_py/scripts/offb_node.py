@@ -74,16 +74,17 @@ def obs_found_cb(msg):
 def main():
     rospy.init_node("offb_node_py")
     obs_found_sub = rospy.Subscriber('/cam_node/obstacle_flag', Bool, obs_found_cb)
-
+    cam = rospy.get_param('~cam', default=True)
+    Namespace = rospy.get_param('~NS', default="None")
     try:
-        drone = Drone()
+        drone = Drone(Namespace)
         # Your main code...
     except rospy.ROSInterruptException:
         pass
    
     # wait for camera 
 
-    cam = rospy.get_param('~cam', default=True)
+  
 
     if cam:
         try:
@@ -98,12 +99,10 @@ def main():
 
     obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, cam_cb, queue_size=10)
 
-
     drone.arm()
     drone.takeoff(0.75)
     drone.hover(1)
     while not rospy.is_shutdown():
-        pose = drone.pose
         drone.hover(1)
         drone.rate.sleep()
 

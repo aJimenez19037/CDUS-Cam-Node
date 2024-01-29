@@ -2,7 +2,7 @@
 
 import rospy
 import mavros
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, TransformStamped
 from mavros_msgs.msg import State 
 from mavros_msgs.srv import CommandBool, SetMode
 from tf.transformations import *
@@ -15,7 +15,8 @@ import time
 from utils import const as fc
 
 class Drone:
-    def __init__(self):
+    def __init__(self,NS = 'None'):
+        self.NS = NS
         self.pose = None
         self.yaw = 0
         self.sp = None
@@ -31,7 +32,13 @@ class Drone:
         self.arming_client = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
         self.set_mode_client = rospy.ServiceProxy('/mavros/set_mode', SetMode)
         rospy.Subscriber('/mavros/state', State, self.state_callback)
-        rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.drone_pose_callback)
+
+        if self.NS == 'None': #Sim
+            rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.drone_pose_callback)
+        else:
+            rospy.Subscriber('vicon/' + self.NS + '/' + self.NS,TransformStamped, self.vicon_callback)
+
+
 
     def state_callback(self, state):
         self.current_state = state
@@ -154,3 +161,10 @@ class Drone:
             self.sp += 0.03 * n
             self.publish_setpoint(self.sp)
             self.rate.sleep()
+    def vicon_callback(self, data):
+        translations = data.transform.translation
+        vicon_x = translations.x
+        vicon_y = translations.y
+        vicon_z = translations.z
+        self.pose = np.array([vicon_x,vicon_y,vicon_z])
+        

@@ -5,6 +5,7 @@
 	<arg name="gcs_url" default="udp://@192.168.88.224" />  
 	<arg name="sim" default="true"/>
     <arg name="cam" default="true"/>
+	<arg name="NS" default="None"/>
 
 	<!-- If sim include the MAVROS node with SITL and Gazebo -->
 	<group if="$(arg sim)">
@@ -24,6 +25,8 @@
 
 
 	<!-- Our node to control the drone -->
-	<node pkg="offboard_py" type="offb_node2.py" name="offb_node_py" required="true" output="screen" />
+	<node pkg="offboard_py" type="offb_node.py" name="offb_node_py" required="true" output="screen" />
 		<rosparam param="cam">$(arg cam)</rosparam>
+		<rosparam param="NS">$(arg NS)</rosparam>
+
 </launch>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="sim" default="true"/>
+    <arg name="cam" default="true"/>
+    <arg name="debug_cam" default="0"/><!-- 1 weak , 2 strong -->
+
+    <group if="$(arg cam)">
+        <!-- cam_node needs roscore -->
+        <exec name="roscore" pkg="ros_core" cwd="node" respawn="true"/>
+        <node pkg="cam_node" type="cam_node" name="cam_node" output="screen">
+            <param name="debug_cam" type="int" value="0"/> 
+        </node>
+    </group>
+
+    <include file="$(find offboard_py)/launch/start_offb.launch">
+        <arg name="sim" value="$(arg sim)"/>
+        <arg name="NS" value="$(arg NS)">
+        <arg name="cam" value="$(arg cam)"/>
+    </include>
+
+</launch>
