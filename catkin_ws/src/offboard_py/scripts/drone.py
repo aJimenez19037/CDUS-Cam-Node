@@ -131,8 +131,10 @@ class Drone:
     def stop(self):
         while self.current_state.armed or self.current_state.mode == "OFFBOARD":
             if self.current_state.armed:
+                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaa")
                 self.arming_client(False)
             if self.current_state.mode == "OFFBOARD":
+                print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
                 self.set_mode_client(base_mode=0, custom_mode="MANUAL")
             self.rate.sleep()
 

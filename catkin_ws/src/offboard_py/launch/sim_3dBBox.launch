@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name="sim" default="true"/>
-    <arg name="cam" default="true"/>
-    <arg name="debug_cam" default="0"/><!-- 1 weak , 2 strong -->
+    <!-- This launch file is designed for testig 3dbbox code in sim with your camera connected to the laptop-->
+
+    <arg name="sim" default="true"/> <!--Will launch with ports setup for sim and launch gazebo-->
+    <arg name="cam" default="true"/> <!--When wanting to launch offb node by itself-->
+    <arg name="NS" default="None"/><!--Name of drone within vicon-->
+    <arg name="debug_cam" default="0"/><!-- 0 none, 1 weak , 2 strong -->
 
     <group if="$(arg cam)">
         <!-- cam_node needs roscore -->
@@ -15,7 +18,7 @@
 
     <include file="$(find offboard_py)/launch/start_offb.launch">
         <arg name="sim" value="$(arg sim)"/>
-        <arg name="NS" value="$(arg NS)">
+        <arg name="NS" value="$(arg NS)"/>
         <arg name="cam" value="$(arg cam)"/>
     </include>
 

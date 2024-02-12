@@ -2,7 +2,7 @@
 
 import rospy
 import math
-from offboard_py.scripts.drone import Drone
+from drone import Drone
 from std_msgs.msg import Float32MultiArray, Bool
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
@@ -16,7 +16,7 @@ def main():
     except rospy.ROSInterruptException:
         pass
     drone.arm()
-    drone.takeoff(0.75)
+    drone.takeoff(0.5)
     drone.hover(5)
     drone.land()
 

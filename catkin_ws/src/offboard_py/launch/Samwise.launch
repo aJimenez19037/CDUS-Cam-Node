@@ -1,17 +1,10 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name="sim" default="true"/> <!--Will launch with ports setup for sim and launch gazebo-->
-    <arg name="cam" default="true"/> <!--When wanting to launch offb node by itself-->
-    <arg name="NS" default="None"/><!--Name of drone within vicon-->
-    <arg name="debug_cam" default="0"/><!-- 0 none, 1 weak , 2 strong -->
-
-    <condition if="$(arg sim)">
-        <arg name="NS" value="None"/>
-    </condition>
-    <condition unless="$(arg sim)">
-        <arg name="NS" value="Gandolf"/>
-    </condition>
+    <arg name="sim" default="false"/>
+    <arg name="cam" default="true"/>
+    <arg name="debug_cam" default="0"/><!-- 1 weak , 2 strong -->
+    <arg name="NS" value="Samwise"/>
 
     <group if="$(arg cam)">
         <!-- cam_node needs roscore -->
@@ -20,6 +13,12 @@
             <param name="debug_cam" type="int" value="0"/> 
         </node>
     </group>
+
+    <include file="$(find offboard_py)/launch/start_offb.launch">
+        <arg name="sim" value="$(arg sim)"/>
+        <arg name="NS" value="$(arg NS)">
+        <arg name="cam" value="$(arg cam)"/>
+    </include>  
 
     <group if="$(arg sim)">
         <include file="$(find vicon_bridge)/launch/vicon.launch"/>
@@ -32,6 +31,5 @@
     </include>
 
 
-</launch>
 
-    
+</launch>

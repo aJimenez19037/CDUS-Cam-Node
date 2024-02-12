@@ -11,7 +11,7 @@ catkin_ws/.catkin_tools
 catkin_ws/src/CMakeList.txt
 catkin_ws/.catkin_tools/*
 *.pyc
-*/.vscode/settings.json
+.vscode
 catkin_ws/src/imgs
 catkin_ws/src/imgs/*
 
