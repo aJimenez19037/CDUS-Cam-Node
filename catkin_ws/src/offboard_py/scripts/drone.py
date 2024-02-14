@@ -4,7 +4,7 @@ import rospy
 import mavros
 from geometry_msgs.msg import PoseStamped, TransformStamped
 from mavros_msgs.msg import State 
-from mavros_msgs.srv import CommandBool, SetMode
+from mavros_msgs.srv import CommandBool, SetMode, CommandTOL
 from tf.transformations import *
 import message_filters
 
@@ -30,13 +30,14 @@ class Drone:
 
         self.setpoint_publisher = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
         self.arming_client = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
+        self.landing_client = rospy.ServiceProxy('/mavros/cmd/land', CommandTOL)
         self.set_mode_client = rospy.ServiceProxy('/mavros/set_mode', SetMode)
         rospy.Subscriber('/mavros/state', State, self.state_callback)
 
-        if self.NS == 'None': #Sim
+        if self.NS == 'Samwise': #Sim
             rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.drone_pose_callback)
-        else:
-            rospy.Subscriber('vicon/' + self.NS + '/' + self.NS,TransformStamped, self.vicon_callback)
+        # else:
+        #     rospy.Subscriber('vicon/' + self.NS + '/' + self.NS,TransformStamped, self.vicon_callback)
 
 
 
@@ -111,32 +112,44 @@ class Drone:
     def hover(self, t_hold):
         print('Position holding...')
         t0 = time.time()
-        self.sp = self.pose
+        hold_pose = self.pose
         while not rospy.is_shutdown():
             t = time.time()
             if t - t0 > t_hold and t_hold > 0: break
             # Update timestamp and publish sp 
-            self.publish_setpoint(self.sp)
+            self.publish_setpoint(hold_pose)
             self.rate.sleep()
 
+    def kill_node(self):
+        print("shutdown time!")
+
     def land(self):
+        
         print("Landing...")
         self.sp = self.pose
         while self.sp[2] > - 1.0:
             self.sp[2] -= 0.05
             self.publish_setpoint(self.sp)
             self.rate.sleep()
-        self.stop()
+        resp = self.landing_client(min_pitch=0.0, yaw=0.0, latitude=0.0, longitude=0.0, altitude=0.0)
 
-    def stop(self):
-        while self.current_state.armed or self.current_state.mode == "OFFBOARD":
-            if self.current_state.armed:
-                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaa")
-                self.arming_client(False)
-            if self.current_state.mode == "OFFBOARD":
-                print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-                self.set_mode_client(base_mode=0, custom_mode="MANUAL")
-            self.rate.sleep()
+        if resp.success:
+            rospy.loginfo("Landing command sent successfully!")
+
+        else:
+            rospy.logerr("Failed to send landing command: %s" % resp.result)
+        
+        #self.stop()
+        
+    # def stop(self):
+    #     while self.current_state.armed or self.current_state.mode == "OFFBOARD":
+    #         if self.current_state.armed:
+    #             print(self.current_state)
+    #             self.arming_client(False)
+    #         if self.current_state.mode == "OFFBOARD":
+    #             self.set_mode_client(base_mode=0, custom_mode="MANUAL")
+    #             print(self.current_state)
+    #         self.rate.sleep()
 
     @staticmethod
     def transform(pose):

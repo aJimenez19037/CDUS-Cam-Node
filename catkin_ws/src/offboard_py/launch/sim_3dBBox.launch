@@ -5,7 +5,7 @@
 
     <arg name="sim" default="true"/> <!--Will launch with ports setup for sim and launch gazebo-->
     <arg name="cam" default="true"/> <!--When wanting to launch offb node by itself-->
-    <arg name="NS" default="None"/><!--Name of drone within vicon-->
+    <arg name="NS" default="Samwise"/><!--Name of drone within vicon-->
     <arg name="debug_cam" default="0"/><!-- 0 none, 1 weak , 2 strong -->
 
     <group if="$(arg cam)">

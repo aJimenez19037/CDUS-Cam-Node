@@ -16,9 +16,11 @@ def main():
     except rospy.ROSInterruptException:
         pass
     drone.arm()
-    drone.takeoff(0.5)
-    drone.hover(5)
+    drone.takeoff(1)
+    drone.hover(10)
     drone.land()
+    while not rospy.is_shutdown():
+        drone.rate.sleep()
 
     #drone.takeoff(0.75)
     # while not rospy.is_shutdown():

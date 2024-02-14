@@ -9,19 +9,10 @@ from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
 from utils import const as fc
-global drone
-drone = None
-obs_detected = False
-land_flag = False
+global land_flag
 global pose 
+
 pose = [0,0,0]
-
-
-# def eucl_dist(x,y,z):
-#     pose = drone.pose
-#     eucl_dist = math.sqrt(pow(pose[0]-x,2) + pow(pose[1]-y,2) + pow(pose[2]-z,2))
-#     return eucl_dist
-    
 
 def cam_cb(msg):
     #data contains all coordinates of all 8 points. 
@@ -45,75 +36,68 @@ def cam_cb(msg):
     drone_x, drone_y, drone_z = pose
     #change alt to alt of obj, 
     print("height change aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-    rospy.loginfo("height change aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     drone.goTo([0, center[2], 0],'relative')
     #Ensure that an obs has been detected
     # while obs_detected == True:
     #  x = depth , y = width, z = height
     print("moving left bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-    rospy.loginfo("moving left bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
     drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
-    rospy.loginfo("moving past ccccccccccccccccccccccccccccccccccccc")
     print("moving past ccccccccccccccccccccccccccccccccccccc")
     drone.goTo([max_x+fc.DRONE_WIDTH, 0, 0], 'relative')
     print("moving right dddddddddddddddddddddddddddd") 
-    rospy.loginfo("moving right dddddddddddddddddddddddddddd")
     drone.goTo([0, -(min_y-fc.DRONE_WIDTH), 0], 'relative')
-    rospy.loginfo("done with obs avoidance")
     print("done with obs avoidance")
-    obs_detected = False
+    drone.land()
     land_flag = True
 
 
     
 def obs_found_cb(msg):
+    global obs_detected
+    global obs_detected_once
     obs_detected = msg.data
     if obs_detected == True:
+        obs_detected_once = True
         print("Obstacle detected")
 
 def main():
+    global drone
+    global obs_detected
+    global obs_detected_once
+    obs_detected = False
+    obs_detected_once = False
+
     rospy.init_node("offb_node_py")
     obs_found_sub = rospy.Subscriber('/cam_node/obstacle_flag', Bool, obs_found_cb)
     cam = rospy.get_param('~cam', default=True)
-    Namespace = rospy.get_param('~NS', default="None")
+    Namespace = rospy.get_param('~NS', default="Samwise")
     try:
         drone = Drone(Namespace)
-        # Your main code...
     except rospy.ROSInterruptException:
         pass
    
-    # wait for camera 
-
-  
-
     if cam:
         try:
             # Wait for a message on the specified topic with a timeout
             rospy.loginfo("Waiting for a message on topic /camera/pose_flag")
             rospy.wait_for_message("/cam_node/pose_flag", Bool, timeout=fc.CAM_TIMEOUT)
-            cam = False 
 
         except rospy.ROSException:
             rospy.logwarn("Timeout reached. No message received.")
             rospy.signal_shutdown("Timeout reached. No message received.")
 
     obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, cam_cb, queue_size=10)
-
+    land_flag = False
+    print(drone.NS)
     drone.arm()
-    drone.takeoff(0.75)
-    drone.hover(1)
+    drone.takeoff(1)
+    drone.hover(5)
     while not rospy.is_shutdown():
-        drone.hover(1)
+        while obs_detected == False and obs_detected_once == False:
+            print(obs_detected)
+            print(obs_detected_once)
+            drone.hover(5)
         drone.rate.sleep()
-
-    # while not rospy.is_shutdown():
-    #     if land_flag == True:
-    #         drone.land()
-    #     # while obs_detected == False and land_flag == False:
-    #     #     drone.hover(1)
-    #     drone.rate.sleep()
-        
-
 
 
 if __name__ == "__main__":
