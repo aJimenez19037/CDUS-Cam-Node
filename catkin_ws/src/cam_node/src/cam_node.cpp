@@ -582,8 +582,8 @@ int main(int argc, char **argv) try {
 					std::cout << current_label.compare(b_str) << std::endl;
 					std::cout << current_label.compare(m_str) << std::endl;
 				}
-
-                if ( ( (current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) || (current_label.compare(z_str) == 1)) 
+//current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) ||
+                if ( (current_label.compare(z_str) == 1)
                         && ( ((*min_element(cX.begin(), cX.end())) < 1) && (abs(y) < 0.5) ) ) {
 					if (debug == 1 || debug == 2){
 						std::cout << current_label << std::endl;
@@ -592,7 +592,7 @@ int main(int argc, char **argv) try {
 							std::cout << m_str << std::endl;
 							std::cout << z_str << std::endl;
 						}
-                    	ROS_INFO_STREAM("WE FOUND A TV, LAPTOP, ZEBRA or MICROWAVE closeby") ;
+                    	ROS_INFO_STREAM("ZEBRA") ;
 					}
                     obstacle_flag = true;
 
@@ -616,7 +616,7 @@ int main(int argc, char **argv) try {
 					obs_corners_pub_.publish(obs_corn_msg);
 
                 }
-                if ( ( (current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) || (current_label.compare(z_str) == 1)) 
+                if ( (current_label.compare(z_str) == 1)
                         && ((*min_element(cX.begin(), cX.end())) >= 1) ) {
 					if (debug == 1 || debug == 2){
 						std::cout << current_label << std::endl;
@@ -625,7 +625,7 @@ int main(int argc, char **argv) try {
 							std::cout << m_str << std::endl;
 							std::cout << z_str << std::endl;
 						}
-						ROS_INFO_STREAM("TV, LAPTOP, ZEBRA, MICROWAVE but too far away") ;
+						ROS_INFO_STREAM("ZEBRA FOUND BUT TOO FAR AWAY") ;
 						ROS_INFO_STREAM("NOT PUBLISHING OBSTACLE");
 					}
 
