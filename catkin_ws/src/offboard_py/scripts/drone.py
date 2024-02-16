@@ -85,7 +85,7 @@ class Drone:
             self.rate.sleep()
 
     @staticmethod
-    def get_setpoint(x, y, z, yaw=np.pi/2):
+    def get_setpoint(x, y, z, yaw=0):
         set_pose = PoseStamped()
         set_pose.pose.position.x = x
         set_pose.pose.position.y = y
@@ -96,7 +96,7 @@ class Drone:
         set_pose.pose.orientation.z = q[2]
         set_pose.pose.orientation.w = q[3]
         return set_pose
-    def publish_setpoint(self, sp, yaw=np.pi/2):
+    def publish_setpoint(self, sp, yaw=0):
         setpoint = self.get_setpoint(sp[0], sp[1], sp[2], yaw)
         setpoint.header.stamp = rospy.Time.now()
         self.setpoint_publisher.publish(setpoint)
@@ -120,8 +120,8 @@ class Drone:
             self.publish_setpoint(hold_pose)
             self.rate.sleep()
 
-    def kill_node(self):
-        print("shutdown time!")
+    # def kill_node(self):
+    #     print("shutdown time!")
 
     def land(self):
         
@@ -160,15 +160,20 @@ class Drone:
         pose_new[2] = pose[2]
         return pose_new
     def goTo(self, wp, mode='global', tol = None):
-
         if tol == None:
             tol = fc.DIST_TO_GOAL_TOL
-
         wp = self.transform(wp)
         if mode=='global':
             goal = wp
         elif mode=='relative':
             goal = self.pose + wp
+        if abs(goal[0]) > fc.X_BOUND:
+            print("Waypoint is outside of X bounds...landing")
+            self.land()
+        elif abs(goal[1]) > fc.Y_BOUND:
+            print("Waypoint is outside of Y bounds...landing")
+            self.land()
+
         rospy.loginfo("Going to a waypoint...")
         self.sp = self.pose
         while norm(goal - self.pose) > tol:
@@ -176,10 +181,10 @@ class Drone:
             self.sp += 0.03 * n
             self.publish_setpoint(self.sp)
             self.rate.sleep()
-    def vicon_callback(self, data):
-        translations = data.transform.translation
-        vicon_x = translations.x
-        vicon_y = translations.y
-        vicon_z = translations.z
-        self.pose = np.array([vicon_x,vicon_y,vicon_z])
+    # def vicon_callback(self, data):
+    #     translations = data.transform.translation
+    #     vicon_x = translations.x
+    #     vicon_y = translations.y
+    #     vicon_z = translations.z
+    #     self.pose = np.array([vicon_x,vicon_y,vicon_z])
         

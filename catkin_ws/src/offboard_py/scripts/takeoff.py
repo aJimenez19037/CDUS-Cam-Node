@@ -12,11 +12,13 @@ from utils import const as fc
 def main():
     rospy.init_node("offb_node_py")
     try:
-        drone = Drone()  
+        drone = Drone(fc.NS)  
     except rospy.ROSInterruptException:
         pass
     drone.arm()
-    drone.takeoff(1)
+    drone.takeoff(.5)
+    drone.goTo([1,0,0],'relative')
+    drone.goTo([-2,0,0],'relative')
     drone.hover(10)
     drone.land()
     while not rospy.is_shutdown():

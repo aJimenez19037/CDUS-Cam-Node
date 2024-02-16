@@ -12,7 +12,7 @@ from utils import const as fc
 def main():
     rospy.init_node("offb_node_py")
     try:
-        drone = Drone()  
+        drone = Drone(fc.NS)  
     except rospy.ROSInterruptException:
         pass
     drone.arm()

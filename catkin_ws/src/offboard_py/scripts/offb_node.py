@@ -11,7 +11,7 @@ from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeReq
 from utils import const as fc
 global land_flag
 global pose 
-
+drone = None
 pose = [0,0,0]
 
 def cam_cb(msg):
@@ -33,18 +33,20 @@ def cam_cb(msg):
 
     center = [(max_x-min_x)/2,(max_y-min_y)/2,(max_z-min_z)/2]
 
+    
     drone_x, drone_y, drone_z = pose
     #change alt to alt of obj, 
-    print("height change aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    print("height change")
+    print(drone.NS)
     drone.goTo([0, center[2], 0],'relative')
     #Ensure that an obs has been detected
     # while obs_detected == True:
     #  x = depth , y = width, z = height
-    print("moving left bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+    print("moving left")
     drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
-    print("moving past ccccccccccccccccccccccccccccccccccccc")
+    print("moving past")
     drone.goTo([max_x+fc.DRONE_WIDTH, 0, 0], 'relative')
-    print("moving right dddddddddddddddddddddddddddd") 
+    print("moving right") 
     drone.goTo([0, -(min_y-fc.DRONE_WIDTH), 0], 'relative')
     print("done with obs avoidance")
     drone.land()
@@ -61,9 +63,9 @@ def obs_found_cb(msg):
         print("Obstacle detected")
 
 def main():
-    global drone
     global obs_detected
     global obs_detected_once
+    global drone
     obs_detected = False
     obs_detected_once = False
 
@@ -73,6 +75,7 @@ def main():
     Namespace = rospy.get_param('~NS', default="Samwise")
     try:
         drone = Drone(Namespace)
+        print(drone.NS)
     except rospy.ROSInterruptException:
         pass
    
