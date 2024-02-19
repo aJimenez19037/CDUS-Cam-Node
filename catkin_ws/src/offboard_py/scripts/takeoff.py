@@ -16,10 +16,12 @@ def main():
     except rospy.ROSInterruptException:
         pass
     drone.arm()
-    drone.takeoff(.5)
-    drone.goTo([1,0,0],'relative')
-    drone.goTo([-2,0,0],'relative')
-    drone.hover(10)
+    drone.takeoff(0.5)
+    drone.goToVelocity([0.5,0,0], mode='relative')
+    print("turn left")
+    drone.goToVelocity([-0.5,0,0], mode='relative')
+    print("turn right")
+    drone.hover(100)
     drone.land()
     while not rospy.is_shutdown():
         drone.rate.sleep()

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="vicon_ip" default="192.168.1.100"/>
+    <arg name="fcu_url" default="/dev/ttyTHS1:500000"/>
+    <arg name="gcs_url" default="udp://@192.168.1.17:14550"/>
+
+    <node name="foo_throttler" type="throttle" pkg="topic_tools" args="messages /vrpn_client_node/samwise/pose 100 /mavros/vision_pose/pose" />
+
+    <include file="$(find vrpn_client_ros)/launch/sample.launch">
+        <arg name="server" value="$(arg vicon_ip)"/>
+    </include>
+
+    <!-- Spin-up Mavros Connection to Pixhawk6C -->
+    <include file="$(find mavros)/launch/px4.launch">
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="gcs_url" value="$(arg gcs_url)"/>
+        <param name="timesync" value="0.0"/>
+
+    <!-- Our node to control the drone -->
+    <node pkg="offboard_py" type="arm.py" name="offb_node_py" required="true" output="screen"/>
+</launch>

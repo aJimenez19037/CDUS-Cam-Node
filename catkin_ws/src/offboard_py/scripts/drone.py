@@ -2,11 +2,12 @@
 
 import rospy
 import mavros
-from geometry_msgs.msg import PoseStamped, TransformStamped
+from geometry_msgs.msg import PoseStamped, TransformStamped, TwistStamped
 from mavros_msgs.msg import State 
 from mavros_msgs.srv import CommandBool, SetMode, CommandTOL
 from tf.transformations import *
 import message_filters
+
 
 from math import *
 import numpy as np
@@ -32,6 +33,8 @@ class Drone:
         self.arming_client = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
         self.landing_client = rospy.ServiceProxy('/mavros/cmd/land', CommandTOL)
         self.set_mode_client = rospy.ServiceProxy('/mavros/set_mode', SetMode)
+        self.velocity_publisher = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
+
         rospy.Subscriber('/mavros/state', State, self.state_callback)
 
         if self.NS == 'Samwise': #Sim
@@ -85,7 +88,7 @@ class Drone:
             self.rate.sleep()
 
     @staticmethod
-    def get_setpoint(x, y, z, yaw=0):
+    def get_setpoint(x, y, z, yaw=np.pi/2):
         set_pose = PoseStamped()
         set_pose.pose.position.x = x
         set_pose.pose.position.y = y
@@ -96,7 +99,7 @@ class Drone:
         set_pose.pose.orientation.z = q[2]
         set_pose.pose.orientation.w = q[3]
         return set_pose
-    def publish_setpoint(self, sp, yaw=0):
+    def publish_setpoint(self, sp, yaw=np.pi/2):
         setpoint = self.get_setpoint(sp[0], sp[1], sp[2], yaw)
         setpoint.header.stamp = rospy.Time.now()
         self.setpoint_publisher.publish(setpoint)
@@ -187,4 +190,52 @@ class Drone:
     #     vicon_y = translations.y
     #     vicon_z = translations.z
     #     self.pose = np.array([vicon_x,vicon_y,vicon_z])
-        
+
+    def goToVelocity(self, wp, mode='global', tol = None):
+        if tol == None:
+            tol = fc.DIST_TO_GOAL_TOL
+        wp = self.transform(wp)
+        if mode=='global':
+            goal = wp
+        elif mode=='relative':
+            goal = self.pose + wp
+        if abs(goal[0]) > fc.X_BOUND:
+            print("Waypoint is outside of X bounds...landing")
+            self.land()
+        elif abs(goal[1]) > fc.Y_BOUND:
+            print("Waypoint is outside of Y bounds...landing")
+            self.land()
+        rospy.loginfo("Going to a waypoint...")
+        self.sp = self.pose
+        #Position controller gains (adjust as needed)
+        k_p = 1  # Proportional gain
+        while norm(goal - self.pose) > tol:            
+            # Calculate position error
+                        
+            # Calculate velocity command using position controller
+            velocity_msg = TwistStamped()
+            velocity_msg.header.stamp = rospy.Time.now()
+            velocity_msg.twist.linear.x = k_p * (goal[0] - self.pose[0])
+            velocity_msg.twist.linear.y = k_p * (goal[1] - self.pose[1])
+            velocity_msg.twist.linear.z = k_p * (goal[2] - self.pose[2])
+            if abs(velocity_msg.twist.linear.x) > fc.MAX_AXIS_VELOCITY:
+                if velocity_msg.twist.linear.x < 0:
+                    velocity_msg.twist.linear.x = -fc.MAX_AXIS_VELOCITY
+                else: 
+                    velocity_msg.twist.linear.x = fc.MAX_AXIS_VELOCITY
+            if abs(velocity_msg.twist.linear.y) > fc.MAX_AXIS_VELOCITY:
+                if velocity_msg.twist.linear.y < 0:
+                    velocity_msg.twist.linear.y = -fc.MAX_AXIS_VELOCITY
+                else: 
+                    velocity_msg.twist.linear.y = fc.MAX_AXIS_VELOCITY
+            if abs(velocity_msg.twist.linear.z) > fc.MAX_AXIS_VELOCITY:
+                if velocity_msg.twist.linear.z < 0:
+                    velocity_msg.twist.linear.z = -fc.MAX_AXIS_VELOCITY
+                else: 
+                    velocity_msg.twist.linear.z = fc.MAX_AXIS_VELOCITY
+            # Publish the velocity message
+            self.velocity_publisher.publish(velocity_msg)
+
+            # Wait for a short time to allow the message to be received
+            self.rate.sleep()
+            
