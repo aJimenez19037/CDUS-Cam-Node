@@ -16,6 +16,7 @@
         <arg name="fcu_url" value="$(arg fcu_url)"/>
         <arg name="gcs_url" value="$(arg gcs_url)"/>
         <param name="timesync" value="0.0"/>
+    </include>
 
     <!-- Our node to control the drone -->
     <node pkg="offboard_py" type="arm.py" name="offb_node_py" required="true" output="screen"/>

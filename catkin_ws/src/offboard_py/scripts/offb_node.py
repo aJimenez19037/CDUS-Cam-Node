@@ -92,7 +92,7 @@ def main():
     print(drone.NS)
     drone.arm()
     drone.takeoff(1)
-    drone.hover(5)
+    drone.hover(2)
     while not rospy.is_shutdown():
         while obs_detected == False and obs_detected_once == False:
             print(obs_detected)
