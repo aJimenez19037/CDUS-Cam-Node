@@ -4,7 +4,7 @@
     <!-- This launch file is designed for testig 3dbbox code in sim with your camera connected to the laptop-->
 
     <arg name="sim" default="true"/> <!--Will launch with ports setup for sim and launch gazebo-->
-    <arg name="cam" default="true"/> <!--When wanting to launch offb node by itself-->
+    <arg name="cam" default="false"/> <!--When wanting to launch offb node by itself-->
     <arg name="NS" default="Samwise"/><!--Name of drone within vicon-->
     <arg name="debug_cam" default="0"/><!-- 0 none, 1 weak , 2 strong -->
 

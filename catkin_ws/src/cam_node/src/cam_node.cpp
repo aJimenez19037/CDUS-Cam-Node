@@ -342,8 +342,7 @@ int main(int argc, char **argv) try {
                             1 );
             }
         }
-		std::string filename = "/home/locus/catkin_ws/src/cam_node/src/img/zebra.jpg";
-		cv::imwrite(filename, rgb_image); 
+
 		int xpos, wpos, ypos, hpos;
 		
 		// ----------------------------------------------------------------------------- //

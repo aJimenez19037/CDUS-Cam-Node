@@ -6,6 +6,18 @@
     <arg name="debug_cam" default="0"/><!-- 1 weak , 2 strong -->
     <arg name="NS" value="Samwise"/>
 
+    <arg name="vicon_ip" default=""/>
+    <arg name="fcu_url" default=""/>
+    <arg name="gcs_url" default=""/>
+
+    <!-- Spin-up Vicon Stream to ROS -->
+    <include file="$(find vrpn_client_ros)/launch/sample.launch">
+        <arg name="server" value="$(arg vicon_ip)"/>
+    </include>
+
+
+    <node name="foo_throttler" type="throttle" pkg="topic_tools" args="messages /vrpn_client_node/samwise/pose 100 /mavros/vision_pose/pose" />
+
     <group if="$(arg cam)">
         <!-- cam_node needs roscore -->
         <exec name="roscore" pkg="ros_core" cwd="node" respawn="true"/>
@@ -31,5 +43,29 @@
     </include>
 
 
+
+</launch>
+
+
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Topic Remaps and Params  -->
+
+  <arg name="vicon_ip" default=""/>
+  <arg name="fcu_url" default=""/>
+  <arg name="gcs_url" default=""/>
+
+  <!-- Spin-up Vicon Stream to ROS -->
+  <include file="$(find vrpn_client_ros)/launch/sample.launch">
+    <arg name="server" value="$(arg vicon_ip)"/>
+  </include>
+
+  <!-- Spin-up Mavros Connection to Pixhawk6C -->
+  <include file="$(find mavros)/launch/px4.launch">
+    <arg name="fcu_url" value="$(arg fcu_url)"/>
+    <arg name="gcs_url" value="$(arg gcs_url)"/>
+    <param name="timesync" value="0.0"/>
+  </include>
 
 </launch>

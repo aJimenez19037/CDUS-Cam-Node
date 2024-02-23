@@ -3,12 +3,14 @@
 
 import rospy
 import math
+import numpy as np
 from drone import Drone
 from std_msgs.msg import Float32MultiArray, Bool
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
 from utils import const as fc
+
 global land_flag
 global pose 
 drone = None
@@ -38,7 +40,7 @@ def cam_cb(msg):
     #change alt to alt of obj, 
     print("height change")
     print(drone.NS)
-    drone.goTo([0, center[2]+0.1, 0],'relative')
+    drone.goTo([0, center[2], 0],'relative')
     #Ensure that an obs has been detected
     # while obs_detected == True:
     #  x = depth , y = width, z = height
@@ -51,6 +53,8 @@ def cam_cb(msg):
     print("done with obs avoidance")
     drone.land()
     land_flag = True
+
+
     
 def obs_found_cb(msg):
     global obs_detected
@@ -59,6 +63,20 @@ def obs_found_cb(msg):
     if obs_detected == True:
         obs_detected_once = True
         print("Obstacle detected")
+
+def lawnmower_relative(x_dist,y_dist):
+    print("Starting lawnmower")
+    drone.goTo([0, -y_dist, 0], 'relative')
+    print("turning")
+    drone.turn(np.pi/2,'relative')
+    print("moving2")
+    drone.goTo([x_dist,0,0],'relative')
+    print('turning 2')
+    drone.turn(np.pi/2, 'relative')
+    print("moving3")
+    drone.goTo([0, -y_dist, 0], 'relative')
+
+
 
 def main():
     global obs_detected
@@ -77,26 +95,26 @@ def main():
     except rospy.ROSInterruptException:
         pass
    
-    if cam:
-        try:
-            # Wait for a message on the specified topic with a timeout
-            rospy.loginfo("Waiting for a message on topic /camera/pose_flag")
-            rospy.wait_for_message("/cam_node/pose_flag", Bool, timeout=fc.CAM_TIMEOUT)
+    # if cam:
+    #     try:
+    #         # Wait for a message on the specified topic with a timeout
+    #         rospy.loginfo("Waiting for a message on topic /camera/pose_flag")
+    #         rospy.wait_for_message("/cam_node/pose_flag", Bool, timeout=fc.CAM_TIMEOUT)
 
-        except rospy.ROSException:
-            rospy.logwarn("Timeout reached. No message received.")
-            rospy.signal_shutdown("Timeout reached. No message received.")
+    #     except rospy.ROSException:
+    #         rospy.logwarn("Timeout reached. No message received.")
+    #         rospy.signal_shutdown("Timeout reached. No message received.")
 
     obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, cam_cb, queue_size=10)
     land_flag = False
     print(drone.NS)
     drone.arm()
     drone.takeoff(1)
-    drone.hover(5)
     while not rospy.is_shutdown():
         while obs_detected == False and obs_detected_once == False:
             print(obs_detected)
             print(obs_detected_once)
+            lawnmower_relative(2,2)
             drone.hover(5)
         drone.rate.sleep()
 

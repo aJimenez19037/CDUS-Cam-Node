@@ -2,10 +2,11 @@
 
 import rospy
 import mavros
-from geometry_msgs.msg import PoseStamped, TransformStamped, TwistStamped
-from mavros_msgs.msg import State 
+from geometry_msgs.msg import PoseStamped, TransformStamped, TwistStamped, Quaternion
+from mavros_msgs.msg import State, AttitudeTarget 
 from mavros_msgs.srv import CommandBool, SetMode, CommandTOL
 from tf.transformations import *
+from tf.transformations import quaternion_from_euler
 import message_filters
 
 
@@ -19,6 +20,7 @@ class Drone:
     def __init__(self,NS = 'None'):
         self.NS = NS
         self.pose = None
+        self.quaternion = None
         self.yaw = 0
         self.sp = None
         self.hz = 10
@@ -34,6 +36,7 @@ class Drone:
         self.landing_client = rospy.ServiceProxy('/mavros/cmd/land', CommandTOL)
         self.set_mode_client = rospy.ServiceProxy('/mavros/set_mode', SetMode)
         self.velocity_publisher = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
+        self.pub_attitude = rospy.Publisher('/mavros/setpoint_raw/attitude', AttitudeTarget, queue_size=10)
 
         rospy.Subscriber('/mavros/state', State, self.state_callback)
 
@@ -49,6 +52,10 @@ class Drone:
 
     def drone_pose_callback(self, pose_msg):
         self.pose = np.array([ pose_msg.pose.position.x, pose_msg.pose.position.y, pose_msg.pose.position.z ])
+        self.quaternion = np.array([pose_msg.pose.orientation.x, pose_msg.pose.orientation.y, pose_msg.pose.orientation.z, pose_msg.pose.orientation.w ])
+        euler = euler_from_quaternion(self.quaternion)
+        self.yaw = euler[2] 
+        
 
     def arm(self):
         print("arming")
@@ -87,20 +94,26 @@ class Drone:
             self.publish_setpoint([0,0,-1])
             self.rate.sleep()
 
-    @staticmethod
-    def get_setpoint(x, y, z, yaw=np.pi/2):
+    def get_setpoint(self, x, y, z, yaw_goal=None):
         set_pose = PoseStamped()
         set_pose.pose.position.x = x
         set_pose.pose.position.y = y
         set_pose.pose.position.z = z
-        q = quaternion_from_euler(0, 0, yaw)
+        
+        if yaw_goal is not None:
+            q = quaternion_from_euler(0, 0, yaw_goal)
+        else:
+            q = quaternion_from_euler(0, 0, self.yaw)
+        
         set_pose.pose.orientation.x = q[0]
         set_pose.pose.orientation.y = q[1]
         set_pose.pose.orientation.z = q[2]
         set_pose.pose.orientation.w = q[3]
+        
         return set_pose
-    def publish_setpoint(self, sp, yaw=np.pi/2):
-        setpoint = self.get_setpoint(sp[0], sp[1], sp[2], yaw)
+    
+    def publish_setpoint(self, sp):
+        setpoint = self.get_setpoint(sp[0], sp[1], sp[2])
         setpoint.header.stamp = rospy.Time.now()
         self.setpoint_publisher.publish(setpoint)
 
@@ -238,4 +251,32 @@ class Drone:
 
             # Wait for a short time to allow the message to be received
             self.rate.sleep()
+
+    def turn(self, yaw, mode = 'global'):
+        sp = self.pose
+        if mode == 'global':
+            while abs(self.yaw - yaw) > fc.DEGREE_TOL:
+                setpoint = self.get_setpoint(sp[0], sp[1], sp[2], yaw)
+                setpoint.header.stamp = rospy.Time.now()
+                self.setpoint_publisher.publish(setpoint)
+                self.rate.sleep()
+
+        elif mode == 'relative':
+            starting_yaw = self.yaw
+            goal_yaw = self.yaw + yaw
+            while abs(self.yaw - goal_yaw) > fc.DEGREE_TOL:
+                setpoint = self.get_setpoint(sp[0], sp[1], sp[2], goal_yaw)
+                setpoint.header.stamp = rospy.Time.now()
+                self.setpoint_publisher.publish(setpoint)
+                self.rate.sleep()
+
+
+        
+
+
+ 
+  
+
+
+        
             
