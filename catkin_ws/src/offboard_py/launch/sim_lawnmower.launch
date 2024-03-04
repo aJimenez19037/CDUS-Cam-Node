@@ -3,23 +3,19 @@
 
 	<arg name="fcu_url" default="/dev/ttyUSB0:921600" />
 	<arg name="gcs_url" default="udp://@192.168.88.224" />  
-	<arg name="sim" default="true"/>
     <arg name="cam" default="true"/>
 	<arg name="NS" default="None"/>
 
 	<!-- If sim include the MAVROS node with SITL and Gazebo -->
-	<group if="$(arg sim)">
-		<include file="$(find px4)/launch/mavros_posix_sitl.launch">
-		</include>
-	</group>
+	<include file="$(find px4)/launch/mavros_posix_sitl.launch"></include>
 
-	<!-- If no sim just run px4 and MAVROS node. I do not think this is currently set to the correct launch node -->
-	<group if="$(eval sim=='false')">
-		<include file="$(find mavros)/launch/px4.launch">
-			<arg name="gcs_url" value="$(arg gcs_url)"/>
-			<arg name="fcu_url" value="$(arg fcu_url)"/>
-		</include>
-	</group>
+	<group if="$(arg cam)">
+        <!-- cam_node needs roscore -->
+        <exec name="roscore" pkg="ros_core" cwd="node" respawn="true"/>
+        <node pkg="cam_node" type="cam_node" name="cam_node" output="screen">
+            <param name="debug_cam" type="int" value="2"/> 
+        </node>
+    </group>
 
 	<!-- Our node to control the drone -->
 	<node pkg="offboard_py" type="lawnmower.py" name="offb_node_py" required="true" output="screen" />

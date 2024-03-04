@@ -7,17 +7,7 @@
     <arg name="cam" default="true"/>
 
     <!-- If sim include the MAVROS node with SITL and Gazebo -->
-    <group if="$(arg sim)">
-        <include file="$(find px4)/launch/mavros_posix_sitl.launch"/>
-    </group>
-
-    <!-- If no sim just run px4 and MAVROS node. I do not think this is currently set to the correct launch node -->
-    <group if="$(eval sim=='false')">
-        <include file="$(find mavros)/launch/px4.launch">
-            <arg name="gcs_url" value="$(arg gcs_url)"/>
-            <arg name="fcu_url" value="$(arg fcu_url)"/>
-        </include>
-    </group>
+    <include file="$(find px4)/launch/mavros_posix_sitl.launch"/>
 
     <!-- Our node to control the drone -->
     <node pkg="offboard_py" type="arm.py" name="offb_node_py" required="true" output="screen"/>

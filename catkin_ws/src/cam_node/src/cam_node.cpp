@@ -560,7 +560,8 @@ int main(int argc, char **argv) try {
 				cXYZ.insert( cXYZ.end(), cZ.begin(), cZ.end() );
 
 				if (debug == 1 || debug == 2)
-					std::cout << "Min X: " << *min_element(cX.begin(), cX.end()) << std::endl;
+					if (current_label.compare(z_str) == 1)
+						std::cout << "Min X: " << *min_element(cX.begin(), cX.end()) << std::endl;
 
 				// -------------------------------------------------------------------------- //
 				// -------------------------------------------------------------------------- //
@@ -578,21 +579,20 @@ int main(int argc, char **argv) try {
                 // Check range to a and b strings:
 				// (current_label.compare(a_str) == 1)
 				if (debug == 2){
-					std::cout << "---------- BEFORE " << std::endl;
-					std::cout << current_label.compare(b_str) << std::endl;
-					std::cout << current_label.compare(m_str) << std::endl;
+					//std::cout << "---------- BEFORE " << std::endl;
+					//std::cout << current_label.compare(b_str) << std::endl;
+					//std::cout << current_label.compare(m_str) << std::endl;
 				}
 //current_label.compare(a_str) == 1) || (current_label.compare(b_str) == 1) || (current_label.compare(m_str) == 1) ||
                 if ( (current_label.compare(z_str) == 1)
-                        && ( ((*min_element(cX.begin(), cX.end())) < 1) && (abs(y) < 0.5) ) ) {
+                        && ( ((*min_element(cX.begin(), cX.end())) < 1) && (abs(y) < 0.8) ) ) {
 					if (debug == 1 || debug == 2){
 						std::cout << current_label << std::endl;
 						if (debug ==2){
-							std::cout << b_str << std::endl;
-							std::cout << m_str << std::endl;
+							// std::cout << b_str << std::endl;
+							// std::cout << m_str << std::endl;
 							std::cout << z_str << std::endl;
 						}
-                    	ROS_INFO_STREAM("ZEBRA") ;
 					}
                     obstacle_flag = true;
 

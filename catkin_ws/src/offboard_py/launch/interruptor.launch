@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="fcu_url" default="/dev/ttyUSB0:921600" />
+	<arg name="gcs_url" default="udp://@192.168.88.224" />  
+
+	<!-- If sim include the MAVROS node with SITL and Gazebo -->
+	<include file="$(find px4)/launch/mavros_posix_sitl.launch"></include>
+
+
+    <!-- Our node to create lawnmower flight path-->
+    <node pkg="offboard_py" type="test_lawnmower.py" name="lawnmower" required="true" output="screen" />
+
+	<!-- Our node to interrupt our flight path-->
+	<node pkg="offboard_py" type="interruptor.py" name="interruptor" required="true" output="screen"/>
+
+
+
+
+
+
+</launch>

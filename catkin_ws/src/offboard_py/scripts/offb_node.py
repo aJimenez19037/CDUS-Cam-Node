@@ -3,76 +3,20 @@
 
 import rospy
 import math
-from drone import Drone
+from drone import Drone_Avoidance
 from std_msgs.msg import Float32MultiArray, Bool
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
 from utils import const as fc
-global land_flag
-global pose 
-drone = None
-pose = [0,0,0]
 
-def cam_cb(msg):
-    #data contains all coordinates of all 8 points. 
-    print("cam callback called")
-    rospy.loginfo("cam callabck called")
-    cXYZ = msg.data
-    cX = cXYZ[:8]
-    cY = cXYZ[8:16]
-    cZ = cXYZ[16:24]
-    # CXYZ is 1x24 vector
-    # x gives depth, y gives width, z gives height. 
-    min_x = min(cX)
-    min_y = min(cY)
-    min_z = min(cZ)
-    max_x = max(cX)
-    max_y = max(cY)
-    max_z = max(cZ)
-
-    center = [(max_x-min_x)/2,(max_y-min_y)/2,(max_z-min_z)/2]
-
-    
-    drone_x, drone_y, drone_z = pose
-    #change alt to alt of obj, 
-    print("height change")
-    print(drone.NS)
-    drone.goTo([0, center[2]+0.1, 0],'relative')
-    #Ensure that an obs has been detected
-    # while obs_detected == True:
-    #  x = depth , y = width, z = height
-    print("moving left")
-    drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
-    print("moving past")
-    drone.goTo([max_x+fc.DRONE_WIDTH, 0, 0], 'relative')
-    print("moving right") 
-    drone.goTo([0, -(min_y-fc.DRONE_WIDTH), 0], 'relative')
-    print("done with obs avoidance")
-    drone.land()
-    land_flag = True
-    
-def obs_found_cb(msg):
-    global obs_detected
-    global obs_detected_once
-    obs_detected = msg.data
-    if obs_detected == True:
-        obs_detected_once = True
-        print("Obstacle detected")
 
 def main():
-    global obs_detected
-    global obs_detected_once
-    global drone
-    obs_detected = False
-    obs_detected_once = False
-
     rospy.init_node("offb_node_py")
-    obs_found_sub = rospy.Subscriber('/cam_node/obstacle_flag', Bool, obs_found_cb)
     cam = rospy.get_param('~cam', default=True)
     Namespace = rospy.get_param('~NS', default="Samwise")
     try:
-        drone = Drone(Namespace)
+        drone = Drone_Avoidance(Namespace)
         print(drone.NS)
     except rospy.ROSInterruptException:
         pass
@@ -81,24 +25,41 @@ def main():
         try:
             # Wait for a message on the specified topic with a timeout
             rospy.loginfo("Waiting for a message on topic /camera/pose_flag")
+            print("Waiting for a message on topic /camera/pose_flag")
             rospy.wait_for_message("/cam_node/pose_flag", Bool, timeout=fc.CAM_TIMEOUT)
 
         except rospy.ROSException:
             rospy.logwarn("Timeout reached. No message received.")
             rospy.signal_shutdown("Timeout reached. No message received.")
 
-    obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, cam_cb, queue_size=10)
-    land_flag = False
-    print(drone.NS)
+    obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, drone.cam_cb, queue_size=10)
+    
     drone.arm()
     drone.takeoff(1)
-    drone.hover(2)
+    drone.hover(1)
     while not rospy.is_shutdown():
-        while obs_detected == False and obs_detected_once == False:
-            print(obs_detected)
-            print(obs_detected_once)
-            drone.hover(5)
+        while drone.land_flag == False and drone.doing_obs_avoid == False:
+            print("[offb_node.py] OBJECT NOT DETECTED ... RETRYING")
+            drone.hover(0.5)
+
+        while drone.doing_obs_avoid == True:
+            min_x, min_y, min_z, max_x, max_y, max_z = drone.get_corners()
+            
+            print("[offb_node.py] MOVING LEFT")
+            drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
+
+            print("[offb_node.py] MOVING PAST")
+            drone.goTo([max_x+fc.DRONE_WIDTH, 0, 0], 'relative')
+
+            print("[offb_node.py] MOVING RIGHT") 
+            drone.goTo([0, -(min_y-fc.DRONE_WIDTH), 0], 'relative')
+
+            print("[offb_node.py] FINISHED ... LANDING")
+            drone.land() 
+            drone.set_obstacle_avoid_status(False)
+        
         drone.rate.sleep()
+
 
 
 if __name__ == "__main__":

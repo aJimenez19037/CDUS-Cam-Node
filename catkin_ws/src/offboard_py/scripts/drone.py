@@ -16,7 +16,7 @@ from numpy.linalg import norm
 import time
 from utils import const as fc
 
-class Drone:
+class Drone(object):
     def __init__(self,NS = 'None'):
         self.NS = NS
         self.pose = None
@@ -25,6 +25,8 @@ class Drone:
         self.sp = None
         self.hz = 10
         self.rate = rospy.Rate(self.hz)
+        self.waypoints = []
+        self.land_flag = False
 
         self.current_state = State()
         self.prev_request = None
@@ -40,12 +42,9 @@ class Drone:
 
         rospy.Subscriber('/mavros/state', State, self.state_callback)
 
-        if self.NS == 'Samwise': #Sim
-            rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.drone_pose_callback)
-        # else:
-        #     rospy.Subscriber('vicon/' + self.NS + '/' + self.NS,TransformStamped, self.vicon_callback)
-
-
+        if self.NS == None:
+            self.NS = fc.NS
+        rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.drone_pose_callback)
 
     def state_callback(self, state):
         self.current_state = state
@@ -56,7 +55,6 @@ class Drone:
         euler = euler_from_quaternion(self.quaternion)
         self.yaw = euler[2] 
         
-
     def arm(self):
         print("arming")
         for i in range(self.hz):
@@ -136,11 +134,7 @@ class Drone:
             self.publish_setpoint(hold_pose)
             self.rate.sleep()
 
-    # def kill_node(self):
-    #     print("shutdown time!")
-
     def land(self):
-        
         print("Landing...")
         self.sp = self.pose
         while self.sp[2] > - 1.0:
@@ -151,21 +145,10 @@ class Drone:
 
         if resp.success:
             rospy.loginfo("Landing command sent successfully!")
+            self.land_flag = True
 
         else:
             rospy.logerr("Failed to send landing command: %s" % resp.result)
-        
-        #self.stop()
-        
-    # def stop(self):
-    #     while self.current_state.armed or self.current_state.mode == "OFFBOARD":
-    #         if self.current_state.armed:
-    #             print(self.current_state)
-    #             self.arming_client(False)
-    #         if self.current_state.mode == "OFFBOARD":
-    #             self.set_mode_client(base_mode=0, custom_mode="MANUAL")
-    #             print(self.current_state)
-    #         self.rate.sleep()
 
     @staticmethod
     def transform(pose):
@@ -194,7 +177,7 @@ class Drone:
         self.sp = self.pose
         while norm(goal - self.pose) > tol:
             n = (goal - self.sp) / norm(goal - self.sp)
-            self.sp += 0.03 * n
+            self.sp += 0.01 * n
             self.publish_setpoint(self.sp)
             self.rate.sleep()
     # def vicon_callback(self, data):
@@ -253,6 +236,7 @@ class Drone:
             self.rate.sleep()
 
     def turn(self, yaw, mode = 'global'):
+        print("Turning")
         sp = self.pose
         if mode == 'global':
             while abs(self.yaw - yaw) > fc.DEGREE_TOL:
@@ -262,13 +246,55 @@ class Drone:
                 self.rate.sleep()
 
         elif mode == 'relative':
-            starting_yaw = self.yaw
             goal_yaw = self.yaw + yaw
             while abs(self.yaw - goal_yaw) > fc.DEGREE_TOL:
                 setpoint = self.get_setpoint(sp[0], sp[1], sp[2], goal_yaw)
                 setpoint.header.stamp = rospy.Time.now()
                 self.setpoint_publisher.publish(setpoint)
                 self.rate.sleep()
+
+class Drone_Avoidance(Drone):
+    # created this class to avoid having to copy over the cam_node object to different scripts.
+    def __init__(self,NS = None):
+        super(Drone_Avoidance, self).__init__(NS=NS)
+        # inherit all properties and methods from the Drone parent class
+        self.doing_obs_avoid = False
+        self.center = None
+        self.min_x, self.min_y, self.min_z, self.max_x, self.max_y, self.max_z = None, None, None, None, None, None
+    
+    def cam_cb(self,msg):
+        #data contains all coordinates of all 8 points. 
+        if  self.doing_obs_avoid == False:
+            print("[offb_node.py] RECIEVED BB CORNER INFO")
+            cXYZ = msg.data
+            cX = cXYZ[:8]
+            cY = cXYZ[8:16]
+            cZ = cXYZ[16:24]
+            # CXYZ is 1x24 vector
+            # x gives depth, y gives width, z gives height. 
+            self.min_x = min(cX)
+            self.min_y = min(cY)
+            self.min_z = min(cZ)
+            self.max_x = max(cX)
+            self.max_y = max(cY)
+            self.max_z = max(cZ)
+            self.center = np.array([(self.max_x-self.min_x)/2,(self.max_y-self.min_y)/2,(self.max_z-self.min_z)/2])
+            self.doing_obs_avoid = True
+
+    def get_is_avoiding(self):
+        return self.doing_obs_avoid
+    
+    def get_corners(self):
+        return ( self.min_x, self.min_y, self.min_z, self.max_x, self.max_y, self.max_z )
+    
+    def set_obstacle_avoid_status(self, boolean=False):
+        self.doing_obs_avoid = boolean
+
+
+
+
+
+
 
 
         
