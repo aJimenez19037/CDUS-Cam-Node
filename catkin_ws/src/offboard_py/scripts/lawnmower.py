@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# Need to make cam node into into a class
+# Might be better to use previous wp instead of current pose. To prevent deviation
 import rospy
 import numpy as np
 from mavros_msgs.srv import CommandBool, SetMode, CommandTOL
@@ -14,15 +14,14 @@ def lawnmower_global(pose,x_dist,y_dist):
     wp2 = np.add(wp1,[x_dist,0,0])
     wp3 = np.add(wp2,[0, y_dist, 0])
     wp4 = np.add(wp3,[x_dist,0,0])
-    lawnmower_wp = [wp1,[np.pi/2],wp2,[-np.pi], 
+    lawnmower_wp = [wp1,[np.pi/2],wp2,[np.pi], 
                     wp3,[np.pi/2],wp4,[0]]
+    print("WP:" + str(lawnmower_wp))
     return lawnmower_wp
-
-
 
 def main():
     rospy.init_node("offb_node_py")
-    cam = rospy.get_param('~cam', default=True)
+    cam = rospy.get_param('cam')
     Namespace = rospy.get_param('~NS', default="Samwise")
 
     try:
@@ -30,6 +29,7 @@ def main():
         print(drone.NS)
     except rospy.ROSInterruptException:
         pass
+    print("Cam:" + str(cam))
     if cam:
         try:
             # Wait for a message on the specified topic with a timeout
@@ -43,13 +43,18 @@ def main():
     obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, drone.cam_cb, queue_size=10)
     drone.arm()
     print(drone.pose)
-    drone.takeoff(0.5)
+    drone.takeoff(1)
     drone.waypoints = lawnmower_global(drone.pose,1.5,1.5)#want to make the points at take off height
-    drone.hover(0.5)
+    drone.hover(1)
+    drone.turn(np.pi/2, "relative")
+    drone.turn(np.pi/2, "relative")
+
 
     while not rospy.is_shutdown():
+        drone.turn(np.pi/2,"relative")
         while drone.land_flag == False and drone.doing_obs_avoid == False and len(drone.waypoints) != 0:
             print("[offb_node.py] Lawmower Patter Start")
+
             if len(drone.waypoints[0]) == 1:# turn command: yaw
                 drone.turn(drone.waypoints[0][0],'global')
                 drone.waypoints.pop(0)

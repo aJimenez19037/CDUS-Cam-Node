@@ -6,7 +6,7 @@ from geometry_msgs.msg import PoseStamped, TransformStamped, TwistStamped, Quate
 from mavros_msgs.msg import State, AttitudeTarget 
 from mavros_msgs.srv import CommandBool, SetMode, CommandTOL
 from tf.transformations import *
-from tf.transformations import quaternion_from_euler
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
 import message_filters
 
 
@@ -19,10 +19,10 @@ from utils import const as fc
 class Drone(object):
     def __init__(self,NS = 'None'):
         self.NS = NS
-        self.pose = None
-        self.quaternion = None
+        self.pose = None # x,y,z
+        self.quaternion = None #x,y,z,w
         self.yaw = 0
-        self.sp = None
+        self.sp = None 
         self.hz = 10
         self.rate = rospy.Rate(self.hz)
         self.waypoints = []
@@ -180,12 +180,6 @@ class Drone(object):
             self.sp += 0.01 * n
             self.publish_setpoint(self.sp)
             self.rate.sleep()
-    # def vicon_callback(self, data):
-    #     translations = data.transform.translation
-    #     vicon_x = translations.x
-    #     vicon_y = translations.y
-    #     vicon_z = translations.z
-    #     self.pose = np.array([vicon_x,vicon_y,vicon_z])
 
     def goToVelocity(self, wp, mode='global', tol = None):
         if tol == None:
@@ -236,22 +230,38 @@ class Drone(object):
             self.rate.sleep()
 
     def turn(self, yaw, mode = 'global'):
-        print("Turning")
+        # normalized yaw angles range from -180 to 180 degrees
         sp = self.pose
+        print("Start turning")
+        yaw_sp = self.yaw
         if mode == 'global':
-            while abs(self.yaw - yaw) > fc.DEGREE_TOL:
-                setpoint = self.get_setpoint(sp[0], sp[1], sp[2], yaw)
-                setpoint.header.stamp = rospy.Time.now()
-                self.setpoint_publisher.publish(setpoint)
-                self.rate.sleep()
+            goal_yaw = yaw
+            normalized_goal_yaw = math.atan2(math.sin(goal_yaw), math.cos(goal_yaw))
+            normalized_yaw_sp = math.atan2(math.sin(yaw_sp), math.cos(yaw_sp))
 
         elif mode == 'relative':
             goal_yaw = self.yaw + yaw
-            while abs(self.yaw - goal_yaw) > fc.DEGREE_TOL:
-                setpoint = self.get_setpoint(sp[0], sp[1], sp[2], goal_yaw)
-                setpoint.header.stamp = rospy.Time.now()
-                self.setpoint_publisher.publish(setpoint)
-                self.rate.sleep()
+            normalized_goal_yaw = math.atan2(math.sin(goal_yaw), math.cos(goal_yaw))
+            normalized_yaw_sp = math.atan2(math.sin(yaw_sp), math.cos(yaw_sp))
+
+        while abs(normalized_goal_yaw - normalized_yaw_sp) > fc.DEGREE_TOL:
+            print("Degrees Error:" + str((normalized_goal_yaw - normalized_yaw_sp) *180 / np.pi))
+            print("Self yaw: " + str(normalized_yaw_sp))
+            print("Goal: " + str(normalized_goal_yaw))
+
+            n = normalized_goal_yaw - normalized_yaw_sp
+
+            #normalize diff to ensure drone turns shortest direction
+            if n < -np.pi:
+                n += 2 * np.pi
+            elif n >= np.pi:
+                n -= 2 * np.pi
+
+            yaw_sp += 0.1 * n
+            setpoint = self.get_setpoint(sp[0], sp[1], sp[2], yaw_sp)
+            self.setpoint_publisher.publish(setpoint)
+            normalized_yaw_sp = math.atan2(math.sin(yaw_sp), math.cos(yaw_sp))
+            self.rate.sleep()
 
 class Drone_Avoidance(Drone):
     # created this class to avoid having to copy over the cam_node object to different scripts.
