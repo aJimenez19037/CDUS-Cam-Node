@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+#Todo - Check transformation
+# Add max velocity argument to goToVelocity
+# Need to create const variables for angles and goTo command. And proportional const
+# need to add tol to turn command
+
+
 import rospy
 import mavros
 from geometry_msgs.msg import PoseStamped, TransformStamped, TwistStamped, Quaternion
@@ -18,6 +24,12 @@ from utils import const as fc
 
 class Drone(object):
     def __init__(self,NS = 'None'):
+        """Constructor for drone object
+            Args: 
+                NS = Namespace used in ROS/Vicon
+            Returns:
+            None
+        """
         self.NS = NS
         self.pose = None # x,y,z
         self.quaternion = None #x,y,z,w
@@ -47,15 +59,54 @@ class Drone(object):
         rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.drone_pose_callback)
 
     def state_callback(self, state):
+        """ Updates drone object's state
+            state message:
+
+            header: 
+                seq: 5
+                stamp: 
+                    secs: 5
+                    nsecs: 320000000
+                frame_id: ''
+                connected: True
+                armed: False
+                guided: False
+                manual_input: False
+                mode: "OFFBOARD"
+                system_status: 0
+        """
         self.current_state = state
 
     def drone_pose_callback(self, pose_msg):
+        """ Updates drone object's pose
+            pose message:
+
+            header: 
+                seq: 80
+                stamp: 
+                    secs: 3
+                    nsecs: 352000000
+                frame_id: "map"
+                pose: 
+                position: 
+                    x: -0.000699795258697
+                    y: -0.0551643483341
+                    z: 0.14720441401
+                orientation: 
+                    x: 0.00583348306994
+                    y: 0.000859421985614
+                    z: -0.698356772749
+                    w: -0.715725628632
+        """
+        print(pose_msg)
         self.pose = np.array([ pose_msg.pose.position.x, pose_msg.pose.position.y, pose_msg.pose.position.z ])
         self.quaternion = np.array([pose_msg.pose.orientation.x, pose_msg.pose.orientation.y, pose_msg.pose.orientation.z, pose_msg.pose.orientation.w ])
         euler = euler_from_quaternion(self.quaternion)
         self.yaw = euler[2] 
         
     def arm(self):
+        """Arm drone
+        """
         print("arming")
         for i in range(self.hz):
             self.publish_setpoint([0,0,-1])
@@ -93,6 +144,33 @@ class Drone(object):
             self.rate.sleep()
 
     def get_setpoint(self, x, y, z, yaw_goal=None):
+        """Create PoseStamped() method
+
+            PoseStamped message
+
+            header: 
+                seq: 83
+                stamp: 
+                    secs: 3
+                    nsecs: 460000000
+                frame_id: "map"
+                pose: 
+                position: 
+                    x: -0.000625429267529
+                    y: -0.0605959072709
+                    z: 0.127905875444
+                orientation: 
+                    x: 0.00581461972105
+                    y: 0.000828222781004
+                    z: -0.69836536873
+                    w: -0.715717454119
+
+            Args: 
+                x, y, z = drone pose goal in x, y, z coordinates
+                yaw_goal = drone yaw angle goal
+            Returns:
+                Pose message
+        """
         set_pose = PoseStamped()
         set_pose.pose.position.x = x
         set_pose.pose.position.y = y
@@ -111,11 +189,23 @@ class Drone(object):
         return set_pose
     
     def publish_setpoint(self, sp):
+        """Publish setpoing
+            Args: 
+                sp = [x, y, z]
+            Returns:
+                None
+        """
         setpoint = self.get_setpoint(sp[0], sp[1], sp[2])
         setpoint.header.stamp = rospy.Time.now()
         self.setpoint_publisher.publish(setpoint)
 
     def takeoff(self, height):
+        """Publish desired height / go to desired height. Works similarly to goTo command
+            Args: 
+                height = desired height 
+            Returns:
+                None
+        """
         print("Takeoff...")
         self.sp = self.pose
         while self.pose[2] < height:
@@ -124,6 +214,12 @@ class Drone(object):
             self.rate.sleep()
 
     def hover(self, t_hold):
+        """Publish hold pose for given duration t_hold
+            Args: 
+                t_hold = time to remain hovering 
+            Returns:
+                None
+        """
         print('Position holding...')
         t0 = time.time()
         hold_pose = self.pose
@@ -135,6 +231,12 @@ class Drone(object):
             self.rate.sleep()
 
     def land(self):
+        """Begin landing, slowly decreases altitude then calls landing client
+            Args: 
+                t_hold = time to remain hovering 
+            Returns:
+                None
+        """
         print("Landing...")
         self.sp = self.pose
         while self.sp[2] > - 1.0:
@@ -152,6 +254,15 @@ class Drone(object):
 
     @staticmethod
     def transform(pose):
+        """Transform given pose in FRD (x - forward y - right z - down ) to ENU - MoCap fram (x - forward, y - forward, z - up)
+            Args: 
+                pose = pose in FRD
+            Returns:
+                pose_new = pose in ENU
+
+
+            # If using vicon it may already be in ENU
+        """
         # transformation: x - forward, y - left, z - up (ENU - MoCap frame)
         pose_new = np.zeros(3)
         pose_new[0] = - pose[1]
@@ -159,13 +270,31 @@ class Drone(object):
         pose_new[2] = pose[2]
         return pose_new
     def goTo(self, wp, mode='global', tol = None):
+        """ Drone goes to given waypoint using positional commands.
+            Args: 
+                wp =  [x,y,z]
+                mode = global or relative 
+                    [Note] if navigating using relative mode, errors do accumulate. Small tolerance may help reduce this issue
+                tol = distance tolerance to be considered having reached wp (meters)
+            Returns:
+                None
+            Notes:
+                Overtakes any other command. 
+                Drone will begin moving to waypoint until within the specified tolerance. 
+                Will land if setpoint is outside of specified boundaries. 
+                Boundary in const was determined by CDUS vicon cage and its blindspots.
+                Does not allow for you to fully control velocity except for changing the proportional const (0.1)
+
+        """
         if tol == None:
             tol = fc.DIST_TO_GOAL_TOL
         wp = self.transform(wp)
+
         if mode=='global':
             goal = wp
         elif mode=='relative':
             goal = self.pose + wp
+
         if abs(goal[0]) > fc.X_BOUND:
             print("Waypoint is outside of X bounds...landing")
             self.land()
@@ -175,6 +304,7 @@ class Drone(object):
 
         rospy.loginfo("Going to a waypoint...")
         self.sp = self.pose
+        # creates waypoint that is (.01 * error) closer to the goal. Increasing .01 leads to faster moving drone.  
         while norm(goal - self.pose) > tol:
             n = (goal - self.sp) / norm(goal - self.sp)
             self.sp += 0.01 * n
@@ -182,32 +312,55 @@ class Drone(object):
             self.rate.sleep()
 
     def goToVelocity(self, wp, mode='global', tol = None):
+        """ Drone goes to given waypoint using velocity commands
+
+            Args: 
+                wp =  [x,y,z]
+                mode = global or relative 
+                    [Note] if navigating using relative mode, errors do accumulate. Small tolerance may help reduce this issue
+                tol = distance tolerance to be considered having reached wp (meters)
+            Returns:
+                None
+
+            Notes:
+                Overtakes any other command. Drone will begin moving to waypoint until within the specified tolerance. 
+                Will land if setpoint is outside of specified boundaries. 
+                Bounds in const.py were determined by CDUS vicon cage and its blindspots.
+           
+                *** Similar to goTo command but is controlled using velocity commands instead of waypoints allowing us to better control velocity. In this case it is a max axis velocity set in const.
+
+        """
         if tol == None:
             tol = fc.DIST_TO_GOAL_TOL
         wp = self.transform(wp)
+
         if mode=='global':
             goal = wp
         elif mode=='relative':
             goal = self.pose + wp
+
         if abs(goal[0]) > fc.X_BOUND:
             print("Waypoint is outside of X bounds...landing")
             self.land()
         elif abs(goal[1]) > fc.Y_BOUND:
             print("Waypoint is outside of Y bounds...landing")
             self.land()
+        
         rospy.loginfo("Going to a waypoint...")
         self.sp = self.pose
-        #Position controller gains (adjust as needed)
-        k_p = 1  # Proportional gain
+        #Position controller gain const
+        k_p = 1  
         while norm(goal - self.pose) > tol:            
-            # Calculate position error
                         
-            # Calculate velocity command using position controller
             velocity_msg = TwistStamped()
             velocity_msg.header.stamp = rospy.Time.now()
+
+            # velocity in x,y,z = gain const * error
             velocity_msg.twist.linear.x = k_p * (goal[0] - self.pose[0])
             velocity_msg.twist.linear.y = k_p * (goal[1] - self.pose[1])
             velocity_msg.twist.linear.z = k_p * (goal[2] - self.pose[2])
+
+            # apply upper bound to velocity
             if abs(velocity_msg.twist.linear.x) > fc.MAX_AXIS_VELOCITY:
                 if velocity_msg.twist.linear.x < 0:
                     velocity_msg.twist.linear.x = -fc.MAX_AXIS_VELOCITY
@@ -223,40 +376,47 @@ class Drone(object):
                     velocity_msg.twist.linear.z = -fc.MAX_AXIS_VELOCITY
                 else: 
                     velocity_msg.twist.linear.z = fc.MAX_AXIS_VELOCITY
-            # Publish the velocity message
-            self.velocity_publisher.publish(velocity_msg)
 
-            # Wait for a short time to allow the message to be received
+            self.velocity_publisher.publish(velocity_msg)
             self.rate.sleep()
 
     def turn(self, yaw, mode = 'global'):
-        # normalized yaw angles range from -180 to 180 degrees
+        """Turn drone to given yaw
+            Args: 
+                yaw = desired yaw
+                mode = global or relative 
+                    [Note] if navigating using relative mode, errors do accumulate. Small tolerance may help reduce this issue
+            Returns:
+                None
+
+            Notes:
+                Works similar to goTo command in that it makes small waypoints based (0.1 * error). Adjusting 0.1 will change how quickly it turns.
+                Turns in shortest direction
+                Normalized angles range from -180 to 180 degrees. 
+                All angles are in rad
+        """
         sp = self.pose
-        print("Start turning")
         yaw_sp = self.yaw
+
         if mode == 'global':
             goal_yaw = yaw
             normalized_goal_yaw = math.atan2(math.sin(goal_yaw), math.cos(goal_yaw))
             normalized_yaw_sp = math.atan2(math.sin(yaw_sp), math.cos(yaw_sp))
-
         elif mode == 'relative':
             goal_yaw = self.yaw + yaw
             normalized_goal_yaw = math.atan2(math.sin(goal_yaw), math.cos(goal_yaw))
             normalized_yaw_sp = math.atan2(math.sin(yaw_sp), math.cos(yaw_sp))
 
+        print("Start turning")
+
         while abs(normalized_goal_yaw - normalized_yaw_sp) > fc.DEGREE_TOL:
-            print("Degrees Error:" + str((normalized_goal_yaw - normalized_yaw_sp) *180 / np.pi))
-            print("Self yaw: " + str(normalized_yaw_sp))
-            print("Goal: " + str(normalized_goal_yaw))
-
             n = normalized_goal_yaw - normalized_yaw_sp
-
             #normalize diff to ensure drone turns shortest direction
             if n < -np.pi:
                 n += 2 * np.pi
             elif n >= np.pi:
                 n -= 2 * np.pi
-
+            #create mini waypoints. yaw_sp = proportional const * error
             yaw_sp += 0.1 * n
             setpoint = self.get_setpoint(sp[0], sp[1], sp[2], yaw_sp)
             self.setpoint_publisher.publish(setpoint)
@@ -273,14 +433,13 @@ class Drone_Avoidance(Drone):
         self.min_x, self.min_y, self.min_z, self.max_x, self.max_y, self.max_z = None, None, None, None, None, None
     
     def cam_cb(self,msg):
-        #data contains all coordinates of all 8 points. 
+        #while not currently avoiding an obstacle take in obstacle corner data 
         if  self.doing_obs_avoid == False:
             print("[offb_node.py] RECIEVED BB CORNER INFO")
             cXYZ = msg.data
-            cX = cXYZ[:8]
-            cY = cXYZ[8:16]
-            cZ = cXYZ[16:24]
-            # CXYZ is 1x24 vector
+            cX = cXYZ[:8] # first 8 values are the 8 corners x position relative to cam
+            cY = cXYZ[8:16] # 8 corners y position relative to cam
+            cZ = cXYZ[16:24] # 8 corners z position relative to cam
             # x gives depth, y gives width, z gives height. 
             self.min_x = min(cX)
             self.min_y = min(cY)
@@ -292,27 +451,13 @@ class Drone_Avoidance(Drone):
             self.doing_obs_avoid = True
 
     def get_is_avoiding(self):
+        # returns if drone is currently avoiding an obstacle
         return self.doing_obs_avoid
     
     def get_corners(self):
+        # returns corners
         return ( self.min_x, self.min_y, self.min_z, self.max_x, self.max_y, self.max_z )
     
     def set_obstacle_avoid_status(self, boolean=False):
-        self.doing_obs_avoid = boolean
-
-
-
-
-
-
-
-
-        
-
-
- 
-  
-
-
-        
-            
+        # setter for if avoiding an obstacle or not
+        self.doing_obs_avoid = boolean            
