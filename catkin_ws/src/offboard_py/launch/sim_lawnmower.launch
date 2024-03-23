@@ -3,7 +3,7 @@
 
 	<arg name="fcu_url" default="/dev/ttyUSB0:921600" />
 	<arg name="gcs_url" default="udp://@192.168.88.224" />  
-    <arg name="cam" default="true"/>
+    <arg name="cam" default="False"/>
 	<arg name="NS" default="None"/>
 
 	<!-- If sim include the MAVROS node with SITL and Gazebo -->
@@ -18,8 +18,9 @@
     </group>
 
 	<!-- Our node to control the drone -->
+	<param name="cam" type="bool" value="$(arg cam)"/>
+	<param name="NS" type="str" value="$(arg NS)"/>
+
 	<node pkg="offboard_py" type="lawnmower.py" name="offb_node_py" required="true" output="screen" />
-		<rosparam param="cam">$(arg cam)</rosparam>
-		<rosparam param="NS">$(arg NS)</rosparam>
 
 </launch>

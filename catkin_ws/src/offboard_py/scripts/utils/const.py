@@ -6,4 +6,5 @@ NS = "Samwise"
 X_BOUND = 1.5
 Y_BOUND = 1.5
 MAX_AXIS_VELOCITY = 0.2 # m/s
-DEGREE_TOL = 0.174533 # 10 degrees
+DEGREE_TOL = 0.0174533 # 1 degree
+

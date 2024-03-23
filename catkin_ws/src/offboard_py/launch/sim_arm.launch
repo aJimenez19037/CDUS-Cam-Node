@@ -4,7 +4,6 @@
     <arg name="sim" default="true"/>
     <arg name="fcu_url" default="/dev/ttyUSB0:921600"/>
     <arg name="gcs_url" default="udp://@192.168.88.224"/>
-    <arg name="cam" default="true"/>
 
     <!-- If sim include the MAVROS node with SITL and Gazebo -->
     <include file="$(find px4)/launch/mavros_posix_sitl.launch"/>
