@@ -35,11 +35,12 @@ def main():
     obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, drone.cam_cb, queue_size=10)
     
     drone.arm()
-    drone.takeoff(1)
+    drone.takeoff(0.8)
     drone.hover(1)
     while not rospy.is_shutdown():
         while drone.land_flag == False and drone.doing_obs_avoid == False:
             print("[offb_node.py] OBJECT NOT DETECTED ... RETRYING")
+            drone.turn(0)
             drone.hover(0.5)
 
         while drone.doing_obs_avoid == True:
@@ -47,12 +48,15 @@ def main():
             
             print("[offb_node.py] MOVING LEFT")
             drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
+            drone.turn(0)
 
             print("[offb_node.py] MOVING PAST")
             drone.goTo([max_x+fc.DRONE_WIDTH, 0, 0], 'relative')
+            drone.turn(0)
 
             print("[offb_node.py] MOVING RIGHT") 
             drone.goTo([0, -(min_y-fc.DRONE_WIDTH), 0], 'relative')
+            drone.turn(0)
 
             print("[offb_node.py] FINISHED ... LANDING")
             drone.land() 

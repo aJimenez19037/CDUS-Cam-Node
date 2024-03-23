@@ -28,44 +28,14 @@
 
     <include file="$(find offboard_py)/launch/start_offb.launch">
         <arg name="sim" value="$(arg sim)"/>
-        <arg name="NS" value="$(arg NS)">
+	<arg name="NS" value="$(arg NS)"/>
         <arg name="cam" value="$(arg cam)"/>
     </include>  
 
-    <group if="$(arg sim)">
-        <include file="$(find vicon_bridge)/launch/vicon.launch"/>
-    </group>
 
-    <include file="$(find offboard_py)/launch/start_offb.launch">
-        <arg name="sim" value="$(arg sim)"/>
-        <arg name="NS" value="$(arg NS)"/>
-        <arg name="cam" value="$(arg cam)"/>
-    </include>
 
 
 
 </launch>
 
 
-<?xml version="1.0"?>
-<launch>
-
-  <!-- Topic Remaps and Params  -->
-
-  <arg name="vicon_ip" default=""/>
-  <arg name="fcu_url" default=""/>
-  <arg name="gcs_url" default=""/>
-
-  <!-- Spin-up Vicon Stream to ROS -->
-  <include file="$(find vrpn_client_ros)/launch/sample.launch">
-    <arg name="server" value="$(arg vicon_ip)"/>
-  </include>
-
-  <!-- Spin-up Mavros Connection to Pixhawk6C -->
-  <include file="$(find mavros)/launch/px4.launch">
-    <arg name="fcu_url" value="$(arg fcu_url)"/>
-    <arg name="gcs_url" value="$(arg gcs_url)"/>
-    <param name="timesync" value="0.0"/>
-  </include>
-
-</launch>

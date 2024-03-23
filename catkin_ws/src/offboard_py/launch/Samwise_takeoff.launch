@@ -3,7 +3,7 @@
 
     <arg name="vicon_ip" default="192.168.1.100"/>
     <arg name="fcu_url" default="/dev/ttyTHS1:500000"/>
-    <arg name="gcs_url" default="udp://@192.168.1.17:14550"/>
+    <arg name="gcs_url" default="udp://@192.168.1.4:14550"/>
 
     <node name="foo_throttler" type="throttle" pkg="topic_tools" args="messages /vrpn_client_node/samwise/pose 100 /mavros/vision_pose/pose" />
 
