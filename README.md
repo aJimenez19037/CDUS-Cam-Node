@@ -1,5 +1,5 @@
 # CDUS-Cam-Node
-This repository containerizes L4T 32.7, OpenCV, ROS Melodic, Eigen, Realsense, and the PX4 Autopilot flight code. Additionally you can install the packages and run the code on your local copmputer. 
+This repository containerizes L4T 32.7, OpenCV, ROS Melodic, Eigen, Realsense, and the PX4 Autopilot flight code. Additionally you can install the packages and run the code on your local compputer. 
 
 # Modifications needed for own setup
 
@@ -24,6 +24,7 @@ $ catkin build
 ```
 
 # Setting Up PX4 Sim 
+Note: Do not clone PX4 Autopilot on Jetson, QGroundControl flashes flight controller with PX4-Autopilot
 ```bash
 #Clone PX4 Repo in ~/
 $ git clone https://github.com/PX4/PX4-Autopilot.git --recursive
@@ -39,7 +40,7 @@ Add the code below to the bottom of your .bashrc file
 ```python
 #Part of ROS melodic setup. 
 source /opt/ros/melodic/setup.bash
-source ~/catkin_ws/devel/setup.bash
+source ~/catkin_ws/devel/setup.bash # Use ~/CDUS-Cam-Node/catkin_ws/devel/setup.bash
 #Add PX4-Autopilot package path to ROS so that ROS can access the package. This is necessary as the sim uses mavros_posix_sitl.launch, which uses other files located in the px4 package
 source ~/PX4-Autopilot/Tools/simulation/gazebo-classic/setup_gazebo.bash ~/PX4-Autopilot ~/PX4-Autopilot/build/px4_sitl_default
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4-Autopilot
@@ -53,9 +54,25 @@ $ source .bashrc
 ```
 If you wish to modify the sim world, examples of this can be seen in the PX4 OFFBOARD EXAMPLE at the bottom of the README.
 
+# Setting UP QGROUNDCONTROL (QGC)
+QGroundControl can be seen as your virtual cockpit that allows you to perform the following actions: Sensor/motor calibration, PID tuning, easily create safety features, and much more. It also provides you with a visual of the remaining battery, errors, and other important information. QGC is chosen as it works with Ubuntu and it can be used to flash the flight computer with PX4-Autopilot. 
+
+On newer version of Ubuntu (20+) the newest build of QGC should work. For Ubuntu 18 I recommend downloading the QGroundControl.AppImage file from QGC v4.2.1 (https://github.com/mavlink/qgroundcontrol/releases/tag/v4.2.1). Once that has been completed, open your terminal and input the commands below:
+
+```bash
+$sudo usermod -a -G dialout $USER
+$sudo apt-get remove modemmanager -y
+$sudo apt install gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl -y
+$sudo apt install libfuse2 -y
+$sudo apt install libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor0 -y
+$chmod +x ./QGroundControl.AppImage
+$./QGroundControl.AppImage
+```
+QGC should now be running on your device!
+
 # Potential Errors
 ## Accessing DNN files
-If your cam_node is having trouble opening the NNet files, open a new terminal, source your .bashrc file, and rebuild the container. 
+If your cam_node is having trouble opening the NNet files, open a new terminal, source your .bashrc file, and rebuild the container.
 
 # Resources
 ROS:
