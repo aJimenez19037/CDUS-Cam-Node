@@ -2,6 +2,7 @@
 
 import rospy
 import math
+import numpy as np
 from drone import Drone
 from std_msgs.msg import Float32MultiArray, Bool
 from geometry_msgs.msg import PoseStamped
@@ -17,7 +18,15 @@ def main():
         pass
     drone.arm()
     drone.takeoff(0.5)
-    drone.goToVelocity([0,0,1], mode='relative')
+    drone.turn(0)
+    drone.turn(np.pi/2)
+    drone.turn(3*np.pi/2)
+    drone.turn(0)
+    drone.goTo([0,0.3,0], mode='relative')
+    drone.goTo([0,-0.3,0], mode='relative')
+    drone.goTo([0.3,0,0], mode='relative')
+    drone.goTo([-0.3,0,0], mode='relative')
+
     drone.land()
     while not rospy.is_shutdown():
         drone.rate.sleep()

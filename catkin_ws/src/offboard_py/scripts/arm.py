@@ -16,6 +16,7 @@ def main():
     except rospy.ROSInterruptException:
         pass
     drone.arm()
+    print("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPp")
     drone.land()
     while not rospy.is_shutdown():
         drone.rate.sleep()

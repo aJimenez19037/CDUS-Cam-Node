@@ -98,7 +98,7 @@ class Drone(object):
                     z: -0.698356772749
                     w: -0.715725628632
         """
-        print(pose_msg)
+        
         self.pose = np.array([ pose_msg.pose.position.x, pose_msg.pose.position.y, pose_msg.pose.position.z ])
         self.quaternion = np.array([pose_msg.pose.orientation.x, pose_msg.pose.orientation.y, pose_msg.pose.orientation.z, pose_msg.pose.orientation.w ])
         euler = euler_from_quaternion(self.quaternion)
@@ -180,7 +180,7 @@ class Drone(object):
             q = quaternion_from_euler(0, 0, yaw_goal)
         else:
             q = quaternion_from_euler(0, 0, self.yaw)
-        
+        print("quaternion:")
         set_pose.pose.orientation.x = q[0]
         set_pose.pose.orientation.y = q[1]
         set_pose.pose.orientation.z = q[2]
@@ -297,9 +297,13 @@ class Drone(object):
 
         if abs(goal[0]) > fc.X_BOUND:
             print("Waypoint is outside of X bounds...landing")
+            print(self.pose)
+            print(goal)
             self.land()
         elif abs(goal[1]) > fc.Y_BOUND:
             print("Waypoint is outside of Y bounds...landing")
+            print(self.pose)
+            print(goal)
             self.land()
 
         rospy.loginfo("Going to a waypoint...")

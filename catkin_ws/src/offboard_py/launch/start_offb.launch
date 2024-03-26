@@ -4,7 +4,7 @@
 	<arg name="fcu_url" default="/dev/ttyUSB0:921600" />
 	<arg name="gcs_url" default="udp://@192.168.88.224" />  
 	<arg name="sim" default="true"/>
-    <arg name="cam" default="true"/>
+    	<arg name="cam" default="true"/>
 	<arg name="NS" default="None"/>
 
 	<!-- If sim include the MAVROS node with SITL and Gazebo -->

@@ -50,13 +50,13 @@ def main():
             drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
             drone.turn(0)
 
-            print("[offb_node.py] MOVING PAST")
-            drone.goTo([max_x+fc.DRONE_WIDTH, 0, 0], 'relative')
-            drone.turn(0)
+            #print("[offb_node.py] MOVING PAST")
+            #drone.goTo([max_x+fc.DRONE_WIDTH, 0, 0], 'relative')
+            #drone.turn(0)
 
-            print("[offb_node.py] MOVING RIGHT") 
-            drone.goTo([0, -(min_y-fc.DRONE_WIDTH), 0], 'relative')
-            drone.turn(0)
+            #print("[offb_node.py] MOVING RIGHT") 
+            #drone.goTo([0, -(min_y-fc.DRONE_WIDTH), 0], 'relative')
+            #drone.turn(0)
 
             print("[offb_node.py] FINISHED ... LANDING")
             drone.land() 
