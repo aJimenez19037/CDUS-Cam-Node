@@ -126,8 +126,8 @@ int main(int argc, char **argv) try {
     }  
     // load the neural network model
     cv::dnn::Net nnet;
-	nnet = cv::dnn::readNet("../catkin_ws/src/cam_node/src/NNet/frozen_inference_graph.pb", 
-                        "../catkin_ws/src/cam_node/src/NNet/ssd_mobilenet_v2_coco_2018_03_29.pbtxt.txt", 
+	nnet = cv::dnn::readNet("/home/cdus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/NNet/frozen_inference_graph.pb", 
+                        "/home/cdus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/NNet/ssd_mobilenet_v2_coco_2018_03_29.pbtxt.txt", 
                         "TensorFlow");
 	// ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //

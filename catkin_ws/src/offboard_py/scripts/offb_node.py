@@ -35,7 +35,7 @@ def main():
     obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, drone.cam_cb, queue_size=10)
     
     drone.arm()
-    drone.takeoff(0.8)
+    drone.takeoff(1)
     drone.hover(1)
     while not rospy.is_shutdown():
         while drone.land_flag == False and drone.doing_obs_avoid == False:
