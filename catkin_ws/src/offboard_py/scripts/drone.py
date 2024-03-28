@@ -288,10 +288,8 @@ class Drone(object):
         if tol == None:
             tol = fc.DIST_TO_GOAL_TOL
         wp = self.transform(wp)
-
-        if mode=='global':
-            goal = wp
-        elif mode=='relative':
+        goal = wp
+        if mode=='relative':
             goal = self.pose + wp
 
         if abs(goal[0]) > fc.X_BOUND:

@@ -120,14 +120,15 @@ int main(int argc, char **argv) try {
     std::string line;
     // The relative path is FROM the " ~/.ros " directory !!!!
     std::ifstream ifs(std::string("../catkin_ws/src/cam_node/src/NNet/object_detection_classes_coco.txt").c_str());
+ 
     while (getline(ifs, line))
     {
         class_names.push_back(line);
     }  
     // load the neural network model
     cv::dnn::Net nnet;
-	nnet = cv::dnn::readNet("/home/cdus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/NNet/frozen_inference_graph.pb", 
-                        "/home/cdus/CDUS-Cam-Node/catkin_ws/src/cam_node/src/NNet/ssd_mobilenet_v2_coco_2018_03_29.pbtxt.txt", 
+	nnet = cv::dnn::readNet("../catkin_ws/src/cam_node/src/NNet/frozen_inference_graph.pb", 
+                        "../catkin_ws/src/cam_node/src/NNet/ssd_mobilenet_v2_coco_2018_03_29.pbtxt.txt", 
                         "TensorFlow");
 	// ----------------------------------------------------------------------------- //
 	// ----------------------------------------------------------------------------- //

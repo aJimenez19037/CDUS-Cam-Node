@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+	
     <!-- Start cam_node -->
     <node pkg="cam_node" type="cam_node" name="cam_node" output="screen">
         <param name="debug_cam" type="int" value="2"/>
