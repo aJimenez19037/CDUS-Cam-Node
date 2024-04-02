@@ -10,10 +10,10 @@ from utils import const as fc
 def lawnmower_global(pose,x_dist,y_dist):
     #direction does not change based on orientation of drone
     print(type(pose))
-    wp1 = np.add(pose,[0, -y_dist, 0])
-    wp2 = np.add(wp1,[x_dist,0,0])
-    wp3 = np.add(wp2,[0, y_dist, 0])
-    wp4 = np.add(wp3,[x_dist,0,0])
+    wp1 = [0, -y_dist, 0]
+    wp2 = [x_dist,0,0]
+    wp3 = [0, y_dist, 0]
+    wp4 = [x_dist,0,0]
     lawnmower_wp = [wp1,[np.pi/2],wp2,[np.pi], 
                     wp3,[np.pi/2],wp4,[0]]
     print("WP:" + str(lawnmower_wp))
@@ -60,7 +60,7 @@ def main():
                 drone.waypoints.pop(0)
 
             elif len(drone.waypoints[0]) == 3:# go to position: x,y,z
-                drone.goTo(drone.waypoints[0],'global') # global 
+                drone.goTo(drone.waypoints[0],'relative') # global 
                 drone.waypoints.pop(0)
             else:
                 print("[ERROR] Waypoint is not correct shape")

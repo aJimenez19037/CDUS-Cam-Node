@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 #Todo - Check transformation
+#Todo - check global x,y vs relative x,y in vicon
 # Add max velocity argument to goToVelocity
 # Need to create const variables for angles and goTo command. And proportional const
 # need to add tol to turn command
@@ -8,9 +9,11 @@
 
 import rospy
 import mavros
-from geometry_msgs.msg import PoseStamped, TransformStamped, TwistStamped, Quaternion
+from geometry_msgs.msg import PointStamped, PoseStamped, TransformStamped, TwistStamped, Quaternion
 from mavros_msgs.msg import State, AttitudeTarget 
 from mavros_msgs.srv import CommandBool, SetMode, CommandTOL
+from tf.broadcaster import TransformBroadcaster
+from tf.listener import TransformListener
 from tf.transformations import *
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 import message_filters
@@ -103,6 +106,12 @@ class Drone(object):
         self.quaternion = np.array([pose_msg.pose.orientation.x, pose_msg.pose.orientation.y, pose_msg.pose.orientation.z, pose_msg.pose.orientation.w ])
         euler = euler_from_quaternion(self.quaternion)
         self.yaw = euler[2] 
+        br = TransformBroadcaster()
+        br.sendTransform((pose_msg.pose.position.x, pose_msg.pose.position.y, pose_msg.pose.position.z ),
+                     quaternion_from_euler(0, 0, euler[2]),
+                     rospy.Time.now(),
+                     self.NS,
+                     "map")
         
     def arm(self):
         """Arm drone
@@ -267,17 +276,26 @@ class Drone(object):
         pose_new[0] = - pose[1]
         pose_new[1] = pose[0]
         pose_new[2] = pose[2]
+
+        # transform to camera axis: +Y - Left, +X - Depth/Forward, +Z - up
+        # pose_new = np.zeros(3)
+        # pose_new[1] =  pose[1] # Y remains the same 
+        # pose_new[0] = -pose[0] # in vicon x points down 
+        # pose_new[2] = pose[2] 
+
+
         return pose_new
     def goTo(self, wp, mode='global', tol = None):
         """ Drone goes to given waypoint using positional commands.
             Args: 
                 wp =  [x,y,z]
                 mode = global or relative 
-                    [Note] if navigating using relative mode, errors do accumulate. Small tolerance may help reduce this issue
                 tol = distance tolerance to be considered having reached wp (meters)
             Returns:
                 None
             Notes:
+                If using relative, errors accumulate
+                Relative, deos not change x,y,z axis, simply (rel_wp + pose) instead of (global_wp)
                 Overtakes any other command. 
                 Drone will begin moving to waypoint until within the specified tolerance. 
                 Will land if setpoint is outside of specified boundaries. 
@@ -299,7 +317,7 @@ class Drone(object):
             print("Waypoint is outside of Y bounds...landing")
             self.land()
 
-        rospy.loginfo("Going to a waypoint...")
+        rospy.loginfo("Going to a waypoint..." + str(goal))
         self.sp = self.pose
         # creates waypoint that is (.01 * error) closer to the goal. Increasing .01 leads to faster moving drone.  
         while norm(goal - self.pose) > tol:
@@ -320,10 +338,6 @@ class Drone(object):
                 None
 
             Notes:
-                Overtakes any other command. Drone will begin moving to waypoint until within the specified tolerance. 
-                Will land if setpoint is outside of specified boundaries. 
-                Bounds in const.py were determined by CDUS vicon cage and its blindspots.
-           
                 *** Similar to goTo command but is controlled using velocity commands instead of waypoints allowing us to better control velocity. In this case it is a max axis velocity set in const.
 
         """
@@ -420,6 +434,23 @@ class Drone(object):
             normalized_yaw_sp = math.atan2(math.sin(yaw_sp), math.cos(yaw_sp))
             self.rate.sleep()
 
+    def transform_point(self,point):
+        listener = TransformListener()
+        rospy.sleep(1)  # Waiting for the listener to start up
+        point_stamped = PointStamped()
+        point_stamped.header.frame_id = "map"
+        point_stamped.header.stamp = rospy.Time(0)
+        point_stamped.point.x, point_stamped.point.y, point_stamped.point.z = point
+        transformed_point = listener.transformPoint(self.NS, point_stamped)
+        return transformed_point
+
+
+
+        # (trans, rot) = listener.lookupTransform(self.NS, "world", rospy.Time(0))
+        # # Transforms the point from source_frame_id to target_frame_id
+        # transformed_point = listener.transformPoint(self.NS, point)
+        # return transformed_point
+    
 class Drone_Avoidance(Drone):
     # created this class to avoid having to copy over the cam_node object to different scripts.
     def __init__(self,NS = None):
@@ -441,7 +472,7 @@ class Drone_Avoidance(Drone):
             self.min_x = min(cX)
             self.min_y = min(cY)
             self.min_z = min(cZ)
-            self.max_x = max(cX)
+            self.max_x = max(cX) 
             self.max_y = max(cY)
             self.max_z = max(cZ)
             self.center = np.array([(self.max_x-self.min_x)/2,(self.max_y-self.min_y)/2,(self.max_z-self.min_z)/2])

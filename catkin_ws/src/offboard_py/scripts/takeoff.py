@@ -17,15 +17,17 @@ def main():
     except rospy.ROSInterruptException:
         pass
     drone.arm()
-    drone.takeoff(0.5)
-    drone.turn(0)
-    drone.turn(np.pi/2)
-    drone.turn(3*np.pi/2)
-    drone.turn(0)
-    drone.goTo([0,0.3,0], mode='relative')
-    drone.goTo([0,-0.3,0], mode='relative')
-    drone.goTo([0.3,0,0], mode='relative')
-    drone.goTo([-0.3,0,0], mode='relative')
+    drone.takeoff(1)
+    print(drone.transform_point((1,0,0)))
+    print(drone.pose)
+    drone.turn(np.pi/2, mode = 'relative')
+    print(drone.transform_point((1,0,0)))
+    print(drone.pose)
+
+    # drone.goTo([0,1,0], mode='relative')
+    # drone.goTo([0,-1,0], mode='relative')
+    # drone.goTo([1,0,0], mode='relative')
+    # drone.goTo([-1,0,0], mode='relative')
 
     drone.land()
     while not rospy.is_shutdown():

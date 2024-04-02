@@ -48,15 +48,15 @@ def main():
             min_x, min_y, min_z, max_x, max_y, max_z = drone.get_corners()
             
             print("[offb_node.py] MOVING LEFT")
-            drone.goTo([ min_x-fc.DRONE_WIDTH,0, 0],'relative')
+            drone.goTo([ min_y-fc.DRONE_WIDTH,0, 0],'relative')
             drone.turn(0)
 
             print("[offb_node.py] MOVING PAST")
-            drone.goTo([0,max_y+fc.DRONE_WIDTH, 0], 'relative')
+            drone.goTo([0,max_x+fc.DRONE_WIDTH, 0], 'relative')
             drone.turn(0)
 
             print("[offb_node.py] MOVING RIGHT") 
-            drone.goTo([-(min_x-fc.DRONE_WIDTH),0, 0], 'relative')
+            drone.goTo([-(min_y-fc.DRONE_WIDTH),0, 0], 'relative')
             drone.turn(0)
 
             print("[offb_node.py] FINISHED ... LANDING")
