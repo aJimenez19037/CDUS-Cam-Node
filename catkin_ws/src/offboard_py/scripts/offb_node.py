@@ -41,22 +41,22 @@ def main():
         while drone.land_flag == False and drone.doing_obs_avoid == False:
             print("[offb_node.py] OBJECT NOT DETECTED ... RETRYING")
             drone.turn(0)
-            drone.goTo([0,0.2,1])
+            drone.goTo([0.2,0,1])
             drone.hover(0.5)
 
         while drone.doing_obs_avoid == True:
             min_x, min_y, min_z, max_x, max_y, max_z = drone.get_corners()
             
-            print("[offb_node.py] MOVING LEFT")
-            drone.goTo([ min_x-fc.DRONE_WIDTH,0, 0],'relative')
+            print("[offb_node.py] MOVING RIGHT")
+            drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
             drone.turn(0)
 
             print("[offb_node.py] MOVING PAST")
-            drone.goTo([0,max_y+fc.DRONE_WIDTH, 0], 'relative')
+            drone.goTo([max_x+fc.DRONE_WIDTH,0, 0], 'relative')
             drone.turn(0)
 
-            print("[offb_node.py] MOVING RIGHT") 
-            drone.goTo([-(min_x-fc.DRONE_WIDTH),0, 0], 'relative')
+            print("[offb_node.py] MOVING LEFT") 
+            drone.goTo([0,-(min_y-fc.DRONE_WIDTH), 0], 'relative')
             drone.turn(0)
 
             print("[offb_node.py] FINISHED ... LANDING")

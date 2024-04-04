@@ -264,8 +264,11 @@ class Drone(object):
         """
         # transformation: x - forward, y - left, z - up (ENU - MoCap frame)
         pose_new = np.zeros(3)
-        pose_new[0] = - pose[1]
-        pose_new[1] = pose[0]
+        #pose_new[0] = - pose[1]
+        #pose_new[1] = pose[0]
+        #pose_new[2] = pose[2]
+        pose_new[0] = pose[0]
+        pose_new[1] = pose[1]
         pose_new[2] = pose[2]
         return pose_new
     def goTo(self, wp, mode='global', tol = None):
@@ -289,6 +292,7 @@ class Drone(object):
             tol = fc.DIST_TO_GOAL_TOL
         wp = self.transform(wp)
         goal = wp
+        rospy.loginfo("going to waypoint: "+str(goal))
         if mode=='relative':
             goal = self.pose + wp
 
