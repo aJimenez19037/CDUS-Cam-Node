@@ -10,10 +10,10 @@ from utils import const as fc
 def lawnmower_global(pose,x_dist,y_dist):
     #direction does not change based on orientation of drone
     print(type(pose))
-    wp1 = [0, -y_dist, 0]
-    wp2 = [x_dist,0,0]
-    wp3 = [0, y_dist, 0]
-    wp4 = [x_dist,0,0]
+    wp1 = [-x_dist,y_dist,1]
+    wp2 = [-x_dist,0,1]
+    wp3 = [x_dist,0,1]
+    wp4 = [x_dist,-y_dist,1]
     lawnmower_wp = [wp1,[np.pi/2],wp2,[np.pi], 
                     wp3,[np.pi/2],wp4,[0]]
     print("WP:" + str(lawnmower_wp))
@@ -23,13 +23,13 @@ def main():
     rospy.init_node("offb_node_py")
     cam = rospy.get_param('cam')
     Namespace = rospy.get_param('~NS', default="Samwise")
-
+    #create drone obj
     try:
         drone = Drone_Avoidance(Namespace)
         print(drone.NS)
     except rospy.ROSInterruptException:
         pass
-    print("Cam:" + str(cam))
+    # if cam node is running wait for node to start
     if cam:
         try:
             # Wait for a message on the specified topic with a timeout
@@ -39,39 +39,44 @@ def main():
         except rospy.ROSException:
             rospy.logwarn("Timeout reached. No message received.")
             rospy.signal_shutdown("Timeout reached. No message received.")
-
+    # subscribe to obs_corners_sub
     obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, drone.cam_cb, queue_size=10)
     drone.arm()
-    print(drone.pose)
     drone.takeoff(1)
-    drone.waypoints = lawnmower_global(drone.pose,1.5,1.5)#want to make the points at take off height
-    drone.hover(1)
-    drone.turn(np.pi/2, "relative")
-    drone.turn(np.pi/2, "relative")
-
+    drone.goTo([1.5,1.5,1], 'global')
+    drone.turn(np.pi, "global") # turn to -x
+    #generate wp assuming to be starting at 1.5,1.5,1 
+    wp1 = [-1.5,1.5,1] # move -x aka closer to us
+    wp2 = [-1.5,0,1] # move toward center aka right
+    wp3 = [1.5,0,1] # move past sven 
+    wp4 = [1.5,-1.5,1]# move farther right
+    wp5 = [-1.5,-1.5,1] # mover towards us
+    drone.waypoints = [wp1,[3*np.pi/2],wp2,[0], 
+                    wp3,[3*np.pi/2],wp4,[-np.pi], wp5]
 
     while not rospy.is_shutdown():
-        drone.turn(np.pi/2,"relative")
+        print("[offb_node.py] Lawmower Patter Start")
         while drone.land_flag == False and drone.doing_obs_avoid == False and len(drone.waypoints) != 0:
-            print("[offb_node.py] Lawmower Patter Start")
-
+            print("Remaining WPs = ", str(len(drone.waypoints)))
             if len(drone.waypoints[0]) == 1:# turn command: yaw
                 drone.turn(drone.waypoints[0][0],'global')
                 drone.waypoints.pop(0)
 
             elif len(drone.waypoints[0]) == 3:# go to position: x,y,z
-                drone.goTo(drone.waypoints[0],'relative') # global 
+                drone.goTo(drone.waypoints[0],'global') 
                 drone.waypoints.pop(0)
+
             else:
                 print("[ERROR] Waypoint is not correct shape")
                 drone.land()
+
             drone.rate.sleep()
         if len(drone.waypoints) == 0:
             drone.land()
         while drone.doing_obs_avoid == True:
             min_x, min_y, min_z, max_x, max_y, max_z = drone.get_corners()
             
-            print("[offb_node.py] MOVING LEFT")
+            print("[offb_node.py] MOVING Right")
             drone.goTo([0, min_y-fc.DRONE_WIDTH, 0],'relative')
 
             print("[offb_node.py] MOVING PAST")
@@ -84,6 +89,7 @@ def main():
             drone.set_obstacle_avoid_status(False)
         
         drone.rate.sleep()
+
 
 if __name__ == "__main__":
     main()

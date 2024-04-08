@@ -106,12 +106,6 @@ class Drone(object):
         self.quaternion = np.array([pose_msg.pose.orientation.x, pose_msg.pose.orientation.y, pose_msg.pose.orientation.z, pose_msg.pose.orientation.w ])
         euler = euler_from_quaternion(self.quaternion)
         self.yaw = euler[2] 
-        br = TransformBroadcaster()
-        br.sendTransform((pose_msg.pose.position.x, pose_msg.pose.position.y, pose_msg.pose.position.z ),
-                     quaternion_from_euler(0, 0, euler[2]),
-                     rospy.Time.now(),
-                     self.NS,
-                     "map")
         
     def arm(self):
         """Arm drone
@@ -259,32 +253,7 @@ class Drone(object):
 
         else:
             rospy.logerr("Failed to send landing command: %s" % resp.result)
-
-    @staticmethod
-    def transform(pose):
-        """Transform given pose in FRD (x - forward y - right z - down ) to ENU - MoCap fram (x - forward, y - forward, z - up)
-            Args: 
-                pose = pose in FRD
-            Returns:
-                pose_new = pose in ENU
-
-
-            # If using vicon it may already be in ENU
-        """
-        # transformation: x - forward, y - left, z - up (ENU - MoCap frame)
-        pose_new = np.zeros(3)
-        pose_new[0] = - pose[1]
-        pose_new[1] = pose[0]
-        pose_new[2] = pose[2]
-
-        # transform to camera axis: +Y - Left, +X - Depth/Forward, +Z - up
-        # pose_new = np.zeros(3)
-        # pose_new[1] =  pose[1] # Y remains the same 
-        # pose_new[0] = -pose[0] # in vicon x points down 
-        # pose_new[2] = pose[2] 
-
-
-        return pose_new
+    
     def goTo(self, wp, mode='global', tol = None):
         """ Drone goes to given waypoint using positional commands.
             Args: 
@@ -305,10 +274,22 @@ class Drone(object):
         """
         if tol == None:
             tol = fc.DIST_TO_GOAL_TOL
-        wp = self.transform(wp)
         goal = wp
-        if mode=='relative':
+        if mode == 'global':
+            goal = wp
+        elif mode=='relative':
             goal = self.pose + wp
+        elif mode=='drone':
+            #transform point to be in the drone reference frame
+            rotation_matrix = np.array([[np.cos(self.yaw), -np.sin(self.yaw),0],
+                                [np.sin(self.yaw), np.cos(self.yaw), 0],
+                                [0, 0,1]])
+            
+            rotated_wp = np.matmul(rotation_matrix,wp) * wp
+            goal = self.pose + rotated_wp
+            
+            rotated_wp = np.matmul(rotation_matrix,wp) * wp
+            goal = self.pose + rotated_wp
 
         if abs(goal[0]) > fc.X_BOUND:
             print("Waypoint is outside of X bounds...landing")
@@ -343,12 +324,18 @@ class Drone(object):
         """
         if tol == None:
             tol = fc.DIST_TO_GOAL_TOL
-        wp = self.transform(wp)
-
-        if mode=='global':
+        if mode == 'global':
             goal = wp
         elif mode=='relative':
             goal = self.pose + wp
+        elif mode=='drone':
+            #transform point to be in the drone reference frame
+            rotation_matrix = np.array([[np.cos(self.yaw), -np.sin(self.yaw),0],
+                                [np.sin(self.yaw), np.cos(self.yaw), 0],
+                                [0, 0,1]])
+            
+            rotated_wp = np.matmul(rotation_matrix,wp) * wp
+            goal = self.pose + rotated_wp
 
         if abs(goal[0]) > fc.X_BOUND:
             print("Waypoint is outside of X bounds...landing")
@@ -433,23 +420,6 @@ class Drone(object):
             self.setpoint_publisher.publish(setpoint)
             normalized_yaw_sp = math.atan2(math.sin(yaw_sp), math.cos(yaw_sp))
             self.rate.sleep()
-
-    def transform_point(self,point):
-        listener = TransformListener()
-        rospy.sleep(1)  # Waiting for the listener to start up
-        point_stamped = PointStamped()
-        point_stamped.header.frame_id = "map"
-        point_stamped.header.stamp = rospy.Time(0)
-        point_stamped.point.x, point_stamped.point.y, point_stamped.point.z = point
-        transformed_point = listener.transformPoint(self.NS, point_stamped)
-        return transformed_point
-
-
-
-        # (trans, rot) = listener.lookupTransform(self.NS, "world", rospy.Time(0))
-        # # Transforms the point from source_frame_id to target_frame_id
-        # transformed_point = listener.transformPoint(self.NS, point)
-        # return transformed_point
     
 class Drone_Avoidance(Drone):
     # created this class to avoid having to copy over the cam_node object to different scripts.
