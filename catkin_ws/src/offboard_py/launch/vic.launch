@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Include vicon.launch -->
+  <include file="$(vicon_bridge)/launch/vicon.launch"/>
+</launch>
+

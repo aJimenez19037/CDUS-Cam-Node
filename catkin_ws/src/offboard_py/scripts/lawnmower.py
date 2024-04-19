@@ -42,17 +42,18 @@ def main():
     # subscribe to obs_corners_sub
     obs_corners_sub = rospy.Subscriber('/cam_node/obs_corners_data', Float32MultiArray, drone.cam_cb, queue_size=10)
     drone.arm()
-    drone.takeoff(1)
-    drone.goTo([1.5,1.5,1], 'global')
-    drone.turn(np.pi, "global") # turn to -x
+    drone.takeoff(0.6)
+    drone.goToVelocity([2,1.6,0.6], 'global')
+    drone.turn(-np.pi, "global") # turn to -x
     #generate wp assuming to be starting at 1.5,1.5,1 
-    wp1 = [-1.5,1.5,1] # move -x aka closer to us
-    wp2 = [-1.5,0,1] # move toward center aka right
-    wp3 = [1.5,0,1] # move past sven 
-    wp4 = [1.5,-1.5,1]# move farther right
-    wp5 = [-1.5,-1.5,1] # mover towards us
+    wp1 = [-0.9,1.6,0.6] # move -x aka closer to us
+    wp2 = [-0.9,0,0.6] # move toward center aka right
+    wp3 = [0.2,0,0.6]
+    wp4 = [2,0,0.6] # move past sven 
+    wp5 = [2,-1.5,1]# move farther right
+    wp6 = [-0.9,-1.5,1] # mover towards us
     drone.waypoints = [wp1,[3*np.pi/2],wp2,[0], 
-                    wp3,[3*np.pi/2],wp4,[-np.pi], wp5]
+                    wp3,[0],wp4,[3*np.pi/2],wp5,[-np.pi], wp6]
 
     while not rospy.is_shutdown():
         print("[offb_node.py] Lawmower Patter Start")
@@ -63,7 +64,7 @@ def main():
                 drone.waypoints.pop(0)
 
             elif len(drone.waypoints[0]) == 3:# go to position: x,y,z
-                drone.goTo(drone.waypoints[0],'global') 
+                drone.goToVelocity(drone.waypoints[0],'global') 
                 drone.waypoints.pop(0)
 
             else:

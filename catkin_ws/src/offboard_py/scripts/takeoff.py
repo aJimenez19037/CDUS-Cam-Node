@@ -17,16 +17,9 @@ def main():
     except rospy.ROSInterruptException:
         pass
     drone.arm()
-    drone.takeoff(0.5)
+    drone.takeoff(0.7)
     drone.turn(0)
-    drone.turn(np.pi/2)
-    drone.turn(3*np.pi/2)
-    drone.turn(0)
-    drone.goTo([0,0.3,0], mode='relative')
-    drone.goTo([0,-0.3,0], mode='relative')
-    drone.goTo([0.3,0,0], mode='relative')
-    drone.goTo([-0.3,0,0], mode='relative')
-
+    droene.goTo([2,1.5,0.7], mode="global")
     drone.land()
     while not rospy.is_shutdown():
         drone.rate.sleep()

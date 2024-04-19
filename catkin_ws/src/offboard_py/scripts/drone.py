@@ -415,7 +415,7 @@ class Drone(object):
             elif n >= np.pi:
                 n -= 2 * np.pi
             #create mini waypoints. yaw_sp = proportional const * error
-            yaw_sp += 0.1 * n
+            yaw_sp += 0.07 * n
             setpoint = self.get_setpoint(sp[0], sp[1], sp[2], yaw_sp)
             self.setpoint_publisher.publish(setpoint)
             normalized_yaw_sp = math.atan2(math.sin(yaw_sp), math.cos(yaw_sp))
